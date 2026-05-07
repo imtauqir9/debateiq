@@ -1138,8 +1138,16 @@ function renderPipeline(states, results) {
     (function(idx){
       var pb = document.getElementById('vbtn'+idx);
       if (pb) pb.addEventListener('click', function(){
-        if (vConnected) speakLayer(idx, lastResults[idx]);
-        else { document.getElementById('vHd').click(); alert('Connect ElevenLabs or browser voice first.'); }
+        if (!vConnected) {
+          /* Auto-enable browser voice without requiring connection */
+          vConnected = true; vUsing11 = false;
+          document.getElementById('vBadge').textContent = '● Browser voice';
+          document.getElementById('vBadge').className   = 'vbdg on';
+          document.getElementById('vCfg').classList.add('on');
+          document.getElementById('vCfg2').classList.add('on');
+          document.getElementById('vModes').classList.add('on');
+        }
+        speakLayer(idx, lastResults[idx]);
       });
       var cb = document.getElementById('copybtn'+idx);
       if (cb) cb.addEventListener('click', function(){
