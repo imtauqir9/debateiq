@@ -438,7 +438,13 @@ select option{background:#161625;}
 .lv-end:disabled{opacity:.35;cursor:not-allowed;}
 .lv-note{padding:0 20px 16px;font-size:11px;color:var(--di);line-height:1.65;}
 
-@media(max-width:600px){.lv-key-row{flex-direction:column;}.lv-key-in{width:100%;}.lv-controls{flex-direction:column;}}
+.lv-config{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--bd);}
+.lv-cf{display:flex;flex-direction:column;gap:5px;}
+.lv-cfl{font-size:10px;color:var(--mu);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.lv-sel{background:var(--s2);border:2px solid var(--bd);border-radius:9px;padding:9px 12px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:12px;outline:none;width:100%;cursor:pointer;appearance:none;-webkit-appearance:none;transition:border-color .2s;}
+.lv-sel:focus{border-color:var(--p);}
+.lv-sel option,.lv-sel optgroup{background:#161625;}
+@media(max-width:600px){.lv-config{grid-template-columns:1fr;}.lv-key-row{flex-direction:column;}.lv-key-in{width:100%;}.lv-controls{flex-direction:column;}}
   .cfg{grid-template-columns:1fr 1fr;}
   .tele{grid-template-columns:1fr 1fr;}
   .insgrid{grid-template-columns:1fr 1fr;}
@@ -739,13 +745,39 @@ select option{background:#161625;}
         <div class="lv-sub">Speak your argument — the AI listens and talks back in real time</div>
       </div>
       <div class="lv-key-row">
-        <input class="lv-key-in" id="lvKey" type="password" placeholder="ElevenLabs API key (xi_...)" />
+        <input class="lv-key-in" id="lvKey" type="password" placeholder="ElevenLabs API key (optional)" />
         <select class="lv-voice-sel" id="lvVoice">
           <option value="21m00Tcm4TlvDq8ikWAM">Rachel — calm</option>
           <option value="AZnzlk1XvdvUeBnXmlld">Domi — confident</option>
           <option value="VR6AewLTigWG4xSOukaG">Arnold — authoritative</option>
           <option value="ErXwobaYiN019PkySvjV">Antoni — clear</option>
           <option value="pNInz6obpgDQGcFmaJgB">Adam — narrative</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- TOPIC + POSITION INSIDE LIVE CARD -->
+    <div class="lv-config">
+      <div class="lv-cf">
+        <div class="lv-cfl">Debate topic</div>
+        <select class="lv-sel" id="lvTopic">
+          <optgroup label="🏏 Cricket">
+            <option value="cs">Strike Rate vs Batting Average</option>
+            <option value="ct20">T20 Leagues &amp; Traditional Cricket</option>
+          </optgroup>
+          <optgroup label="🍔 Food">
+            <option value="ff">Fast Food vs Traditional Cuisine</option>
+            <option value="fr">Government Food Regulation</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="lv-cf">
+        <div class="lv-cfl">Your position</div>
+        <select class="lv-sel" id="lvPos">
+          <option>Strike Rate is the more important metric</option>
+          <option>Batting Average is the more important metric</option>
+          <option>Both are equally important — format context decides</option>
+          <option>Neither alone is sufficient; composite metrics needed</option>
         </select>
       </div>
     </div>
@@ -1409,10 +1441,25 @@ function lvSetWave(state){
   if(state === 'speaking'){ lbl.textContent='AI is speaking…'; aiAv.classList.add('speaking'); aiAv.classList.remove('listening'); youAv.classList.remove('listening','speaking'); }
 }
 
+function lvGetTopic(){
+  var id = document.getElementById('lvTopic').value;
+  return TOPICS[id] ? TOPICS[id].title : getTopicTitle();
+}
+function lvGetPos(){
+  return document.getElementById('lvPos').value;
+}
+function lvUpdatePositions(){
+  var id = document.getElementById('lvTopic').value;
+  var t = TOPICS[id]; if(!t) return;
+  var sel = document.getElementById('lvPos');
+  sel.innerHTML = '';
+  t.positions.forEach(function(p){ var opt=document.createElement('option'); opt.textContent=p; sel.appendChild(opt); });
+}
+
 /* Build AI counter-argument prompt */
 function lvBuildPrompt(userSpeech){
-  var topic = getTopicTitle();
-  var pos = document.getElementById('posSelect').value;
+  var topic = lvGetTopic();
+  var pos = lvGetPos();
   var pa = document.getElementById('personaSelect').value;
   var persona = PERSONA[pa] || 'analyst';
   var src = SOURCES[selSrc];
@@ -1550,10 +1597,10 @@ function lvStart(){
   lvSpeaking = false; lvListening = false;
 
   /* Update topic bar */
-  document.getElementById('lvTopicBar').textContent = '📋 ' + topic;
+  document.getElementById('lvTopicBar').textContent = '📋 ' + lvGetTopic();
 
   /* Update roles */
-  var pos = document.getElementById('posSelect').value;
+  var pos = lvGetPos();
   document.getElementById('lvYourRole').textContent = pos.length>25?pos.slice(0,25)+'…':pos;
 
   /* Clear transcript */
@@ -1572,7 +1619,7 @@ function lvStart(){
   /* AI opens with a challenge */
   lvSetStatus('AI is setting the stage…');
   lvShowTyping();
-  var openPrompt = 'You are opening a live spoken debate. Topic: "'+topic+'". The human will argue: "'+document.getElementById('posSelect').value+'". You will argue the opposite. In 2-3 sentences, briefly introduce the debate and challenge them to make their case. Be direct and energetic. No preamble.';
+  var openPrompt = 'You are opening a live spoken debate. Topic: "'+lvGetTopic()+'". The human will argue: "'+lvGetPos()+'". You will argue the opposite. In 2-3 sentences, briefly introduce the debate and challenge them to make their case. Be direct and energetic. No preamble.';
   callAPI(openPrompt).then(function(res){
     lvRemoveTyping();
     lvAddMessage('ai', res.text);
@@ -1618,6 +1665,10 @@ window.addEventListener('DOMContentLoaded', function(){
     var endBtn   = document.getElementById('lvEndBtn');
     if(startBtn) startBtn.addEventListener('click', lvStart);
     if(endBtn)   endBtn.addEventListener('click', lvEnd);
+
+    /* Update positions when topic changes */
+    var lvTopicSel = document.getElementById('lvTopic');
+    if(lvTopicSel){ lvTopicSel.addEventListener('change', lvUpdatePositions); lvUpdatePositions(); }
 
     /* Hold to speak — mousedown/touchstart to start, mouseup/touchend to stop */
     if(speakBtn){
