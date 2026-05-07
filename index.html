@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DebateIQ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>DebateIQ — AI Debate Strategist</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -16,65 +16,75 @@
   --o2:#fbbf24;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;}
 
 /* NAV */
-nav{position:sticky;top:0;z-index:50;background:rgba(7,7,15,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);padding:0 1.5rem;}
-.ni{max-width:1060px;margin:0 auto;height:52px;display:flex;align-items:center;gap:10px;}
+nav{position:sticky;top:0;z-index:50;background:rgba(7,7,15,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);padding:0 1.2rem;}
+.ni{max-width:1060px;margin:0 auto;height:52px;display:flex;align-items:center;gap:8px;}
 .logo{display:flex;align-items:center;gap:7px;font-size:17px;font-weight:800;}
-.li{width:28px;height:28px;background:linear-gradient(135deg,var(--p),#3b82f6);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.li{width:28px;height:28px;background:linear-gradient(135deg,var(--p),#3b82f6);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
 .logo span{background:linear-gradient(135deg,var(--p2),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nd{width:6px;height:6px;border-radius:50%;background:var(--g2);box-shadow:0 0 5px var(--g2);animation:bl 2s infinite;}
+.nd{width:6px;height:6px;border-radius:50%;background:var(--g2);box-shadow:0 0 5px var(--g2);animation:bl 2s infinite;flex-shrink:0;}
 @keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
-.nr{margin-left:auto;display:flex;gap:7px;}
-.bs{background:transparent;border:1px solid var(--bd);border-radius:8px;padding:5px 12px;font-size:12px;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500;transition:all .2s;}
+.nr{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;}
+.bs{background:transparent;border:1px solid var(--bd);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500;transition:all .2s;white-space:nowrap;}
 .bs:hover{border-color:var(--p);color:var(--p2);}
 .bsp{background:var(--p);border-color:var(--p);color:#fff;}
 .bsp:hover{opacity:.88;}
 
 /* PAGE */
-.page{max-width:1060px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.page{max-width:1060px;margin:0 auto;padding:1.5rem 1.2rem 5rem;}
 
 /* HERO */
-.hero{text-align:center;padding:1.8rem 0 1.5rem;}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,3rem);line-height:1.1;margin-bottom:.5rem;}
+.hero{text-align:center;padding:1.5rem 0 1.2rem;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,3rem);line-height:1.1;margin-bottom:.5rem;}
 .hero h1 em{font-style:italic;background:linear-gradient(135deg,var(--p2),var(--l1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero p{font-size:14px;color:var(--mu);max-width:460px;margin:0 auto 1.2rem;line-height:1.7;}
-.hstats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;}
+.hero p{font-size:13px;color:var(--mu);max-width:460px;margin:0 auto 1.2rem;line-height:1.7;}
+.hstats{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;}
 .hv{font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--p2),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hl{font-size:11px;color:var(--di);margin-top:1px;}
 
 /* SECTION LABEL */
 .sl{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--di);font-family:'JetBrains Mono',monospace;margin-bottom:.8rem;margin-top:1.6rem;display:flex;align-items:center;gap:8px;}
 .sl::after{content:'';flex:1;height:1px;background:var(--bd);}
-.sn{background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:2px 7px;font-size:10px;color:var(--p2);}
+.sn{background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:2px 7px;font-size:10px;color:var(--p2);flex-shrink:0;}
 
 /* CATEGORY BUTTONS */
 .cats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;}
-.cat{background:var(--s1);border:2px solid var(--bd);border-radius:16px;padding:14px 18px;cursor:pointer;text-align:left;transition:border-color .2s,background .2s;font-family:'Outfit',sans-serif;color:var(--tx);}
+.cat{background:var(--s1);border:2px solid var(--bd);border-radius:14px;padding:12px 16px;cursor:pointer;text-align:left;transition:all .2s;font-family:'Outfit',sans-serif;color:var(--tx);}
 .cat:hover{border-color:var(--bd2);}
 .cat.ac{border-color:var(--l1);background:rgba(56,189,248,.06);}
 .cat.af{border-color:var(--l4);background:rgba(251,146,60,.06);}
-.ce{font-size:24px;display:block;margin-bottom:5px;}
-.ct{font-size:14px;font-weight:700;margin-bottom:2px;}
-.cs{font-size:11px;color:var(--mu);}
+.ce{font-size:22px;display:block;margin-bottom:4px;}
+.ct{font-size:13px;font-weight:700;margin-bottom:2px;}
+.css2{font-size:11px;color:var(--mu);}
 .cbadge{float:right;font-size:9px;padding:2px 7px;border-radius:999px;font-family:'JetBrains Mono',monospace;}
 .cbc{background:rgba(56,189,248,.1);color:var(--l1);border:1px solid rgba(56,189,248,.2);}
 .cbf{background:rgba(251,146,60,.1);color:var(--l4);border:1px solid rgba(251,146,60,.2);}
 
 /* TOPIC CARDS */
-.topics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.2rem;}
-.topic{background:var(--s1);border:2px solid var(--bd);border-radius:12px;padding:14px 16px;cursor:pointer;text-align:left;transition:border-color .2s,background .2s;font-family:'Outfit',sans-serif;color:var(--tx);position:relative;}
+.topics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;}
+.topic{background:var(--s1);border:2px solid var(--bd);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left;transition:all .2s;font-family:'Outfit',sans-serif;color:var(--tx);position:relative;}
 .topic:hover{border-color:var(--bd2);}
 .topic.sel{border-color:var(--p);background:rgba(139,92,246,.07);}
-.te{font-size:20px;display:block;margin-bottom:6px;}
-.tt{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3;}
-.tsu{font-size:11px;color:var(--mu);line-height:1.5;}
-.tick{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--p);color:#fff;font-size:10px;display:none;align-items:center;justify-content:center;pointer-events:none;}
+.te{font-size:18px;display:block;margin-bottom:5px;}
+.tt{font-size:12px;font-weight:700;margin-bottom:2px;line-height:1.3;}
+.tsu{font-size:10px;color:var(--mu);line-height:1.5;}
+.tick{position:absolute;top:8px;right:8px;width:16px;height:16px;border-radius:50%;background:var(--p);color:#fff;font-size:9px;display:none;align-items:center;justify-content:center;pointer-events:none;}
 .topic.sel .tick{display:flex;}
 
+/* CUSTOM TOPIC */
+.custom-topic-wrap{margin-bottom:1rem;}
+.custom-topic-row{display:flex;gap:8px;}
+.ctin{flex:1;background:var(--s1);border:2px solid var(--bd);border-radius:10px;padding:10px 14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.ctin:focus{border-color:var(--p);}
+.ctin::placeholder{color:var(--di);}
+.ctbtn{background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:10px;padding:10px 16px;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .2s;}
+.ctbtn:hover{opacity:.88;}
+
 /* CONFIG */
-.cfg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1rem;}
+.cfg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1rem;}
 .cf{display:flex;flex-direction:column;gap:5px;}
 .cfl{font-size:11px;color:var(--mu);font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:5px;}
 .cft{font-size:9px;padding:1px 5px;background:var(--s3);border-radius:4px;color:var(--di);}
@@ -83,58 +93,58 @@ select:focus{border-color:var(--p);}
 select option{background:#161625;}
 
 /* TONE */
-.tones{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1.2rem;align-items:center;}
+.tones{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;align-items:center;}
 .tl{font-size:11px;color:var(--mu);font-family:'JetBrains Mono',monospace;}
-.tone{background:var(--s1);border:2px solid var(--bd);border-radius:999px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--mu);cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif;}
+.tone{background:var(--s1);border:2px solid var(--bd);border-radius:999px;padding:5px 12px;font-size:11px;font-weight:500;color:var(--mu);cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif;}
 .tone:hover{border-color:var(--bd2);color:var(--tx);}
 .tone.sel{border-color:var(--l2);color:var(--l2);background:rgba(167,139,250,.1);}
 
 /* PREVIEW */
-.prev{background:linear-gradient(135deg,rgba(139,92,246,.07),rgba(59,130,246,.04));border:1px solid rgba(139,92,246,.18);border-radius:16px;padding:14px 18px;display:flex;gap:12px;align-items:center;margin-bottom:1.2rem;}
-.pe{font-size:26px;flex-shrink:0;}
+.prev{background:linear-gradient(135deg,rgba(139,92,246,.07),rgba(59,130,246,.04));border:1px solid rgba(139,92,246,.18);border-radius:14px;padding:12px 16px;display:flex;gap:10px;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;}
+.pe{font-size:24px;flex-shrink:0;}
 .pm{flex:1;min-width:0;}
 .plbl{font-size:9px;color:var(--di);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
-.ptitle{font-size:14px;font-weight:700;margin-bottom:5px;}
-.chips{display:flex;gap:5px;flex-wrap:wrap;}
-.chip{font-size:11px;padding:2px 9px;border-radius:999px;border:1px solid;}
+.ptitle{font-size:13px;font-weight:700;margin-bottom:4px;}
+.chips{display:flex;gap:4px;flex-wrap:wrap;}
+.chip{font-size:10px;padding:2px 8px;border-radius:999px;border:1px solid;}
 .chip-p{color:var(--o2);border-color:rgba(251,191,36,.2);background:rgba(251,191,36,.07);}
 .chip-a{color:var(--l1);border-color:rgba(56,189,248,.2);background:rgba(56,189,248,.07);}
 .chip-s{color:var(--g2);border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.07);}
 .chip-t{color:var(--l2);border-color:rgba(167,139,250,.2);background:rgba(167,139,250,.07);}
+.chip-l{color:var(--l4);border-color:rgba(251,146,60,.2);background:rgba(251,146,60,.07);}
 .psr{flex-shrink:0;text-align:right;}
 .psrn{font-size:11px;color:var(--g2);font-family:'JetBrains Mono',monospace;font-weight:600;}
 .psru{font-size:10px;color:var(--di);margin-top:1px;}
 
 /* SOURCE */
-.srcwrap{background:var(--s1);border:2px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:1.2rem;}
-.srchd{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.srcwrap{background:var(--s1);border:2px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:1rem;}
+.srchd{padding:11px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
 .srchd.open{border-bottom:1px solid var(--bd);}
 .srchl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;}
 .srcbdg{font-size:10px;padding:2px 9px;border-radius:999px;background:rgba(16,185,129,.1);color:var(--g2);border:1px solid rgba(16,185,129,.2);font-family:'JetBrains Mono',monospace;}
 .srcch{color:var(--di);font-size:11px;transition:transform .2s;}
 .srcch.open{transform:rotate(180deg);}
-.srcbd{padding:14px 18px;display:none;}
+.srcbd{padding:14px 16px;display:none;}
 .srcbd.open{display:block;}
 .srcgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:10px;}
-.srcbtn{background:var(--s2);border:2px solid var(--bd);border-radius:9px;padding:9px 10px;cursor:pointer;text-align:left;color:var(--tx);font-family:'Outfit',sans-serif;transition:all .2s;}
+.srcbtn{background:var(--s2);border:2px solid var(--bd);border-radius:9px;padding:8px 10px;cursor:pointer;text-align:left;color:var(--tx);font-family:'Outfit',sans-serif;transition:all .2s;position:relative;}
 .srcbtn:hover{border-color:var(--bd2);}
 .srcbtn.sel{border-color:var(--g);background:rgba(16,185,129,.07);}
-.si{font-size:16px;margin-bottom:3px;}
+.si{font-size:15px;margin-bottom:3px;}
 .sn2{font-size:11px;font-weight:700;margin-bottom:1px;}
 .sd{font-size:9px;color:var(--mu);}
 .srcurl{display:flex;gap:7px;margin-bottom:10px;}
 .surlin{flex:1;background:var(--s2);border:2px solid var(--bd);border-radius:8px;padding:8px 12px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:border-color .2s;}
 .surlin:focus{border-color:var(--g);}
 .surlin::placeholder{color:var(--di);}
-.suruse{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:8px 14px;color:var(--g2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s;}
+.suruse{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:8px 12px;color:var(--g2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
 .suruse:hover{background:rgba(16,185,129,.2);}
 .srcnote{font-size:11px;color:var(--di);line-height:1.7;}
 .srcnote a{color:var(--g2);text-decoration:none;}
-.srcnote a:hover{text-decoration:underline;}
 
 /* VOICE */
-.voicewrap{background:var(--s1);border:2px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:1.2rem;}
-.vhd{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.voicewrap{background:var(--s1);border:2px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:1rem;}
+.vhd{padding:11px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
 .vhd.open{border-bottom:1px solid var(--bd);}
 .vhl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;}
 .vbdg{font-size:10px;padding:2px 9px;border-radius:999px;font-family:'JetBrains Mono',monospace;}
@@ -142,67 +152,80 @@ select option{background:#161625;}
 .vbdg.on{background:rgba(16,185,129,.1);color:var(--g2);border:1px solid rgba(16,185,129,.2);}
 .vch{color:var(--di);font-size:11px;transition:transform .2s;}
 .vch.open{transform:rotate(180deg);}
-.vbd{padding:14px 18px;display:none;}
+.vbd{padding:14px 16px;display:none;}
 .vbd.open{display:block;}
 .vkrow{display:flex;gap:8px;margin-bottom:12px;}
-.vkin{flex:1;background:var(--s2);border:2px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:border-color .2s;}
-.vkin:focus{border-color:var(--p);}
+.vkin{flex:1;background:var(--s2);border:2px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;}
 .vkin::placeholder{color:var(--di);letter-spacing:0;}
-.vconn{background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:8px;padding:9px 16px;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .2s;}
-.vconn:hover{opacity:.88;}
-.vconn:disabled{opacity:.4;cursor:not-allowed;}
+.vconn{background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:8px;padding:9px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
 .vcfg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:10px;opacity:.4;pointer-events:none;transition:opacity .3s;}
 .vcfg.on{opacity:1;pointer-events:auto;}
 .vcl{font-size:10px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-bottom:4px;}
 .vsl{width:100%;accent-color:var(--p);}
-.vmodes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;opacity:.4;pointer-events:none;transition:opacity .3s;}
+.vmodes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;opacity:.4;pointer-events:none;}
 .vmodes.on{opacity:1;pointer-events:auto;}
-.vmode{background:var(--s2);border:2px solid var(--bd);border-radius:999px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
+.vmode{background:var(--s2);border:2px solid var(--bd);border-radius:999px;padding:5px 12px;font-size:11px;font-weight:500;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
 .vmode:hover{border-color:var(--bd2);color:var(--tx);}
 .vmode.sel{border-color:var(--p2);color:var(--p2);background:rgba(167,139,250,.1);}
 .vnote{font-size:11px;color:var(--di);line-height:1.65;padding-top:10px;border-top:1px solid var(--bd);}
 .vnote a{color:var(--p2);text-decoration:none;}
 
 /* RUN BUTTON */
-.runbtn{width:100%;padding:16px;background:linear-gradient(135deg,var(--p),#7c3aed 50%,#3b82f6);background-size:200%;border:none;border-radius:14px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:.02em;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.6rem;}
-.runbtn:hover{background-position:right center;transform:translateY(-2px);box-shadow:0 12px 35px rgba(139,92,246,.35);}
+.runbtn{width:100%;padding:15px;background:linear-gradient(135deg,var(--p),#7c3aed 50%,#3b82f6);background-size:200%;border:none;border-radius:12px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#fff;letter-spacing:.02em;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.4rem;}
+.runbtn:hover{background-position:right center;transform:translateY(-2px);box-shadow:0 10px 30px rgba(139,92,246,.35);}
 .runbtn:active{transform:translateY(0);}
 .runbtn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;}
 
 /* TELEMETRY */
-.tele{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:1.6rem;}
-.tc{background:var(--s1);border:2px solid var(--bd);border-radius:11px;padding:12px 14px;transition:border-color .3s;}
+.tele{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.4rem;}
+.tc{background:var(--s1);border:2px solid var(--bd);border-radius:11px;padding:11px 12px;transition:border-color .3s;}
 .tc.lit{border-color:var(--g);}
-.tlbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--di);font-family:'JetBrains Mono',monospace;margin-bottom:6px;}
-.tval{font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--g2);}
+.tlbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--di);font-family:'JetBrains Mono',monospace;margin-bottom:5px;}
+.tval{font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--g2);}
 .tunit{font-size:10px;color:var(--di);margin-top:2px;}
 
+/* COST BADGE */
+.cost-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:999px;padding:4px 12px;font-size:11px;color:var(--o2);font-family:'JetBrains Mono',monospace;margin-bottom:1.4rem;}
+
 /* PROGRESS */
-.progwrap{height:3px;background:var(--bd);border-radius:999px;overflow:hidden;margin-bottom:1.5rem;display:none;}
+.progwrap{height:3px;background:var(--bd);border-radius:999px;overflow:hidden;margin-bottom:1.4rem;display:none;}
 .progfill{height:100%;background:linear-gradient(90deg,var(--p),var(--l1));border-radius:999px;transition:width .4s;}
 
+/* TABS (Normal / Side-by-Side) */
+.mode-tabs{display:flex;gap:8px;margin-bottom:1rem;}
+.mtab{background:var(--s1);border:2px solid var(--bd);border-radius:999px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
+.mtab:hover{border-color:var(--bd2);color:var(--tx);}
+.mtab.sel{border-color:var(--p);color:var(--p2);background:rgba(139,92,246,.1);}
+
+/* SIDE BY SIDE */
+.sbs-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.sbs-col{display:flex;flex-direction:column;gap:0;}
+.sbs-head{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-bottom:10px;text-align:center;font-size:12px;font-weight:700;}
+.sbs-head.a{color:var(--l1);border-color:rgba(56,189,248,.3);}
+.sbs-head.b{color:var(--l3);border-color:rgba(251,113,133,.3);}
+
 /* PIPELINE */
-.pipeline{display:flex;flex-direction:column;gap:0;margin-bottom:2rem;}
-.lcard{background:var(--s1);border:2px solid var(--bd);border-radius:16px;overflow:hidden;transition:border-color .3s;animation:fu .35s ease both;}
+.pipeline{display:flex;flex-direction:column;gap:0;margin-bottom:1.5rem;}
+.lcard{background:var(--s1);border:2px solid var(--bd);border-radius:14px;overflow:hidden;transition:border-color .3s;animation:fu .35s ease both;}
 @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .lcard.done{border-color:var(--lc,var(--p));}
-.lhdr{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--bd);background:rgba(255,255,255,.015);}
-.lnum{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;border:2px solid;flex-shrink:0;}
-.lmeta{flex:1;}
-.ltitle{font-size:14px;font-weight:700;}
-.lsub{font-size:11px;color:var(--mu);margin-top:2px;}
-.lq{font-size:11px;color:var(--di);font-style:italic;margin-top:2px;}
-.lstat{margin-left:auto;font-size:10px;letter-spacing:.07em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;padding:3px 10px;border-radius:999px;border:1px solid;white-space:nowrap;}
-.lbody{padding:18px;min-height:48px;}
-.ltext{font-size:14px;line-height:1.85;color:var(--tx);}
+.lhdr{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--bd);background:rgba(255,255,255,.015);}
+.lnum{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;border:2px solid;flex-shrink:0;}
+.lmeta{flex:1;min-width:0;}
+.ltitle{font-size:13px;font-weight:700;}
+.lsub{font-size:10px;color:var(--mu);margin-top:1px;}
+.lq{font-size:10px;color:var(--di);font-style:italic;margin-top:1px;}
+.lstat{margin-left:auto;font-size:9px;letter-spacing:.07em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;padding:3px 9px;border-radius:999px;border:1px solid;white-space:nowrap;flex-shrink:0;}
+.lbody{padding:16px;min-height:48px;}
+.ltext{font-size:13px;line-height:1.85;color:var(--tx);}
 .lspin{display:flex;gap:5px;align-items:center;}
 .ld{width:7px;height:7px;border-radius:50%;background:var(--lc,var(--p));animation:lb 1s infinite;}
 .ld:nth-child(2){animation-delay:.18s;}.ld:nth-child(3){animation-delay:.36s;}
 @keyframes lb{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.lfoot{padding:9px 18px 12px;display:flex;gap:9px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--bd);}
+.lfoot{padding:8px 16px 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--bd);}
 .ltok{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--di);display:flex;align-items:center;gap:3px;}
 .ltok b{color:var(--lc,var(--p));font-weight:600;}
-.lsrc{margin-left:auto;font-size:10px;color:var(--g2);font-family:'JetBrains Mono',monospace;}
+.lsrc{font-size:10px;color:var(--g2);font-family:'JetBrains Mono',monospace;}
 .lcopy{background:transparent;border:1px solid var(--bd);border-radius:6px;padding:3px 9px;font-size:10px;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
 .lcopy:hover{border-color:var(--p);color:var(--p2);}
 .lplay{display:flex;align-items:center;gap:4px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:6px;padding:3px 9px;font-size:10px;color:var(--p2);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;transition:all .2s;}
@@ -210,88 +233,131 @@ select option{background:#161625;}
 .lplay.playing{background:rgba(251,113,133,.1);border-color:rgba(251,113,133,.25);color:var(--l3);}
 
 /* CONNECTOR */
-.conn{display:flex;flex-direction:column;align-items:center;height:24px;}
+.conn{display:flex;flex-direction:column;align-items:center;height:22px;}
 .connline{width:1px;flex:1;background:repeating-linear-gradient(180deg,var(--bd) 0,var(--bd) 4px,transparent 4px,transparent 8px);}
 .conndot{width:8px;height:8px;border-radius:50%;background:var(--p);border:2px solid var(--bg);box-shadow:0 0 7px rgba(139,92,246,.5);}
 
 /* EMPTY */
-.empty{text-align:center;padding:3.5rem 2rem;color:var(--mu);}
+.empty{text-align:center;padding:3rem 2rem;color:var(--mu);}
 .emptyicon{font-size:3rem;margin-bottom:1rem;opacity:.3;}
 .emptytitle{font-size:16px;font-weight:600;margin-bottom:.4rem;}
 .emptysub{font-size:13px;color:var(--di);}
 
+/* SCORE CARD */
+.scorecard{background:var(--s1);border:2px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:1.5rem;}
+.sc-head{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
+.sc-title{font-size:14px;font-weight:700;}
+.sc-total{font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;}
+.sc-total.excellent{color:var(--g2);}
+.sc-total.good{color:var(--l1);}
+.sc-total.fair{color:var(--o2);}
+.sc-total.weak{color:var(--l3);}
+.sc-body{padding:16px 18px;}
+.sc-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.sc-row:last-child{margin-bottom:0;}
+.sc-label{font-size:12px;color:var(--mu);width:110px;flex-shrink:0;}
+.sc-bar-wrap{flex:1;height:8px;background:var(--s3);border-radius:999px;overflow:hidden;}
+.sc-bar{height:100%;border-radius:999px;transition:width 1s cubic-bezier(.34,1.56,.64,1);}
+.sc-score{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;width:40px;text-align:right;flex-shrink:0;}
+.sc-verdict{margin-top:14px;padding-top:14px;border-top:1px solid var(--bd);font-size:12px;color:var(--mu);line-height:1.7;}
+.sc-verdict strong{color:var(--tx);}
+
 /* INSIGHTS */
 .insgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:.8rem;}
-.insc{background:var(--s1);border:2px solid var(--bd);border-radius:14px;padding:16px;position:relative;overflow:hidden;}
+.insc{background:var(--s1);border:2px solid var(--bd);border-radius:12px;padding:14px;position:relative;overflow:hidden;}
 .insc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ic,var(--p));}
-.inslbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--di);font-family:'JetBrains Mono',monospace;margin-bottom:8px;}
-.insval{font-size:26px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--ic,var(--p));}
-.insdesc{font-size:11px;color:var(--mu);margin-top:4px;}
+.inslbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--di);font-family:'JetBrains Mono',monospace;margin-bottom:7px;}
+.insval{font-size:24px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--ic,var(--p));}
+.insdesc{font-size:11px;color:var(--mu);margin-top:3px;}
 
 /* CHART */
-.chartcard{background:var(--s1);border:2px solid var(--bd);border-radius:14px;padding:18px;margin-top:1rem;}
+.chartcard{background:var(--s1);border:2px solid var(--bd);border-radius:12px;padding:16px;margin-top:1rem;}
 .chartlbl{font-size:10px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-bottom:12px;}
-.chartbars{display:flex;align-items:flex-end;gap:9px;height:110px;}
-.bwrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.chartbars{display:flex;align-items:flex-end;gap:9px;height:100px;}
+.bwrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .bar{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height .6s cubic-bezier(.34,1.56,.64,1);}
 .bval{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--tx);}
 .blbl{font-size:10px;color:var(--di);font-family:'JetBrains Mono',monospace;}
-.tlbar{display:flex;height:20px;border-radius:7px;overflow:hidden;gap:2px;margin-top:12px;}
+.tlbar{display:flex;height:18px;border-radius:7px;overflow:hidden;gap:2px;margin-top:10px;}
 .tlseg{display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(0,0,0,.7);font-weight:700;overflow:hidden;border-radius:3px;}
 
 /* EXPORT */
-.expbar{display:flex;gap:7px;flex-wrap:wrap;margin-top:1.2rem;padding:13px 16px;background:var(--s1);border:2px solid var(--bd);border-radius:14px;align-items:center;}
-.explbl{font-size:11px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-right:5px;}
-.expbtn{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
+.expbar{display:flex;gap:7px;flex-wrap:wrap;margin-top:1.2rem;padding:12px 14px;background:var(--s1);border:2px solid var(--bd);border-radius:12px;align-items:center;}
+.explbl{font-size:11px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-right:4px;}
+.expbtn{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
 .expbtn:hover{border-color:var(--p);color:var(--p2);}
+
+/* SHARE */
+.share-row{display:flex;gap:8px;margin-top:.8rem;}
+.share-url{flex:1;background:var(--s1);border:2px solid var(--bd);border-radius:9px;padding:9px 12px;color:var(--mu);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;cursor:text;}
+.share-copy{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:9px;padding:9px 14px;color:var(--p2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.share-copy:hover{background:rgba(139,92,246,.2);}
 
 /* HISTORY */
 .histlist{display:flex;flex-direction:column;gap:7px;margin-top:.8rem;}
-.hitem{background:var(--s1);border:1px solid var(--bd);border-radius:11px;padding:11px 15px;display:flex;align-items:center;gap:11px;}
-.hiem{font-size:17px;}
+.hitem{background:var(--s1);border:1px solid var(--bd);border-radius:11px;padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.hiem{font-size:16px;}
 .hiinfo{flex:1;min-width:0;}
 .hitopic{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .himeta{font-size:10px;color:var(--di);margin-top:2px;}
 .hitok{font-size:10px;color:var(--g2);font-family:'JetBrains Mono',monospace;flex-shrink:0;}
 
 /* PLAYER BAR */
-.playerbar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(7,7,15,.96);backdrop-filter:blur(16px);border-top:1px solid rgba(139,92,246,.3);padding:9px 1.5rem;display:none;align-items:center;gap:12px;}
+.playerbar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(7,7,15,.96);backdrop-filter:blur(16px);border-top:1px solid rgba(139,92,246,.3);padding:8px 1.2rem;display:none;align-items:center;gap:10px;}
 .playerbar.show{display:flex;}
 .pblogo{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--p2);font-weight:600;flex-shrink:0;}
 .pbinfo{flex:1;min-width:0;}
 .pblayer{font-size:9px;color:var(--p2);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1px;}
-.pbtext{font-size:12px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pbprog{height:3px;background:var(--bd);border-radius:999px;overflow:hidden;margin-top:4px;}
+.pbtext{font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pbprog{height:3px;background:var(--bd);border-radius:999px;overflow:hidden;margin-top:3px;}
 .pbprogfill{height:100%;width:0%;background:linear-gradient(90deg,var(--p),var(--l1));border-radius:999px;transition:width .3s;}
-.pbwave{display:flex;align-items:center;gap:2px;height:24px;flex-shrink:0;}
+.pbwave{display:flex;align-items:center;gap:2px;height:22px;flex-shrink:0;}
 .pw{width:2px;border-radius:2px;background:var(--p2);animation:wv .8s ease-in-out infinite;}
 .pw:nth-child(1){animation-delay:0s;}.pw:nth-child(2){animation-delay:.1s;}.pw:nth-child(3){animation-delay:.2s;}.pw:nth-child(4){animation-delay:.1s;}.pw:nth-child(5){animation-delay:0s;}.pw:nth-child(6){animation-delay:.1s;}.pw:nth-child(7){animation-delay:.2s;}.pw:nth-child(8){animation-delay:.1s;}
-@keyframes wv{0%,100%{height:3px}50%{height:20px}}
-.pbpause{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:7px;padding:6px 12px;font-size:12px;color:var(--l2);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;flex-shrink:0;}
-.pbstop{background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.25);border-radius:7px;padding:6px 12px;font-size:12px;color:var(--l3);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;flex-shrink:0;}
+@keyframes wv{0%,100%{height:3px}50%{height:18px}}
+.pbpause{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:7px;padding:5px 10px;font-size:11px;color:var(--l2);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;flex-shrink:0;}
+.pbstop{background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.25);border-radius:7px;padding:5px 10px;font-size:11px;color:var(--l3);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;flex-shrink:0;}
 
 /* TUTORIAL */
 .tut{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px);}
 .tut.show{display:flex;}
-.tutbox{background:var(--s1);border:2px solid var(--bd);border-radius:20px;max-width:600px;width:100%;overflow:hidden;}
-.tuttop{background:linear-gradient(135deg,rgba(139,92,246,.14),rgba(59,130,246,.07));padding:22px 26px 18px;border-bottom:1px solid var(--bd);}
-.tutlogo{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;margin-bottom:8px;}
-.tuttop h2{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:3px;}
+.tutbox{background:var(--s1);border:2px solid var(--bd);border-radius:18px;max-width:580px;width:100%;overflow:hidden;max-height:90vh;overflow-y:auto;}
+.tuttop{background:linear-gradient(135deg,rgba(139,92,246,.14),rgba(59,130,246,.07));padding:20px 24px 16px;border-bottom:1px solid var(--bd);}
+.tutlogo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;margin-bottom:8px;}
+.tuttop h2{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:3px;}
 .tuttop p{font-size:12px;color:var(--mu);}
-.tutsteps{padding:18px 26px;display:flex;flex-direction:column;gap:14px;}
-.tutstep{display:flex;gap:12px;}
-.tutn{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;}
-.tutb{padding-top:2px;}
-.tutt{font-size:13px;font-weight:700;margin-bottom:2px;}
-.tutd{font-size:12px;color:var(--mu);line-height:1.6;}
-.tutex{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.18);border-radius:7px;padding:6px 11px;margin-top:5px;font-size:11px;color:var(--p2);font-family:'JetBrains Mono',monospace;line-height:1.7;}
-.tutfoot{padding:16px 26px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--bd);}
-.tutgo{background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:9px;padding:10px 20px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
-.tutskip{background:transparent;border:1px solid var(--bd);border-radius:9px;padding:10px 14px;font-family:'Outfit',sans-serif;font-size:13px;color:var(--mu);cursor:pointer;}
+.tutsteps{padding:16px 24px;display:flex;flex-direction:column;gap:12px;}
+.tutstep{display:flex;gap:10px;}
+.tutn{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-top:2px;}
+.tutb{flex:1;}
+.tutt{font-size:12px;font-weight:700;margin-bottom:2px;}
+.tutd{font-size:11px;color:var(--mu);line-height:1.6;}
+.tutex{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.18);border-radius:7px;padding:6px 10px;margin-top:5px;font-size:10px;color:var(--p2);font-family:'JetBrains Mono',monospace;line-height:1.7;}
+.tutfoot{padding:14px 24px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--bd);}
+.tutgo{background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:9px;padding:10px 20px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;}
+.tutskip{background:transparent;border:1px solid var(--bd);border-radius:9px;padding:10px 13px;font-family:'Outfit',sans-serif;font-size:12px;color:var(--mu);cursor:pointer;}
 
+/* MOBILE */
 @media(max-width:700px){
-  .cfg,.tele,.insgrid{grid-template-columns:1fr 1fr;}
-  .cats,.topics,.srcgrid{grid-template-columns:1fr;}
+  .cfg{grid-template-columns:1fr 1fr;}
+  .tele{grid-template-columns:1fr 1fr;}
+  .insgrid{grid-template-columns:1fr 1fr;}
+  .cats{grid-template-columns:1fr 1fr;}
+  .topics{grid-template-columns:1fr 1fr;}
+  .srcgrid{grid-template-columns:repeat(2,1fr);}
+  .sbs-wrap{grid-template-columns:1fr;}
+  .vcfg{grid-template-columns:1fr 1fr;}
+  .nr .bs:not(.bsp){display:none;}
+  .sc-row{flex-wrap:wrap;}
+}
+@media(max-width:480px){
+  .cfg{grid-template-columns:1fr;}
+  .tele{grid-template-columns:1fr 1fr;}
+  .insgrid{grid-template-columns:1fr 1fr;}
+  .cats{grid-template-columns:1fr;}
+  .topics{grid-template-columns:1fr;}
+  .chips{gap:3px;}
+  .hero h1{font-size:1.6rem;}
 }
 </style>
 </head>
@@ -308,27 +374,21 @@ select option{background:#161625;}
     <div class="tutsteps">
       <div class="tutstep">
         <div class="tutn" style="background:rgba(56,189,248,.14);color:var(--l1);border:1px solid rgba(56,189,248,.3)">1</div>
-        <div class="tutb">
-          <div class="tutt">Pick Cricket or Food — then click a topic</div>
-          <div class="tutd">Click a category button to switch, then click a topic card to select your debate question.</div>
-          <div class="tutex">🏏 Strike Rate vs Average · 🌐 T20 Leagues · 🍔 Fast Food · 📋 Food Regulation</div>
-        </div>
+        <div class="tutb"><div class="tutt">Pick a topic or type your own</div>
+        <div class="tutd">Click Cricket or Food, then pick a topic card. Or type any debate question in the custom topic box.</div>
+        <div class="tutex">🏏 Strike Rate · 🌐 T20 · 🍔 Fast Food · 📋 Food Reg · ✏️ Custom</div></div>
       </div>
       <div class="tutstep">
         <div class="tutn" style="background:rgba(251,146,60,.14);color:var(--l4);border:1px solid rgba(251,146,60,.3)">2</div>
-        <div class="tutb">
-          <div class="tutt">Choose position, persona &amp; tone</div>
-          <div class="tutd">Select your side from the dropdown. Pick a persona (Analyst, Journalist, Lawyer…) and a debate tone to shape the AI's style.</div>
-          <div class="tutex">Position: "Strike Rate matters more" · Persona: Sports Analyst · Tone: Persuasive</div>
-        </div>
+        <div class="tutb"><div class="tutt">Configure position, persona, tone &amp; language</div>
+        <div class="tutd">Pick your side, a debate persona, tone, and what language you want the output in.</div>
+        <div class="tutex">Position: "Strike Rate matters more" · Language: Arabic · Tone: Aggressive</div></div>
       </div>
       <div class="tutstep">
         <div class="tutn" style="background:rgba(52,211,153,.14);color:var(--l5);border:1px solid rgba(52,211,153,.3)">3</div>
-        <div class="tutb">
-          <div class="tutt">Set a source, click Run — watch AI reason live</div>
-          <div class="tutd">Pick ESPNCricinfo, WHO, BBC etc. or paste any URL. 5 reasoning layers fire one by one. Optionally connect ElevenLabs to hear it read aloud.</div>
-          <div class="tutex">L1 Analyse → L2 Argue → L3 Counter → L4 Critique → L5 Final Verdict</div>
-        </div>
+        <div class="tutb"><div class="tutt">Choose Normal or Side-by-Side mode</div>
+        <div class="tutd">Normal: one position argued through 5 layers. Side-by-Side: two opposing positions debated simultaneously.</div>
+        <div class="tutex">L1 Analyse → L2 Argue → L3 Counter → L4 Critique → L5 Verdict + Score Card</div></div>
       </div>
     </div>
     <div class="tutfoot">
@@ -340,7 +400,7 @@ select option{background:#161625;}
 
 <!-- PLAYER BAR -->
 <div class="playerbar" id="playerBar">
-  <div class="pblogo">⚡ ElevenLabs</div>
+  <div class="pblogo">⚡ Voice</div>
   <div class="pbinfo">
     <div class="pblayer" id="pbLayer">Layer 1</div>
     <div class="pbtext" id="pbText">Reading…</div>
@@ -358,82 +418,53 @@ select option{background:#161625;}
     <div class="nd"></div>
     <div class="nr">
       <button class="bs" id="navGuide">? Guide</button>
-      <button class="bs" id="navClear">Clear history</button>
+      <button class="bs" id="navClear">Clear</button>
       <button class="bs bsp" id="navExport">⬇ Export</button>
     </div>
   </div>
 </nav>
 
 <div class="page">
-
   <div class="hero">
     <h1>Argue smarter with<br><em>5-layer AI reasoning</em></h1>
-    <p>Cricket or Food — pick your debate, choose your position and persona, and watch AI build, challenge and refine your argument live.</p>
+    <p>Pick any topic, choose your position and persona, and watch AI build, challenge and refine your argument live.</p>
     <div class="hstats">
-      <div><div class="hv">4</div><div class="hl">topics</div></div>
-      <div><div class="hv">5</div><div class="hl">reasoning layers</div></div>
+      <div><div class="hv">4+</div><div class="hl">topics</div></div>
+      <div><div class="hv">5</div><div class="hl">layers</div></div>
       <div><div class="hv">10</div><div class="hl">sources</div></div>
-      <div><div class="hv">5</div><div class="hl">personas</div></div>
+      <div><div class="hv">12</div><div class="hl">languages</div></div>
     </div>
   </div>
 
-  <!-- STEP 1 -->
+  <!-- STEP 1: TOPIC -->
   <div class="sl"><span class="sn">01</span> Choose your debate topic</div>
-
   <div class="cats">
-    <button class="cat ac" id="catCricket">
-      <span class="cbadge cbc">2 topics</span>
-      <span class="ce">🏏</span>
-      <div class="ct">Cricket</div>
-      <div class="cs">Strike rate, batting average, T20 leagues</div>
-    </button>
-    <button class="cat" id="catFood">
-      <span class="cbadge cbf">2 topics</span>
-      <span class="ce">🍔</span>
-      <div class="ct">Food</div>
-      <div class="cs">Fast food, traditional cuisine, food regulation</div>
-    </button>
+    <button class="cat ac" id="catCricket"><span class="cbadge cbc">2 topics</span><span class="ce">🏏</span><div class="ct">Cricket</div><div class="css2">Strike rate, T20 leagues</div></button>
+    <button class="cat" id="catFood"><span class="cbadge cbf">2 topics</span><span class="ce">🍔</span><div class="ct">Food</div><div class="css2">Fast food, food regulation</div></button>
   </div>
-
   <div class="topics" id="topicsCricket">
-    <button class="topic sel" id="topic-cs">
-      <div class="tick">✓</div>
-      <span class="te">🏏</span>
-      <div class="tt">Strike Rate vs Batting Average</div>
-      <div class="tsu">Which metric truly defines a batsman's value?</div>
-    </button>
-    <button class="topic" id="topic-ct20">
-      <div class="tick">✓</div>
-      <span class="te">🌐</span>
-      <div class="tt">T20 Leagues &amp; Traditional Cricket</div>
-      <div class="tsu">Do IPL, BBL and leagues help or harm the game?</div>
-    </button>
+    <button class="topic sel" id="topic-cs"><div class="tick">✓</div><span class="te">🏏</span><div class="tt">Strike Rate vs Batting Average</div><div class="tsu">Which metric truly defines a batsman's value?</div></button>
+    <button class="topic" id="topic-ct20"><div class="tick">✓</div><span class="te">🌐</span><div class="tt">T20 Leagues &amp; Traditional Cricket</div><div class="tsu">Do IPL, BBL and leagues help or harm the game?</div></button>
   </div>
-
   <div class="topics" id="topicsFood" style="display:none">
-    <button class="topic" id="topic-ff">
-      <div class="tick">✓</div>
-      <span class="te">🍔</span>
-      <div class="tt">Fast Food vs Traditional Cuisine</div>
-      <div class="tsu">Which model better serves modern society?</div>
-    </button>
-    <button class="topic" id="topic-fr">
-      <div class="tick">✓</div>
-      <span class="te">📋</span>
-      <div class="tt">Government Food Regulation</div>
-      <div class="tsu">How much should governments control what we eat?</div>
-    </button>
+    <button class="topic" id="topic-ff"><div class="tick">✓</div><span class="te">🍔</span><div class="tt">Fast Food vs Traditional Cuisine</div><div class="tsu">Which model better serves modern society?</div></button>
+    <button class="topic" id="topic-fr"><div class="tick">✓</div><span class="te">📋</span><div class="tt">Government Food Regulation</div><div class="tsu">How much should governments control what we eat?</div></button>
   </div>
 
-  <!-- STEP 2 -->
+  <!-- CUSTOM TOPIC -->
+  <div class="custom-topic-wrap">
+    <div class="sl" style="margin-top:.6rem;"><span class="sn">✏️</span> Or type your own topic</div>
+    <div class="custom-topic-row">
+      <input class="ctin" id="customTopicIn" placeholder="e.g. Should social media be banned for under 16s?" />
+      <button class="ctbtn" id="customTopicBtn">Use this topic</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: CONFIG -->
   <div class="sl"><span class="sn">02</span> Configure your argument</div>
   <div class="cfg">
-    <div class="cf">
-      <div class="cfl">Your position <span class="cft">pick a side</span></div>
-      <select id="posSelect"></select>
-    </div>
-    <div class="cf">
-      <div class="cfl">Debate persona <span class="cft">shapes style</span></div>
+    <div class="cf"><div class="cfl">Position <span class="cft">pick a side</span></div><select id="posSelect"></select></div>
+    <div class="cf"><div class="cfl">Persona <span class="cft">shapes style</span></div>
       <select id="personaSelect">
         <option value="analyst">📊 Sports / Domain Analyst</option>
         <option value="academic">🎓 Academic Researcher</option>
@@ -443,14 +474,38 @@ select option{background:#161625;}
         <option value="activist">✊ Policy Activist</option>
       </select>
     </div>
-    <div class="cf">
-      <div class="cfl">Argument depth <span class="cft">word count</span></div>
+    <div class="cf"><div class="cfl">Depth <span class="cft">word count</span></div>
       <select id="depthSelect">
-        <option value="concise">Concise (150–200 words/layer)</option>
-        <option value="standard" selected>Standard (220–270 words/layer)</option>
-        <option value="deep">Deep dive (300–350 words/layer)</option>
+        <option value="concise">Concise (150–200 words)</option>
+        <option value="standard" selected>Standard (220–270 words)</option>
+        <option value="deep">Deep (300–350 words)</option>
       </select>
     </div>
+  </div>
+  <div class="cfg" style="margin-top:-4px;">
+    <div class="cf"><div class="cfl">Language <span class="cft">output language</span></div>
+      <select id="langSelect">
+        <option value="English">🇬🇧 English</option>
+        <option value="Arabic">🇸🇦 Arabic</option>
+        <option value="Urdu">🇵🇰 Urdu</option>
+        <option value="Spanish">🇪🇸 Spanish</option>
+        <option value="French">🇫🇷 French</option>
+        <option value="Hindi">🇮🇳 Hindi</option>
+        <option value="Mandarin Chinese">🇨🇳 Mandarin</option>
+        <option value="German">🇩🇪 German</option>
+        <option value="Portuguese">🇧🇷 Portuguese</option>
+        <option value="Turkish">🇹🇷 Turkish</option>
+        <option value="Indonesian">🇮🇩 Indonesian</option>
+        <option value="Swahili">🌍 Swahili</option>
+      </select>
+    </div>
+    <div class="cf"><div class="cfl">Mode <span class="cft">debate format</span></div>
+      <select id="modeSelect">
+        <option value="normal">🧠 Normal — 5 layer reasoning</option>
+        <option value="sbs">⚔️ Side-by-Side — two positions</option>
+      </select>
+    </div>
+    <div class="cf" id="posBWrap" style="display:none"><div class="cfl">Position B <span class="cft">opposing side</span></div><select id="posBSelect"></select></div>
   </div>
 
   <div class="tones">
@@ -462,6 +517,7 @@ select option{background:#161625;}
     <button class="tone" data-t="socratic">🤔 Socratic</button>
   </div>
 
+  <!-- PREVIEW -->
   <div class="prev" id="preview">
     <div class="pe" id="prevEm">🏏</div>
     <div class="pm">
@@ -472,84 +528,54 @@ select option{background:#161625;}
         <span class="chip chip-a" id="chipPersona">Analyst</span>
         <span class="chip chip-s" id="chipSrc">ESPNCricinfo</span>
         <span class="chip chip-t" id="chipTone">persuasive</span>
+        <span class="chip chip-l" id="chipLang">🇬🇧 English</span>
       </div>
     </div>
-    <div class="psr">
-      <div class="psrn" id="prevSrcName">ESPNCricinfo</div>
-      <div class="psru" id="prevSrcUrl">espncricinfo.com</div>
-    </div>
+    <div class="psr"><div class="psrn" id="prevSrcName">ESPNCricinfo</div><div class="psru" id="prevSrcUrl">espncricinfo.com</div></div>
   </div>
 
-  <!-- STEP 3: SOURCE -->
+  <!-- SOURCE -->
   <div class="sl"><span class="sn">03</span> Knowledge source</div>
   <div class="srcwrap">
-    <div class="srchd" id="srcHd">
-      <div class="srchl">📡 Select knowledge source <span class="srcbdg" id="srcBadge">ESPNCricinfo</span></div>
-      <span class="srcch" id="srcCh">▼</span>
-    </div>
+    <div class="srchd" id="srcHd"><div class="srchl">📡 Select source <span class="srcbdg" id="srcBadge">ESPNCricinfo</span></div><span class="srcch" id="srcCh">▼</span></div>
     <div class="srcbd" id="srcBd">
       <div class="srcgrid" id="srcGrid"></div>
-      <div class="srcurl">
-        <input class="surlin" id="customSrcUrl" type="url" placeholder="Or paste any URL: https://espncricinfo.com/article/..." />
-        <button class="suruse" id="applyUrlBtn">Use this URL</button>
-      </div>
-      <div class="srcnote" id="srcNote">ℹ️ AI grounds its reasoning in the style and data of the selected source. Visit: <a href="https://espncricinfo.com" target="_blank" id="srcLink">espncricinfo.com</a></div>
+      <div class="srcurl"><input class="surlin" id="customSrcUrl" type="url" placeholder="Or paste any URL…" /><button class="suruse" id="applyUrlBtn">Use URL</button></div>
+      <div class="srcnote" id="srcNote">ℹ️ AI grounds reasoning in <strong>ESPNCricinfo</strong>. Visit: <a href="https://espncricinfo.com" target="_blank">espncricinfo.com</a></div>
     </div>
   </div>
 
   <!-- VOICE -->
-  <div class="sl"><span class="sn">🎙</span> Voice — ElevenLabs (optional)</div>
+  <div class="sl"><span class="sn">🎙</span> Voice — ElevenLabs</div>
   <div class="voicewrap">
-    <div class="vhd" id="vHd">
-      <div class="vhl">🔊 ElevenLabs Text-to-Speech <span class="vbdg on" id="vBadge">● Browser voice ready</span></div>
-      <span class="vch" id="vCh">▼</span>
-    </div>
+    <div class="vhd" id="vHd"><div class="vhl">🔊 Text-to-Speech <span class="vbdg on" id="vBadge">● Browser voice ready</span></div><span class="vch" id="vCh">▼</span></div>
     <div class="vbd" id="vBd">
-      <div class="vkrow">
-        <input class="vkin" id="vKey" type="password" placeholder="Paste your ElevenLabs API key: xi_..." />
-        <button class="vconn" id="vConnBtn">Connect</button>
-      </div>
-      <div class="vcfg" id="vCfg">
-        <div>
-          <div class="vcl">Voice</div>
+      <div class="vkrow"><input class="vkin" id="vKey" type="password" placeholder="ElevenLabs API key: xi_... (optional — upgrades to neural voice)" /><button class="vconn" id="vConnBtn">Connect</button></div>
+      <div class="vcfg on" id="vCfg">
+        <div><div class="vcl">Voice</div>
           <select id="vVoice" style="background:var(--s2);border:2px solid var(--bd);border-radius:8px;padding:8px 10px;color:var(--tx);font-size:12px;outline:none;width:100%;appearance:none;-webkit-appearance:none;">
-            <option value="21m00Tcm4TlvDq8ikWAM">Rachel — calm, professional</option>
-            <option value="AZnzlk1XvdvUeBnXmlld">Domi — strong, confident</option>
-            <option value="EXAVITQu4vr4xnSDxMaL">Bella — warm, natural</option>
-            <option value="ErXwobaYiN019PkySvjV">Antoni — articulate</option>
-            <option value="VR6AewLTigWG4xSOukaG">Arnold — authoritative</option>
+            <option value="21m00Tcm4TlvDq8ikWAM">Rachel — calm</option>
+            <option value="AZnzlk1XvdvUeBnXmlld">Domi — confident</option>
+            <option value="EXAVITQu4vr4xnSDxMaL">Bella — warm</option>
+            <option value="ErXwobaYiN019PkySvjV">Antoni — clear</option>
+            <option value="VR6AewLTigWG4xSOukaG">Arnold — deep</option>
             <option value="pNInz6obpgDQGcFmaJgB">Adam — narrative</option>
           </select>
         </div>
-        <div>
-          <div class="vcl">Stability <span id="stabVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">0.50</span></div>
-          <input class="vsl" type="range" id="stabSlider" min="0" max="1" step="0.05" value="0.5">
-        </div>
-        <div>
-          <div class="vcl">Similarity <span id="simVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">0.75</span></div>
-          <input class="vsl" type="range" id="simSlider" min="0" max="1" step="0.05" value="0.75">
-        </div>
+        <div><div class="vcl">Stability <span id="stabVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">0.50</span></div><input class="vsl" type="range" id="stabSlider" min="0" max="1" step="0.05" value="0.5"></div>
+        <div><div class="vcl">Similarity <span id="simVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">0.75</span></div><input class="vsl" type="range" id="simSlider" min="0" max="1" step="0.05" value="0.75"></div>
       </div>
-      <div class="vcfg" id="vCfg2">
-        <div>
-          <div class="vcl">Speed <span id="speedVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">1.0x</span></div>
-          <input class="vsl" type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1.0">
-        </div>
-        <div>
-          <div class="vcl">Volume <span id="volVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">100%</span></div>
-          <input class="vsl" type="range" id="volSlider" min="0" max="1" step="0.05" value="1.0">
-        </div>
-        <div style="display:flex;align-items:flex-end;gap:6px;padding-top:16px;">
-          <button class="lplay" id="playAllBtn">▶▶ Play all</button>
-          <button class="lcopy" id="replayBtn">↺ Replay</button>
-        </div>
+      <div class="vcfg on" id="vCfg2">
+        <div><div class="vcl">Speed <span id="speedVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">1.0x</span></div><input class="vsl" type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1.0"></div>
+        <div><div class="vcl">Volume <span id="volVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">100%</span></div><input class="vsl" type="range" id="volSlider" min="0" max="1" step="0.05" value="1.0"></div>
+        <div style="display:flex;align-items:flex-end;gap:6px;padding-top:14px;"><button class="lplay" id="playAllBtn">▶▶ Play all</button><button class="lcopy" id="replayBtn">↺ Replay</button></div>
       </div>
-      <div class="vmodes" id="vModes">
+      <div class="vmodes on" id="vModes">
         <button class="vmode sel" data-m="each">🔁 Each layer</button>
-        <button class="vmode" data-m="verdict">🏆 Final verdict only</button>
-        <button class="vmode" data-m="manual">🖐 Manual only</button>
+        <button class="vmode" data-m="verdict">🏆 Final verdict</button>
+        <button class="vmode" data-m="manual">🖐 Manual</button>
       </div>
-      <div class="vnote" id="vNote">✅ Browser voice active — click ▶ Play on any layer after running. For higher quality neural voice, paste your <a href="https://elevenlabs.io" target="_blank">ElevenLabs</a> API key above and click Connect.</div>
+      <div class="vnote" id="vNote">✅ Browser voice active — click ▶ Play on any layer. For neural voice, add your <a href="https://elevenlabs.io" target="_blank">ElevenLabs</a> key above.</div>
     </div>
   </div>
 
@@ -565,38 +591,52 @@ select option{background:#161625;}
     <div class="tc" id="tc1"><div class="tlbl">⬇ Output tokens</div><div class="tval" id="tv1">—</div><div class="tunit">generated</div></div>
     <div class="tc" id="tc2"><div class="tlbl">⚡ Total tokens</div><div class="tval" id="tv2">—</div><div class="tunit">combined</div></div>
     <div class="tc" id="tc3"><div class="tlbl">⏱ Latency</div><div class="tval" id="tv3">—</div><div class="tunit">elapsed</div></div>
-    <div class="tc" id="tc4"><div class="tlbl">📊 Efficiency</div><div class="tval" id="tv4">—</div><div class="tunit">out÷in ratio</div></div>
+    <div class="tc" id="tc4"><div class="tlbl">📊 Efficiency</div><div class="tval" id="tv4">—</div><div class="tunit">out÷in</div></div>
   </div>
+  <div id="costBadge" style="display:none;" class="cost-badge">💰 <span id="costVal">~$0.000</span> estimated cost · claude-sonnet-4</div>
 
   <div class="progwrap" id="progWrap"><div class="progfill" id="progFill" style="width:0%"></div></div>
 
   <!-- PIPELINE -->
   <div class="sl"><span class="sn">04</span> Reasoning pipeline</div>
-  <div class="pipeline" id="pipeline">
-    <div class="empty"><div class="emptyicon">🧠</div><div class="emptytitle">Ready to reason</div><div class="emptysub">Configure your debate above and click Run.</div></div>
+  <div id="pipeline">
+    <div class="empty"><div class="emptyicon">🧠</div><div class="emptytitle">Ready to reason</div><div class="emptysub">Configure above and click Run.</div></div>
+  </div>
+
+  <!-- SCORE CARD -->
+  <div id="scorecardSection" style="display:none">
+    <div class="sl"><span class="sn">🏆</span> Debate score card</div>
+    <div class="scorecard" id="scorecard"></div>
   </div>
 
   <!-- INSIGHTS -->
   <div id="insightsSection" style="display:none">
     <div class="sl"><span class="sn">05</span> Telemetry insights</div>
     <div class="insgrid">
-      <div class="insc" style="--ic:var(--l1)"><div class="inslbl">Most verbose layer</div><div class="insval" id="iv0">—</div><div class="insdesc" id="id0"></div></div>
-      <div class="insc" style="--ic:var(--o2)"><div class="inslbl">Avg tokens / layer</div><div class="insval" id="iv1">—</div><div class="insdesc">Mean output tokens</div></div>
+      <div class="insc" style="--ic:var(--l1)"><div class="inslbl">Most verbose</div><div class="insval" id="iv0">—</div><div class="insdesc" id="id0"></div></div>
+      <div class="insc" style="--ic:var(--o2)"><div class="inslbl">Avg tokens/layer</div><div class="insval" id="iv1">—</div><div class="insdesc">mean output</div></div>
       <div class="insc" style="--ic:var(--l5)"><div class="inslbl">Fastest layer</div><div class="insval" id="iv2">—</div><div class="insdesc" id="id2"></div></div>
       <div class="insc" style="--ic:var(--l3)"><div class="inslbl">Slowest layer</div><div class="insval" id="iv3">—</div><div class="insdesc" id="id3"></div></div>
     </div>
     <div class="chartcard">
       <div class="chartlbl">Output tokens per layer</div>
       <div class="chartbars" id="chartBars"></div>
-      <div style="font-size:10px;color:var(--di);font-family:'JetBrains Mono',monospace;margin-top:10px;margin-bottom:4px;">Token budget share</div>
+      <div style="font-size:10px;color:var(--di);font-family:'JetBrains Mono',monospace;margin-top:8px;margin-bottom:4px;">Token budget share</div>
       <div class="tlbar" id="tlBar"></div>
     </div>
+    <!-- EXPORT + SHARE -->
     <div class="expbar">
       <span class="explbl">Export:</span>
       <button class="expbtn" id="expMD">📄 Markdown</button>
-      <button class="expbtn" id="expTXT">📝 Plain text</button>
+      <button class="expbtn" id="expTXT">📝 Text</button>
       <button class="expbtn" id="expJSON">{ } JSON</button>
-      <button class="expbtn" id="expCopy">📋 Copy all</button>
+      <button class="expbtn" id="expCopy">📋 Copy</button>
+      <button class="expbtn" id="expPDF">📑 PDF</button>
+    </div>
+    <div class="sl" style="margin-top:1rem;"><span class="sn">🔗</span> Share this debate</div>
+    <div class="share-row">
+      <input class="share-url" id="shareUrl" readonly placeholder="Run a debate to generate a share link…" />
+      <button class="share-copy" id="shareCopyBtn">📋 Copy link</button>
     </div>
   </div>
 
@@ -605,635 +645,545 @@ select option{background:#161625;}
     <div class="sl"><span class="sn">06</span> Session history</div>
     <div class="histlist" id="histList"></div>
   </div>
-
 </div>
 
 <script>
 /* ═══════════════════ DATA ═══════════════════ */
 var TOPICS = {
-  cs:   { emoji:'🏏', title:'Strike Rate vs Batting Average',  cat:'cricket', defaultSrc:'cricinfo',
-          positions:['Strike Rate is the more important metric','Batting Average is the more important metric','Both are equally important — format context decides','Neither alone is sufficient; composite metrics are needed'] },
-  ct20: { emoji:'🌐', title:'T20 Leagues & Traditional Cricket', cat:'cricket', defaultSrc:'cricinfo',
-          positions:['T20 leagues have transformed cricket for the better','T20 leagues are damaging Test and first-class cricket','Impact is mixed — benefits players but harms Test culture','T20 leagues need stricter regulation to coexist'] },
-  ff:   { emoji:'🍔', title:'Fast Food vs Traditional Cuisine',  cat:'food',    defaultSrc:'who',
-          positions:['Fast food is a net positive for modern society','Traditional cuisine better serves cultural and health needs','Both have valid, complementary roles in society','Fast food must be more strictly regulated for public health'] },
-  fr:   { emoji:'📋', title:'Government Food Regulation',        cat:'food',    defaultSrc:'fda',
-          positions:['Stricter government food regulation is urgently needed','Food regulation should be reduced — personal choice matters','Current levels of regulation are broadly adequate','Industry self-regulation is more effective than government rules'] }
+  cs:   { emoji:'🏏', title:'Strike Rate vs Batting Average',   cat:'cricket', defaultSrc:'cricinfo',
+          positions:['Strike Rate is the more important metric','Batting Average is the more important metric','Both are equally important — context decides','Neither alone is sufficient; composite metrics are needed'] },
+  ct20: { emoji:'🌐', title:'T20 Leagues & Traditional Cricket',  cat:'cricket', defaultSrc:'cricinfo',
+          positions:['T20 leagues have transformed cricket for the better','T20 leagues are damaging Test cricket','Impact is mixed — depends on country and player','T20 leagues need stricter regulation'] },
+  ff:   { emoji:'🍔', title:'Fast Food vs Traditional Cuisine',   cat:'food',    defaultSrc:'who',
+          positions:['Fast food is a net positive for modern society','Traditional cuisine is clearly superior','Both have valid, complementary roles','Fast food needs much stricter health regulation'] },
+  fr:   { emoji:'📋', title:'Government Food Regulation',         cat:'food',    defaultSrc:'fda',
+          positions:['Stricter food regulation is urgently needed','Food regulation should be reduced — personal choice matters','Current regulation is broadly adequate','Industry self-regulation is more effective'] }
 };
-
 var SOURCES = {
-  cricinfo:{ name:'ESPNCricinfo', url:'espncricinfo.com', icon:'🏏', desc:'Cricket stats & analysis',  cat:'cricket', ctx:"ESPNCricinfo (espncricinfo.com), the world's leading cricket statistics platform" },
-  cricbuzz: { name:'Cricbuzz',    url:'cricbuzz.com',     icon:'📊', desc:'Cricket news & scores',     cat:'cricket', ctx:'Cricbuzz (cricbuzz.com), a leading cricket news platform' },
-  icc:      { name:'ICC Official',url:'icc-cricket.com',  icon:'🏆', desc:'Governing body',            cat:'cricket', ctx:'the ICC (icc-cricket.com), the official governing body of world cricket' },
-  wisden:   { name:'Wisden',      url:'wisden.com',       icon:'📖', desc:'Cricket almanac',           cat:'cricket', ctx:'Wisden (wisden.com), the historic cricket almanac' },
-  who:      { name:'WHO',         url:'who.int',          icon:'🏥', desc:'Global health authority',   cat:'food',    ctx:'the WHO (who.int), the global public health authority' },
-  fda:      { name:'FDA',         url:'fda.gov',          icon:'🔬', desc:'Food safety regulation',    cat:'food',    ctx:'the US FDA (fda.gov), the food safety regulatory body' },
-  bbc:      { name:'BBC',         url:'bbc.co.uk',        icon:'📺', desc:'News & food culture',       cat:'general', ctx:'BBC (bbc.co.uk), a globally trusted broadcaster' },
-  reuters:  { name:'Reuters',     url:'reuters.com',      icon:'📰', desc:'Global newswire',           cat:'general', ctx:'Reuters (reuters.com), the world leading news agency' },
-  guardian: { name:'The Guardian',url:'theguardian.com',  icon:'🗞️', desc:'Investigative journalism', cat:'general', ctx:'The Guardian (theguardian.com), an investigative news outlet' },
-  custom:   { name:'Custom URL',  url:'',                 icon:'🔗', desc:'Your own source',           cat:'general', ctx:'a custom source provided by the user' }
+  cricinfo:{ name:'ESPNCricinfo', url:'espncricinfo.com', icon:'🏏', desc:'Cricket stats',        cat:'cricket', ctx:"ESPNCricinfo (espncricinfo.com), the world's leading cricket statistics platform" },
+  cricbuzz: { name:'Cricbuzz',    url:'cricbuzz.com',     icon:'📊', desc:'Cricket news',          cat:'cricket', ctx:'Cricbuzz (cricbuzz.com), a leading cricket news platform' },
+  icc:      { name:'ICC',         url:'icc-cricket.com',  icon:'🏆', desc:'Governing body',        cat:'cricket', ctx:'the ICC (icc-cricket.com), the official governing body of world cricket' },
+  wisden:   { name:'Wisden',      url:'wisden.com',       icon:'📖', desc:'Cricket almanac',       cat:'cricket', ctx:'Wisden (wisden.com), the historic cricket almanac' },
+  who:      { name:'WHO',         url:'who.int',          icon:'🏥', desc:'Global health',         cat:'food',    ctx:'the WHO (who.int), the global public health authority' },
+  fda:      { name:'FDA',         url:'fda.gov',          icon:'🔬', desc:'Food safety',           cat:'food',    ctx:'the US FDA (fda.gov), the food safety regulatory body' },
+  bbc:      { name:'BBC',         url:'bbc.co.uk',        icon:'📺', desc:'News & culture',        cat:'general', ctx:'BBC (bbc.co.uk), a globally trusted broadcaster' },
+  reuters:  { name:'Reuters',     url:'reuters.com',      icon:'📰', desc:'Global newswire',       cat:'general', ctx:'Reuters (reuters.com), the world leading news agency' },
+  guardian: { name:'Guardian',    url:'theguardian.com',  icon:'🗞️', desc:'Investigative news',   cat:'general', ctx:'The Guardian (theguardian.com), an investigative news outlet' },
+  custom:   { name:'Custom URL',  url:'',                 icon:'🔗', desc:'Your source',           cat:'general', ctx:'a custom source provided by the user' }
 };
-
 var LAYERS = [
   { num:'01', title:'Context Analysis',  sub:'Understand the problem landscape',  q:'What is the problem and what influences it?', color:'var(--l1)' },
-  { num:'02', title:'Argument Builder',  sub:'Take a clear, justified position',  q:'What is my position and why is it right?',   color:'var(--l2)' },
+  { num:'02', title:'Argument Builder',  sub:'Take a clear, justified position',  q:'What is my position and why?',               color:'var(--l2)' },
   { num:'03', title:'Counter Argument',  sub:'The strongest opposing view',        q:'What is the best case against my position?', color:'var(--l3)' },
   { num:'04', title:'Self-Critique',     sub:'Identify weaknesses and gaps',       q:'Where is my argument weakest?',              color:'var(--l4)' },
   { num:'05', title:'Final Strategy',    sub:'Synthesised, balanced conclusion',   q:'What is the most informed final answer?',    color:'var(--l5)' }
 ];
+var PERSONA = { analyst:'📊 Sports/Domain Analyst', academic:'🎓 Academic Researcher', journalist:'📰 Investigative Journalist', lawyer:'⚖️ Defense Lawyer', economist:'💹 Economist', activist:'✊ Policy Activist' };
+var TONE_DESC = { persuasive:'compelling and rhetorically persuasive', formal:'formally structured and academically rigorous', aggressive:'bold, assertive and uncompromising', balanced:'measured and fair, acknowledging nuance on both sides', socratic:'questioning and exploratory' };
+/* Cost per 1M tokens (Sonnet) */
+var COST_IN = 3.0, COST_OUT = 15.0;
 
-var PERSONA = {
-  analyst:'📊 Sports/Domain Analyst', academic:'🎓 Academic Researcher',
-  journalist:'📰 Investigative Journalist', lawyer:'⚖️ Defense Lawyer',
-  economist:'💹 Economist', activist:'✊ Policy Activist'
-};
+/* STATE */
+var selTopic = 'cs', selSrc = 'cricinfo', selTone = 'persuasive', selCat = 'cricket', customSrcName = '';
+var customTopicText = '', usingCustomTopic = false;
+var layerTelem = [], totalIn = 0, totalOut = 0, lastResults = [], debateHistory = [];
+var vConnected = true, vKey = '', vMode = 'each', vAudio = null, vAudioUrl = null, vPaused = false, vLayer = -1, vUsing11 = false, vVoices = [];
+var lastScoreData = null;
 
-var TONE_DESC = {
-  persuasive:'compelling and rhetorically persuasive',
-  formal:'formally structured and academically rigorous',
-  aggressive:'bold, assertive and uncompromising',
-  balanced:'measured and fair, acknowledging nuance on both sides',
-  socratic:'questioning and exploratory, reasoning through open questions'
-};
-
-/* ═══════════════════ STATE ═══════════════════ */
-var selTopic = 'cs';
-var selSrc   = 'cricinfo';
-var selTone  = 'persuasive';
-var selCat   = 'cricket';
-var customSrcName = '';
-var layerTelem = [];
-var totalIn = 0, totalOut = 0;
-var lastResults = [];
-var debateHistory = [];
-
-/* VOICE STATE */
-var vConnected = false;
-var vKey = '';
-var vMode = 'each';
-var vAudio = null;
-var vAudioUrl = null;
-var vPaused = false;
-var vLayer = -1;
-var vUsing11 = false;
-var vVoices = [];
-
-/* ═══════════════════ INIT — wire all events ═══════════════════ */
+/* ═══════════════════ INIT ═══════════════════ */
 window.addEventListener('DOMContentLoaded', function() {
-
   /* Tutorial */
   document.getElementById('tutskip').addEventListener('click', function(){ document.getElementById('tut').classList.remove('show'); });
-  document.getElementById('tutgo').addEventListener('click',   function(){ document.getElementById('tut').classList.remove('show'); });
+  document.getElementById('tutgo').addEventListener('click', function(){ document.getElementById('tut').classList.remove('show'); });
   document.getElementById('navGuide').addEventListener('click', function(){ document.getElementById('tut').classList.add('show'); });
-
-  /* Nav */
   document.getElementById('navClear').addEventListener('click', clearHist);
   document.getElementById('navExport').addEventListener('click', exportMD);
 
-  /* Category buttons */
+  /* Category */
   document.getElementById('catCricket').addEventListener('click', function(){ switchCat('cricket'); });
-  document.getElementById('catFood').addEventListener('click',    function(){ switchCat('food'); });
+  document.getElementById('catFood').addEventListener('click', function(){ switchCat('food'); });
 
-  /* Topic buttons */
-  document.getElementById('topic-cs').addEventListener('click',   function(){ selectTopic('cs'); });
+  /* Topics */
+  document.getElementById('topic-cs').addEventListener('click', function(){ selectTopic('cs'); });
   document.getElementById('topic-ct20').addEventListener('click', function(){ selectTopic('ct20'); });
-  document.getElementById('topic-ff').addEventListener('click',   function(){ selectTopic('ff'); });
-  document.getElementById('topic-fr').addEventListener('click',   function(){ selectTopic('fr'); });
+  document.getElementById('topic-ff').addEventListener('click', function(){ selectTopic('ff'); });
+  document.getElementById('topic-fr').addEventListener('click', function(){ selectTopic('fr'); });
+
+  /* Custom topic */
+  document.getElementById('customTopicBtn').addEventListener('click', applyCustomTopic);
+  document.getElementById('customTopicIn').addEventListener('keydown', function(e){ if(e.key==='Enter') applyCustomTopic(); });
 
   /* Dropdowns */
   document.getElementById('posSelect').addEventListener('change', updatePreview);
   document.getElementById('personaSelect').addEventListener('change', updatePreview);
+  document.getElementById('langSelect').addEventListener('change', updatePreview);
+  document.getElementById('modeSelect').addEventListener('change', function(){
+    var isSBS = this.value === 'sbs';
+    document.getElementById('posBWrap').style.display = isSBS ? 'flex' : 'none';
+  });
 
   /* Tone */
   var toneBtns = document.querySelectorAll('.tone');
-  for (var i = 0; i < toneBtns.length; i++) {
-    toneBtns[i].addEventListener('click', function() {
+  for(var i=0;i<toneBtns.length;i++){
+    toneBtns[i].addEventListener('click', function(){
       selTone = this.getAttribute('data-t');
-      for (var j = 0; j < toneBtns.length; j++) toneBtns[j].classList.remove('sel');
+      for(var j=0;j<toneBtns.length;j++) toneBtns[j].classList.remove('sel');
       this.classList.add('sel');
       updatePreview();
     });
   }
 
-  /* Source panel */
-  document.getElementById('srcHd').addEventListener('click', function() {
-    var bd = document.getElementById('srcBd');
-    var ch = document.getElementById('srcCh');
-    var isOpen = bd.classList.toggle('open');
-    this.classList.toggle('open', isOpen);
-    ch.classList.toggle('open', isOpen);
+  /* Source */
+  document.getElementById('srcHd').addEventListener('click', function(){
+    var bd=document.getElementById('srcBd'), ch=document.getElementById('srcCh');
+    var open=bd.classList.toggle('open');
+    this.classList.toggle('open',open); ch.classList.toggle('open',open);
   });
   document.getElementById('applyUrlBtn').addEventListener('click', applyCustomUrl);
 
-  /* Voice panel */
-  document.getElementById('vHd').addEventListener('click', function() {
-    var bd = document.getElementById('vBd');
-    var ch = document.getElementById('vCh');
-    var isOpen = bd.classList.toggle('open');
-    this.classList.toggle('open', isOpen);
-    ch.classList.toggle('open', isOpen);
+  /* Voice */
+  document.getElementById('vHd').addEventListener('click', function(){
+    var bd=document.getElementById('vBd'), ch=document.getElementById('vCh');
+    var open=bd.classList.toggle('open');
+    this.classList.toggle('open',open); ch.classList.toggle('open',open);
   });
   document.getElementById('vConnBtn').addEventListener('click', connectVoice);
-  document.getElementById('stabSlider').addEventListener('input', function(){ document.getElementById('stabVal').textContent = parseFloat(this.value).toFixed(2); });
-  document.getElementById('simSlider').addEventListener('input',  function(){ document.getElementById('simVal').textContent  = parseFloat(this.value).toFixed(2); });
-  document.getElementById('speedSlider').addEventListener('input', function(){ document.getElementById('speedVal').textContent = parseFloat(this.value).toFixed(1)+'x'; if(vAudio) vAudio.playbackRate = parseFloat(this.value); });
-  document.getElementById('volSlider').addEventListener('input',   function(){ document.getElementById('volVal').textContent  = Math.round(this.value*100)+'%'; if(vAudio) vAudio.volume = parseFloat(this.value); });
-  document.getElementById('playAllBtn').addEventListener('click',  function(){ if(lastResults.length){ stopVoice(); speakLayer(0, lastResults[0]); } });
-  document.getElementById('replayBtn').addEventListener('click',   function(){ if(vLayer>=0 && lastResults[vLayer]) speakLayer(vLayer, lastResults[vLayer]); });
-
-  var vmodeBtns = document.querySelectorAll('.vmode');
-  for (var i = 0; i < vmodeBtns.length; i++) {
-    vmodeBtns[i].addEventListener('click', function() {
-      vMode = this.getAttribute('data-m');
-      for (var j = 0; j < vmodeBtns.length; j++) vmodeBtns[j].classList.remove('sel');
+  document.getElementById('stabSlider').addEventListener('input', function(){ document.getElementById('stabVal').textContent=parseFloat(this.value).toFixed(2); });
+  document.getElementById('simSlider').addEventListener('input',  function(){ document.getElementById('simVal').textContent=parseFloat(this.value).toFixed(2); });
+  document.getElementById('speedSlider').addEventListener('input', function(){ document.getElementById('speedVal').textContent=parseFloat(this.value).toFixed(1)+'x'; if(vAudio) vAudio.playbackRate=parseFloat(this.value); });
+  document.getElementById('volSlider').addEventListener('input',   function(){ document.getElementById('volVal').textContent=Math.round(this.value*100)+'%'; if(vAudio) vAudio.volume=parseFloat(this.value); });
+  document.getElementById('playAllBtn').addEventListener('click', function(){ if(lastResults.length) speakLayer(0,lastResults[0]); });
+  document.getElementById('replayBtn').addEventListener('click',  function(){ if(vLayer>=0&&lastResults[vLayer]) speakLayer(vLayer,lastResults[vLayer]); });
+  var vmodeBtns=document.querySelectorAll('.vmode');
+  for(var i=0;i<vmodeBtns.length;i++){
+    vmodeBtns[i].addEventListener('click', function(){
+      vMode=this.getAttribute('data-m');
+      for(var j=0;j<vmodeBtns.length;j++) vmodeBtns[j].classList.remove('sel');
       this.classList.add('sel');
     });
   }
-
-  /* Player bar */
   document.getElementById('pbPause').addEventListener('click', togglePause);
-  document.getElementById('pbStop').addEventListener('click',  stopVoice);
+  document.getElementById('pbStop').addEventListener('click', stopVoice);
 
   /* Run */
   document.getElementById('runBtn').addEventListener('click', runDebate);
 
   /* Export */
-  document.getElementById('expMD').addEventListener('click',   exportMD);
-  document.getElementById('expTXT').addEventListener('click',  exportTXT);
+  document.getElementById('expMD').addEventListener('click', exportMD);
+  document.getElementById('expTXT').addEventListener('click', exportTXT);
   document.getElementById('expJSON').addEventListener('click', exportJSON);
   document.getElementById('expCopy').addEventListener('click', copyAll);
+  document.getElementById('expPDF').addEventListener('click', exportPDF);
+  document.getElementById('shareCopyBtn').addEventListener('click', copyShareLink);
 
-  /* Auto-enable browser voice on load — no connection needed */
-  if (window.speechSynthesis) {
-    vConnected = true; vUsing11 = false;
-    document.getElementById('vBadge').textContent = '● Browser voice ready';
-    document.getElementById('vBadge').className   = 'vbdg on';
-    document.getElementById('vCfg').classList.add('on');
-    document.getElementById('vCfg2').classList.add('on');
-    document.getElementById('vModes').classList.add('on');
-    document.getElementById('vNote').innerHTML = '✅ Browser voice active — click ▶ Play on any layer after running. For higher quality neural voice, paste your <a href="https://elevenlabs.io" target="_blank">ElevenLabs</a> API key above and click Connect.';
-  }
+  /* Speech voices */
+  if(window.speechSynthesis){ window.speechSynthesis.onvoiceschanged=function(){ vVoices=window.speechSynthesis.getVoices(); }; vVoices=window.speechSynthesis.getVoices(); }
 
-  /* Load speech voices */
-  if (window.speechSynthesis) {
-    window.speechSynthesis.onvoiceschanged = function() { vVoices = window.speechSynthesis.getVoices(); };
-    vVoices = window.speechSynthesis.getVoices();
-  }
+  /* Check for shared debate in URL */
+  loadFromURL();
 
-  /* INIT */
   selectTopic('cs');
 });
 
 /* ═══════════════════ TOPIC SELECTION ═══════════════════ */
-function switchCat(cat) {
-  selCat = cat;
-  document.getElementById('catCricket').className = 'cat' + (cat==='cricket' ? ' ac' : '');
-  document.getElementById('catFood').className    = 'cat' + (cat==='food' ? ' af' : '');
-  document.getElementById('topicsCricket').style.display = cat==='cricket' ? 'grid' : 'none';
-  document.getElementById('topicsFood').style.display    = cat==='food'    ? 'grid' : 'none';
-  selectTopic(cat==='cricket' ? 'cs' : 'ff');
+function switchCat(cat){
+  selCat=cat; usingCustomTopic=false;
+  document.getElementById('catCricket').className='cat'+(cat==='cricket'?' ac':'');
+  document.getElementById('catFood').className='cat'+(cat==='food'?' af':'');
+  document.getElementById('topicsCricket').style.display=cat==='cricket'?'grid':'none';
+  document.getElementById('topicsFood').style.display=cat==='food'?'grid':'none';
+  selectTopic(cat==='cricket'?'cs':'ff');
 }
-
-function selectTopic(id) {
-  var t = TOPICS[id];
-  if (!t) return;
-  selTopic = id;
-  selSrc   = t.defaultSrc;
-
-  /* Update card highlights */
-  var ids = ['cs','ct20','ff','fr'];
-  for (var i = 0; i < ids.length; i++) {
-    var el = document.getElementById('topic-'+ids[i]);
-    if (el) el.className = 'topic' + (ids[i]===id ? ' sel' : '');
+function selectTopic(id){
+  var t=TOPICS[id]; if(!t) return;
+  selTopic=id; selSrc=t.defaultSrc; usingCustomTopic=false;
+  document.getElementById('customTopicIn').value='';
+  var ids=['cs','ct20','ff','fr'];
+  for(var i=0;i<ids.length;i++){
+    var el=document.getElementById('topic-'+ids[i]);
+    if(el) el.className='topic'+(ids[i]===id?' sel':'');
   }
-
-  /* Populate positions */
-  var ps = document.getElementById('posSelect');
-  ps.innerHTML = '';
-  for (var j = 0; j < t.positions.length; j++) {
-    var opt = document.createElement('option');
-    opt.textContent = t.positions[j];
-    ps.appendChild(opt);
-  }
-
-  renderSrcGrid();
-  updateSrcNote();
+  var ps=document.getElementById('posSelect');
+  ps.innerHTML=''; 
+  for(var j=0;j<t.positions.length;j++){ var opt=document.createElement('option'); opt.textContent=t.positions[j]; ps.appendChild(opt); }
+  var pb=document.getElementById('posBSelect');
+  pb.innerHTML='';
+  for(var k=t.positions.length-1;k>=0;k--){ var opt2=document.createElement('option'); opt2.textContent=t.positions[k]; pb.appendChild(opt2); }
+  renderSrcGrid(); updateSrcNote(); updatePreview();
+}
+function applyCustomTopic(){
+  var val=document.getElementById('customTopicIn').value.trim();
+  if(!val){ alert('Please type a debate topic first.'); return; }
+  customTopicText=val; usingCustomTopic=true;
+  var ids=['cs','ct20','ff','fr'];
+  for(var i=0;i<ids.length;i++){ var el=document.getElementById('topic-'+ids[i]); if(el) el.className='topic'; }
+  var ps=document.getElementById('posSelect');
+  ps.innerHTML='';
+  var defaultPos=['For (supporting this view)','Against (opposing this view)','Neutral — exploring both sides','Devil\'s advocate'];
+  for(var j=0;j<defaultPos.length;j++){ var opt=document.createElement('option'); opt.textContent=defaultPos[j]; ps.appendChild(opt); }
+  var pb=document.getElementById('posBSelect');
+  pb.innerHTML='';
+  var defaultPosB=['Against (opposing this view)','For (supporting this view)','Neutral','Devil\'s advocate'];
+  for(var k=0;k<defaultPosB.length;k++){ var opt2=document.createElement('option'); opt2.textContent=defaultPosB[k]; pb.appendChild(opt2); }
   updatePreview();
 }
 
 /* ═══════════════════ PREVIEW ═══════════════════ */
-function updatePreview() {
-  var t  = TOPICS[selTopic];
-  var s  = SOURCES[selSrc];
-  var ps = document.getElementById('posSelect');
-  var pa = document.getElementById('personaSelect');
-  document.getElementById('prevEm').textContent    = t.emoji;
-  document.getElementById('prevTitle').textContent = t.title;
-  var posText = ps.value || '—';
-  document.getElementById('chipPos').textContent     = posText.length > 28 ? posText.slice(0,28)+'…' : posText;
-  document.getElementById('chipPersona').textContent = (pa.options[pa.selectedIndex]||{text:''}).text.slice(0,18);
-  document.getElementById('chipSrc').textContent     = s.name;
-  document.getElementById('chipTone').textContent    = selTone;
-  document.getElementById('prevSrcName').textContent = s.name;
-  document.getElementById('prevSrcUrl').textContent  = s.url || customSrcName;
+function getTopicTitle(){ return usingCustomTopic ? customTopicText : (TOPICS[selTopic]||{title:''}).title; }
+function getTopicEmoji(){ return usingCustomTopic ? '✏️' : (TOPICS[selTopic]||{emoji:'🏏'}).emoji; }
+function updatePreview(){
+  var s=SOURCES[selSrc], ps=document.getElementById('posSelect'), pa=document.getElementById('personaSelect'), lang=document.getElementById('langSelect');
+  document.getElementById('prevEm').textContent=getTopicEmoji();
+  document.getElementById('prevTitle').textContent=getTopicTitle();
+  var posText=ps.value||'—';
+  document.getElementById('chipPos').textContent=posText.length>26?posText.slice(0,26)+'…':posText;
+  document.getElementById('chipPersona').textContent=(pa.options[pa.selectedIndex]||{text:''}).text.slice(0,16);
+  document.getElementById('chipSrc').textContent=s.name;
+  document.getElementById('chipTone').textContent=selTone;
+  document.getElementById('chipLang').textContent=lang.options[lang.selectedIndex].text;
+  document.getElementById('prevSrcName').textContent=s.name;
+  document.getElementById('prevSrcUrl').textContent=s.url||customSrcName;
 }
 
 /* ═══════════════════ SOURCE ═══════════════════ */
-function renderSrcGrid() {
-  var t   = TOPICS[selTopic];
-  var cat = t ? t.cat : selCat;
-  var keys = Object.keys(SOURCES);
-  var html = '';
-  for (var i = 0; i < keys.length; i++) {
-    var k = keys[i];
-    var s = SOURCES[k];
-    var isRec = (s.cat === cat || s.cat === 'general');
-    var isSel = (k === selSrc);
-    html += '<button class="srcbtn'+(isSel?' sel':'')+'" data-src="'+k+'">';
-    html += (isRec && k!=='custom' ? '<span style="position:absolute;top:5px;right:5px;font-size:8px;color:var(--g2)">✓</span>' : '');
-    html += '<div class="si">'+s.icon+'</div>';
-    html += '<div class="sn2">'+s.name+'</div>';
-    html += '<div class="sd">'+s.desc+'</div>';
-    html += '</button>';
+function renderSrcGrid(){
+  var t=usingCustomTopic?null:TOPICS[selTopic], cat=t?t.cat:selCat, keys=Object.keys(SOURCES), html='';
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i], s=SOURCES[k], isRec=(s.cat===cat||s.cat==='general'), isSel=(k===selSrc);
+    html+='<button class="srcbtn'+(isSel?' sel':'')+'" data-src="'+k+'">';
+    if(isRec&&k!=='custom') html+='<span style="position:absolute;top:5px;right:5px;font-size:8px;color:var(--g2)">✓</span>';
+    html+='<div class="si">'+s.icon+'</div><div class="sn2">'+s.name+'</div><div class="sd">'+s.desc+'</div></button>';
   }
-  var grid = document.getElementById('srcGrid');
-  grid.innerHTML = html;
-  /* Wire source button clicks */
-  var btns = grid.querySelectorAll('.srcbtn');
-  for (var j = 0; j < btns.length; j++) {
-    btns[j].addEventListener('click', function() {
-      selSrc = this.getAttribute('data-src');
-      renderSrcGrid();
-      updateSrcNote();
-      updatePreview();
+  var grid=document.getElementById('srcGrid'); grid.innerHTML=html;
+  var btns=grid.querySelectorAll('.srcbtn');
+  for(var j=0;j<btns.length;j++){
+    btns[j].addEventListener('click', function(){
+      selSrc=this.getAttribute('data-src'); renderSrcGrid(); updateSrcNote(); updatePreview();
     });
   }
 }
-
-function updateSrcNote() {
-  var s    = SOURCES[selSrc];
-  var href = selSrc==='custom' ? (document.getElementById('customSrcUrl').value||'#') : 'https://'+s.url;
-  document.getElementById('srcNote').innerHTML = 'ℹ️ AI grounds reasoning in style and data of <strong>'+s.name+'</strong>. Visit: <a href="'+href+'" target="_blank">'+( s.url||customSrcName)+'</a>';
-  document.getElementById('srcBadge').textContent = s.name;
+function updateSrcNote(){
+  var s=SOURCES[selSrc], href=selSrc==='custom'?(document.getElementById('customSrcUrl').value||'#'):'https://'+s.url;
+  document.getElementById('srcNote').innerHTML='ℹ️ AI grounds reasoning in <strong>'+s.name+'</strong>. Visit: <a href="'+href+'" target="_blank">'+(s.url||customSrcName)+'</a>';
+  document.getElementById('srcBadge').textContent=s.name;
 }
-
-function applyCustomUrl() {
-  var val = document.getElementById('customSrcUrl').value.trim();
-  if (!val) { alert('Please paste a URL first.'); return; }
-  try { customSrcName = new URL(val).hostname; } catch(e) { customSrcName = val; }
-  SOURCES.custom.url = customSrcName;
-  SOURCES.custom.ctx = 'the website at ' + customSrcName;
-  selSrc = 'custom';
-  renderSrcGrid();
-  updateSrcNote();
-  updatePreview();
+function applyCustomUrl(){
+  var val=document.getElementById('customSrcUrl').value.trim();
+  if(!val){ alert('Please paste a URL.'); return; }
+  try{ customSrcName=new URL(val).hostname; }catch(e){ customSrcName=val; }
+  SOURCES.custom.url=customSrcName; SOURCES.custom.ctx='the website at '+customSrcName;
+  selSrc='custom'; renderSrcGrid(); updateSrcNote(); updatePreview();
 }
 
 /* ═══════════════════ VOICE ═══════════════════ */
-function connectVoice() {
-  var key = document.getElementById('vKey').value.trim();
-  if (!key) { alert('Paste your ElevenLabs API key first.'); return; }
-  var btn = document.getElementById('vConnBtn');
-  btn.textContent = 'Testing…'; btn.disabled = true;
-  /* Test with a short TTS call */
-  fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
-    method:'POST',
-    headers:{ 'xi-api-key':key, 'Content-Type':'application/json', 'Accept':'audio/mpeg' },
-    body: JSON.stringify({ text:'Connected.', model_id:'eleven_turbo_v2_5', voice_settings:{ stability:0.5, similarity_boost:0.75 } })
-  })
-  .then(function(r) {
-    if (!r.ok) throw new Error('HTTP '+r.status);
-    return r.blob();
-  })
-  .then(function(blob) {
-    vKey = key; vConnected = true; vUsing11 = true;
-    document.getElementById('vBadge').textContent = '● ElevenLabs active';
-    document.getElementById('vBadge').className   = 'vbdg on';
-    document.getElementById('vCfg').classList.add('on');
-    document.getElementById('vCfg2').classList.add('on');
-    document.getElementById('vModes').classList.add('on');
-    btn.textContent = '✓ Active'; btn.style.background = 'var(--g)';
-    document.getElementById('vNote').innerHTML = '✅ ElevenLabs connected · <a href="https://elevenlabs.io/app" target="_blank">Manage →</a>';
-    playBlob(blob, -1);
-  })
-  .catch(function(e) {
-    /* Fall back to browser voice */
-    vKey = key; vConnected = true; vUsing11 = false;
-    document.getElementById('vBadge').textContent = '● Browser voice';
-    document.getElementById('vBadge').className   = 'vbdg on';
-    document.getElementById('vCfg').classList.add('on');
-    document.getElementById('vCfg2').classList.add('on');
-    document.getElementById('vModes').classList.add('on');
-    btn.textContent = '✓ Active (browser)'; btn.style.background = 'var(--g)';
-    document.getElementById('vNote').innerHTML = '⚠️ ElevenLabs blocked ('+e.message+') — using browser voice instead. All controls still work.';
+function connectVoice(){
+  var key=document.getElementById('vKey').value.trim();
+  if(!key){ alert('Paste your ElevenLabs API key.'); return; }
+  var btn=document.getElementById('vConnBtn'); btn.textContent='Testing…'; btn.disabled=true;
+  fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM',{
+    method:'POST',headers:{'xi-api-key':key,'Content-Type':'application/json','Accept':'audio/mpeg'},
+    body:JSON.stringify({text:'Connected.',model_id:'eleven_turbo_v2_5',voice_settings:{stability:.5,similarity_boost:.75}})
+  }).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.blob(); })
+  .then(function(blob){
+    vKey=key; vUsing11=true;
+    document.getElementById('vBadge').textContent='● ElevenLabs active'; document.getElementById('vBadge').className='vbdg on';
+    btn.textContent='✓ Active'; btn.style.background='var(--g)';
+    document.getElementById('vNote').innerHTML='✅ ElevenLabs neural voice active · <a href="https://elevenlabs.io/app" target="_blank">Manage →</a>';
+    playBlob(blob,-1);
+  }).catch(function(e){
+    vUsing11=false;
+    document.getElementById('vNote').innerHTML='⚠️ ElevenLabs blocked ('+e.message+') — using browser voice.';
+    btn.textContent='Retry'; btn.disabled=false;
   });
 }
-
-function speakLayer(idx, text) {
-  if (!vConnected) return;
-  if (!text) return;
-  stopVoice();
-  vLayer = idx;
-  updatePlayerBar(idx, text);
-
-  var voiceId   = document.getElementById('vVoice').value;
-  var stability = parseFloat(document.getElementById('stabSlider').value);
-  var similarity = parseFloat(document.getElementById('simSlider').value);
-  var speed     = parseFloat(document.getElementById('speedSlider').value);
-  var volume    = parseFloat(document.getElementById('volSlider').value);
-  var clean     = text.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,4500);
-
-  if (vUsing11) {
-    fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId, {
-      method:'POST',
-      headers:{ 'xi-api-key':vKey, 'Content-Type':'application/json', 'Accept':'audio/mpeg' },
-      body: JSON.stringify({ text:clean, model_id:'eleven_turbo_v2_5', voice_settings:{ stability:stability, similarity_boost:similarity, style:0.2, use_speaker_boost:true } })
-    })
-    .then(function(r) { if(!r.ok) throw new Error('HTTP '+r.status); return r.blob(); })
-    .then(function(blob) { playBlob(blob, idx, speed, volume); })
-    .catch(function(e) {
-      /* Auto-fallback to browser */
-      vUsing11 = false;
-      document.getElementById('vBadge').textContent = '● Browser voice';
-      speakBrowser(idx, clean, speed, volume);
-    });
-  } else {
-    speakBrowser(idx, clean, speed, volume);
-  }
+function speakLayer(idx,text){
+  if(!text) return;
+  stopVoice(); vLayer=idx;
+  var voiceId=document.getElementById('vVoice').value;
+  var stability=parseFloat(document.getElementById('stabSlider').value);
+  var similarity=parseFloat(document.getElementById('simSlider').value);
+  var speed=parseFloat(document.getElementById('speedSlider').value);
+  var volume=parseFloat(document.getElementById('volSlider').value);
+  var clean=text.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,4500);
+  updatePlayerBar(idx,text);
+  if(vUsing11 && vKey){
+    fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId,{
+      method:'POST',headers:{'xi-api-key':vKey,'Content-Type':'application/json','Accept':'audio/mpeg'},
+      body:JSON.stringify({text:clean,model_id:'eleven_turbo_v2_5',voice_settings:{stability:stability,similarity_boost:similarity,style:.2,use_speaker_boost:true}})
+    }).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.blob(); })
+    .then(function(blob){ playBlob(blob,idx,speed,volume); })
+    .catch(function(){ vUsing11=false; speakBrowser(idx,clean,speed,volume); });
+  } else { speakBrowser(idx,clean,speed,volume); }
 }
-
-function playBlob(blob, idx, speed, volume) {
-  speed  = speed  || 1.0;
-  volume = volume || 1.0;
-  if (vAudioUrl) URL.revokeObjectURL(vAudioUrl);
-  vAudioUrl = URL.createObjectURL(blob);
-  vAudio = new Audio(vAudioUrl);
-  vAudio.playbackRate = speed;
-  vAudio.volume = volume;
-  vAudio.play();
-  vLayer = idx;
-  setPlayBtn(idx, 'playing');
-
-  vAudio.ontimeupdate = function() {
-    if (vAudio && vAudio.duration) {
-      document.getElementById('pbProg').style.width = Math.round((vAudio.currentTime/vAudio.duration)*100)+'%';
-    }
-  };
-  vAudio.onended = function() {
-    var li = vLayer;
-    stopVoice();
-    if (vMode==='each' && li>=0 && li<lastResults.length-1) {
-      setTimeout(function(){ speakLayer(li+1, lastResults[li+1]); }, 700);
-    }
-  };
+function playBlob(blob,idx,speed,volume){
+  speed=speed||1; volume=volume===undefined?1:volume;
+  if(vAudioUrl) URL.revokeObjectURL(vAudioUrl);
+  vAudioUrl=URL.createObjectURL(blob); vAudio=new Audio(vAudioUrl);
+  vAudio.playbackRate=speed; vAudio.volume=volume; vAudio.play(); vLayer=idx;
+  setPlayBtn(idx,'playing');
+  vAudio.ontimeupdate=function(){ if(vAudio&&vAudio.duration){ document.getElementById('pbProg').style.width=Math.round((vAudio.currentTime/vAudio.duration)*100)+'%'; } };
+  vAudio.onended=function(){ var li=vLayer; stopVoice(); if(vMode==='each'&&li>=0&&li<lastResults.length-1) setTimeout(function(){ speakLayer(li+1,lastResults[li+1]); },700); };
 }
-
-function speakBrowser(idx, text, speed, volume) {
-  if (!window.speechSynthesis) return;
+function speakBrowser(idx,text,speed,volume){
+  if(!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  var u = new SpeechSynthesisUtterance(text);
-  u.rate = speed || 1.0;
-  u.volume = volume || 1.0;
-  var en = vVoices.find(function(v){ return v.lang && v.lang.startsWith('en') && v.localService; });
-  if (en) u.voice = en;
-  setPlayBtn(idx, 'playing');
-  vLayer = idx;
-  var words = text.split(' ').length;
-  var prog = 0;
-  var iv = setInterval(function(){
-    prog = Math.min(prog+(100/words), 98);
-    document.getElementById('pbProg').style.width = prog+'%';
-  }, 400);
-  u.onend = function(){
-    clearInterval(iv);
-    document.getElementById('pbProg').style.width = '100%';
-    var li = vLayer;
-    stopVoice();
-    if (vMode==='each' && li>=0 && li<lastResults.length-1){
-      setTimeout(function(){ speakLayer(li+1, lastResults[li+1]); }, 600);
-    }
-  };
-  u.onerror = function(){ clearInterval(iv); stopVoice(); };
+  var u=new SpeechSynthesisUtterance(text); u.rate=speed||1; u.volume=volume===undefined?1:volume;
+  var en=vVoices.find(function(v){ return v.lang&&v.lang.startsWith('en')&&v.localService; }); if(en) u.voice=en;
+  setPlayBtn(idx,'playing'); vLayer=idx;
+  var words=text.split(' ').length, prog=0;
+  var iv=setInterval(function(){ prog=Math.min(prog+(100/words),98); document.getElementById('pbProg').style.width=prog+'%'; },400);
+  u.onend=function(){ clearInterval(iv); document.getElementById('pbProg').style.width='100%'; var li=vLayer; stopVoice(); if(vMode==='each'&&li>=0&&li<lastResults.length-1) setTimeout(function(){ speakLayer(li+1,lastResults[li+1]); },600); };
+  u.onerror=function(){ clearInterval(iv); stopVoice(); };
   window.speechSynthesis.speak(u);
 }
-
-function togglePause() {
-  var btn = document.getElementById('pbPause');
-  if (vAudio) {
-    if (vPaused) { vAudio.play(); vPaused=false; btn.textContent='⏸ Pause'; }
-    else         { vAudio.pause(); vPaused=true;  btn.textContent='▶ Resume'; }
-  } else if (window.speechSynthesis) {
-    if (vPaused) { window.speechSynthesis.resume(); vPaused=false; btn.textContent='⏸ Pause'; }
-    else         { window.speechSynthesis.pause();  vPaused=true;  btn.textContent='▶ Resume'; }
-  }
+function togglePause(){
+  var btn=document.getElementById('pbPause');
+  if(vAudio){ if(vPaused){vAudio.play();vPaused=false;btn.textContent='⏸ Pause';}else{vAudio.pause();vPaused=true;btn.textContent='▶ Resume';} }
+  else if(window.speechSynthesis){ if(vPaused){window.speechSynthesis.resume();vPaused=false;btn.textContent='⏸ Pause';}else{window.speechSynthesis.pause();vPaused=true;btn.textContent='▶ Resume';} }
 }
-
-function stopVoice() {
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-  if (vAudio) { vAudio.pause(); vAudio=null; }
-  if (vAudioUrl) { URL.revokeObjectURL(vAudioUrl); vAudioUrl=null; }
+function stopVoice(){
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  if(vAudio){vAudio.pause();vAudio=null;} if(vAudioUrl){URL.revokeObjectURL(vAudioUrl);vAudioUrl=null;}
   vPaused=false; vLayer=-1;
   document.getElementById('playerBar').classList.remove('show');
   document.querySelectorAll('.lplay').forEach(function(b){ b.textContent='▶ Play'; b.classList.remove('playing'); });
-  document.getElementById('pbPause').textContent = '⏸ Pause';
+  document.getElementById('pbPause').textContent='⏸ Pause';
 }
-
-function updatePlayerBar(idx, text) {
-  if (idx < 0) return;
-  document.getElementById('pbLayer').textContent = 'Layer '+(idx+1)+' — '+LAYERS[idx].title;
-  document.getElementById('pbText').textContent  = text.replace(/<[^>]*>/g,'').slice(0,80)+'…';
-  document.getElementById('pbProg').style.width  = '0%';
+function updatePlayerBar(idx,text){
+  if(idx<0) return;
+  document.getElementById('pbLayer').textContent='Layer '+(idx+1)+' — '+LAYERS[idx].title;
+  document.getElementById('pbText').textContent=text.replace(/<[^>]*>/g,'').slice(0,70)+'…';
+  document.getElementById('pbProg').style.width='0%';
   document.getElementById('playerBar').classList.add('show');
 }
-
-function setPlayBtn(idx, state) {
-  if (idx < 0) return;
-  var btn = document.getElementById('vbtn'+idx);
-  if (!btn) return;
-  if (state==='playing') { btn.textContent='■ Stop'; btn.classList.add('playing'); }
-  else { btn.textContent='▶ Play'; btn.classList.remove('playing'); }
+function setPlayBtn(idx,state){
+  if(idx<0) return;
+  var btn=document.getElementById('vbtn'+idx); if(!btn) return;
+  if(state==='playing'){btn.textContent='■ Stop';btn.classList.add('playing');}
+  else{btn.textContent='▶ Play';btn.classList.remove('playing');}
 }
 
 /* ═══════════════════ PROMPTS ═══════════════════ */
-function buildPrompt(i, prevOutputs) {
-  var t    = TOPICS[selTopic];
-  var pos  = document.getElementById('posSelect').value;
-  var pa   = document.getElementById('personaSelect').value;
-  var dept = document.getElementById('depthSelect').value;
-  var src  = SOURCES[selSrc];
-  var words = dept==='concise'?'150-200':dept==='deep'?'300-350':'220-270';
-  var persona = PERSONA[pa]||'analyst';
-  var tone    = TONE_DESC[selTone]||'persuasive';
-  var ctx = prevOutputs.length>0 ? '\n\nPrevious reasoning layers:\n'+prevOutputs.map(function(o,j){ return '[Layer '+(j+1)+' — '+LAYERS[j].title+']:\n'+o; }).join('\n\n') : '';
-
-  var preamble = 'You are writing as a '+persona+'. Tone: '+tone+'. Draw on the style and expertise of '+src.ctx+' when citing examples.';
-  var instrs = [
-    preamble+'\nLayer 1 — Context Analysis.\nTopic: "'+t.title+'". Position to explore: "'+pos+'".\nObjectively map the debate. Define the core question. Identify 4-5 key factors. Surface 2-3 hidden assumptions. Do NOT take a position. '+words+' words.',
-    preamble+'\nLayer 2 — Argument Builder.\nTopic: "'+t.title+'". Defend: "'+pos+'".\nBuild 3 distinct, evidence-backed arguments, each with a bold claim, evidence, and a real-world example. '+words+' words.',
-    preamble+'\nLayer 3 — Counter Argument.\nTopic: "'+t.title+'". Challenge: "'+pos+'".\nBuild the STRONGEST possible opposing case — 3 genuinely compelling counter-arguments. No strawmen. '+words+' words.',
-    preamble+'\nLayer 4 — Self-Critique.\nTopic: "'+t.title+'". Original position: "'+pos+'".\nHonestly identify 3-4 weaknesses in Layer 2\'s arguments. Name each flaw, explain why it undermines the argument, suggest a stronger version. '+words+' words.',
-    preamble+'\nLayer 5 — Final Strategy.\nTopic: "'+t.title+'". Original position: "'+pos+'".\nSynthesise all four layers into the most nuanced, authoritative final answer. State conditions under which each side wins. End with an italicised one-sentence "Final Verdict:". '+words+' words.'
+function buildPrompt(i,prevOutputs,posOverride){
+  var topic=getTopicTitle(), pos=posOverride||document.getElementById('posSelect').value;
+  var pa=document.getElementById('personaSelect').value, dept=document.getElementById('depthSelect').value;
+  var lang=document.getElementById('langSelect').value, src=SOURCES[selSrc];
+  var words=dept==='concise'?'150-200':dept==='deep'?'300-350':'220-270';
+  var persona=PERSONA[pa]||'analyst', tone=TONE_DESC[selTone]||'persuasive';
+  var langLine=lang!=='English'?'\nIMPORTANT: Write your entire response in '+lang+'. All arguments, analysis and conclusions must be in '+lang+'.'  :'';
+  var ctx=prevOutputs.length>0?'\n\nPrevious reasoning layers:\n'+prevOutputs.map(function(o,j){return '[Layer '+(j+1)+' — '+LAYERS[j].title+']:\n'+o;}).join('\n\n'):'';
+  var pre='You are writing as a '+persona+'. Tone: '+tone+'. Draw on the expertise of '+src.ctx+'.'+langLine;
+  var ins=[
+    pre+'\nLayer 1 — Context Analysis.\nTopic: "'+topic+'". Position to explore: "'+pos+'".\nObjectively map the debate. Define the core question. Identify 4-5 key factors. Surface hidden assumptions. Do NOT take a position yet. '+words+' words.',
+    pre+'\nLayer 2 — Argument Builder.\nTopic: "'+topic+'". Defend: "'+pos+'".\nBuild 3 distinct evidence-backed arguments, each with a bold claim, evidence, and a real-world example. '+words+' words.',
+    pre+'\nLayer 3 — Counter Argument.\nTopic: "'+topic+'". Challenge: "'+pos+'".\n3 genuinely compelling counter-arguments. No strawmen. '+words+' words.',
+    pre+'\nLayer 4 — Self-Critique.\nTopic: "'+topic+'". Original position: "'+pos+'".\n3-4 honest weaknesses in Layer 2\'s arguments. Name each flaw, why it undermines the argument, stronger version. '+words+' words.',
+    pre+'\nLayer 5 — Final Strategy.\nTopic: "'+topic+'". Original position: "'+pos+'".\nSynthesise all four layers. State conditions each side wins. End with italicised "Final Verdict:". '+words+' words.'
   ];
-  return instrs[i]+ctx;
+  return ins[i]+ctx;
+}
+function buildScorePrompt(results, pos){
+  var topic=getTopicTitle();
+  return 'You are a debate judge. Analyse this 5-layer debate argument and score it.\nTopic: "'+topic+'"\nPosition: "'+pos+'"\n\nLayer 1 — Context Analysis:\n'+results[0]+'\n\nLayer 2 — Arguments:\n'+results[1]+'\n\nLayer 3 — Counter Arguments:\n'+results[2]+'\n\nLayer 4 — Self-Critique:\n'+results[3]+'\n\nLayer 5 — Final Strategy:\n'+results[4]+'\n\nScore this debate on 4 dimensions (0-100 each):\n1. Argument Strength: How strong and convincing are the core arguments?\n2. Evidence Quality: How well-cited and specific is the evidence?\n3. Logical Coherence: How logically consistent and well-structured?\n4. Persuasiveness: How likely to convince a neutral audience?\n\nRespond ONLY with valid JSON, no other text:\n{"strength":85,"evidence":72,"logic":90,"persuasion":78,"overall":81,"verdict":"One sentence summary of the argument quality","recommendation":"One actionable improvement tip"}';
 }
 
-/* ═══════════════════ API CALL ═══════════════════ */
-function callAPI(prompt) {
-  var t0 = Date.now();
-  /* Use Netlify function proxy when deployed, direct API when local */
-  var endpoint = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'https://api.anthropic.com/v1/messages'
-    : '/.netlify/functions/claude';
-  var headers = { 'Content-Type': 'application/json' };
-
-  return fetch(endpoint, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1200, messages:[{ role:'user', content:prompt }] })
-  })
-  .then(function(r) { return r.json().then(function(d){ return { data:d, latency:Date.now()-t0 }; }); })
-  .then(function(res) {
-    var d   = res.data;
-    var lat = res.latency;
-    if (d.error) throw new Error(d.error.message||'API error');
-    var text = (d.content||[]).map(function(c){ return c.text||''; }).join('');
-    return { text:text, inputTokens:d.usage&&d.usage.input_tokens||0, outputTokens:d.usage&&d.usage.output_tokens||0, latency:lat };
+/* ═══════════════════ API ═══════════════════ */
+function callAPI(prompt){
+  var t0=Date.now();
+  var endpoint=window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1'
+    ?'https://api.anthropic.com/v1/messages':'/.netlify/functions/claude';
+  return fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})
+  }).then(function(r){ return r.json().then(function(d){ return {data:d,latency:Date.now()-t0}; }); })
+  .then(function(res){
+    var d=res.data,lat=res.latency;
+    if(d.error) throw new Error(d.error.message||'API error');
+    var text=(d.content||[]).map(function(c){ return c.text||''; }).join('');
+    return {text:text,inputTokens:d.usage&&d.usage.input_tokens||0,outputTokens:d.usage&&d.usage.output_tokens||0,latency:lat};
   });
 }
 
-/* ═══════════════════ RENDER LAYER ═══════════════════ */
-function renderCard(layer, state, result, idx) {
-  var col  = state==='waiting' ? 'var(--di)' : layer.color;
-  var lab  = state==='waiting' ? 'waiting' : state==='running' ? 'processing…' : 'complete ✓';
-  var s = SOURCES[selSrc];
-  var html = '<div class="lcard'+(state==='done'?' done':'')+'"'+(state!=='waiting'?' style="--lc:'+layer.color+'"':'')+' id="lcard'+idx+'">';
-  html += '<div class="lhdr">';
-  html += '<div class="lnum" style="color:'+col+';border-color:'+col+'">'+layer.num+'</div>';
-  html += '<div class="lmeta"><div class="ltitle" style="color:'+(state!=='waiting'?col:'var(--mu)')+'">'+layer.title+'</div>';
-  html += '<div class="lsub">'+layer.sub+'</div>';
-  html += '<div class="lq">"'+layer.q+'"</div></div>';
-  html += '<div class="lstat" style="color:'+col+';border-color:'+col+'">'+lab+'</div>';
-  html += '</div>';
-  html += '<div class="lbody">';
-  if (state==='waiting') html += '<div style="font-size:13px;color:var(--di);font-style:italic">Awaiting previous layers…</div>';
-  if (state==='running') html += '<div class="lspin"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div><div style="font-size:12px;color:var(--mu);margin-top:8px">Reasoning — layer '+layer.num+' of 05</div>';
-  if (state==='done')    html += '<div class="ltext">'+escHtml(result.text)+'</div>';
-  html += '</div>';
-  if (state==='done') {
-    html += '<div class="lfoot">';
-    html += '<span class="ltok">In: <b>'+result.inputTokens.toLocaleString()+'</b></span>';
-    html += '<span class="ltok">Out: <b>'+result.outputTokens.toLocaleString()+'</b></span>';
-    html += '<span class="ltok">⏱ <b>'+(result.latency/1000).toFixed(2)+'s</b></span>';
-    html += '<span class="lsrc">📡 '+s.name+'</span>';
-    html += '<button class="lplay" id="vbtn'+idx+'">▶ Play</button>';
-    html += '<button class="lcopy" id="copybtn'+idx+'">Copy</button>';
-    html += '</div>';
+/* ═══════════════════ RENDER ═══════════════════ */
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+function renderCard(layer,state,result,idx){
+  var col=state==='waiting'?'var(--di)':layer.color, lab=state==='waiting'?'waiting':state==='running'?'processing…':'complete ✓';
+  var s=SOURCES[selSrc];
+  var html='<div class="lcard'+(state==='done'?' done':'')+'"'+(state!=='waiting'?' style="--lc:'+layer.color+'"':'')+' id="lcard'+idx+'">';
+  html+='<div class="lhdr"><div class="lnum" style="color:'+col+';border-color:'+col+'">'+layer.num+'</div>';
+  html+='<div class="lmeta"><div class="ltitle" style="color:'+(state!=='waiting'?col:'var(--mu)')+'">'+layer.title+'</div>';
+  html+='<div class="lsub">'+layer.sub+'</div><div class="lq">"'+layer.q+'"</div></div>';
+  html+='<div class="lstat" style="color:'+col+';border-color:'+col+'">'+lab+'</div></div>';
+  html+='<div class="lbody">';
+  if(state==='waiting') html+='<div style="font-size:13px;color:var(--di);font-style:italic">Awaiting previous layers…</div>';
+  if(state==='running') html+='<div class="lspin"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div><div style="font-size:12px;color:var(--mu);margin-top:8px">Reasoning — layer '+layer.num+' of 05</div>';
+  if(state==='done') html+='<div class="ltext">'+escHtml(result.text)+'</div>';
+  html+='</div>';
+  if(state==='done'){
+    html+='<div class="lfoot">';
+    html+='<span class="ltok">In: <b>'+result.inputTokens.toLocaleString()+'</b></span>';
+    html+='<span class="ltok">Out: <b>'+result.outputTokens.toLocaleString()+'</b></span>';
+    html+='<span class="ltok">⏱ <b>'+(result.latency/1000).toFixed(2)+'s</b></span>';
+    html+='<span class="lsrc">📡 '+s.name+'</span>';
+    html+='<button class="lplay" id="vbtn'+idx+'">▶ Play</button>';
+    html+='<button class="lcopy" id="copybtn'+idx+'">Copy</button>';
+    html+='</div>';
   }
-  html += '</div>';
-  return html;
+  html+='</div>'; return html;
 }
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
-}
-
-function renderPipeline(states, results) {
-  var html = '';
-  for (var i = 0; i < LAYERS.length; i++) {
-    if (i>0) html += '<div class="conn"><div class="connline"></div><div class="conndot"></div><div class="connline"></div></div>';
-    html += renderCard(LAYERS[i], states[i], results[i], i);
+function renderPipeline(states,results){
+  var html='';
+  for(var i=0;i<LAYERS.length;i++){
+    if(i>0) html+='<div class="conn"><div class="connline"></div><div class="conndot"></div><div class="connline"></div></div>';
+    html+=renderCard(LAYERS[i],states[i],results[i],i);
   }
-  document.getElementById('pipeline').innerHTML = html;
-  /* Wire play/copy buttons */
-  for (var j = 0; j < LAYERS.length; j++) {
+  var pl=document.getElementById('pipeline'); pl.innerHTML=html;
+  for(var j=0;j<LAYERS.length;j++){
     (function(idx){
-      var pb = document.getElementById('vbtn'+idx);
-      if (pb) pb.addEventListener('click', function(){
-        if (!vConnected) {
-          /* Auto-enable browser voice without requiring connection */
-          vConnected = true; vUsing11 = false;
-          document.getElementById('vBadge').textContent = '● Browser voice';
-          document.getElementById('vBadge').className   = 'vbdg on';
-          document.getElementById('vCfg').classList.add('on');
-          document.getElementById('vCfg2').classList.add('on');
-          document.getElementById('vModes').classList.add('on');
-        }
-        speakLayer(idx, lastResults[idx]);
+      var pb=document.getElementById('vbtn'+idx);
+      if(pb) pb.addEventListener('click', function(){
+        if(!vConnected){vConnected=true; vUsing11=false;}
+        speakLayer(idx,lastResults[idx]);
       });
-      var cb = document.getElementById('copybtn'+idx);
-      if (cb) cb.addEventListener('click', function(){
-        if (lastResults[idx]) navigator.clipboard.writeText('[Layer '+(idx+1)+' — '+LAYERS[idx].title+']\n\n'+lastResults[idx]).then(function(){ alert('Copied!'); });
+      var cb=document.getElementById('copybtn'+idx);
+      if(cb) cb.addEventListener('click', function(){
+        if(lastResults[idx]) navigator.clipboard.writeText('[Layer '+(idx+1)+' — '+LAYERS[idx].title+']\n\n'+lastResults[idx]).then(function(){alert('Copied!');});
       });
     })(j);
   }
 }
-
-function setTele(v0,v1,v2,v3,v4,lit) {
-  for (var i=0;i<5;i++) document.getElementById('tc'+i).classList.toggle('lit',!!lit);
+function setTele(v0,v1,v2,v3,v4,lit){
+  for(var i=0;i<5;i++) document.getElementById('tc'+i).classList.toggle('lit',!!lit);
   var vals=[v0,v1,v2,v3,v4];
-  for (var j=0;j<5;j++) document.getElementById('tv'+j).textContent = vals[j]===null?'—':vals[j];
+  for(var j=0;j<5;j++) document.getElementById('tv'+j).textContent=vals[j]===null?'—':vals[j];
+}
+function setProgress(p){ document.getElementById('progWrap').style.display='block'; document.getElementById('progFill').style.width=p+'%'; }
+function updateCost(){
+  var cost=((totalIn/1000000)*COST_IN)+((totalOut/1000000)*COST_OUT);
+  var badge=document.getElementById('costBadge'); badge.style.display='inline-flex';
+  document.getElementById('costVal').textContent='~$'+cost.toFixed(4);
 }
 
-function setProgress(p) {
-  document.getElementById('progWrap').style.display='block';
-  document.getElementById('progFill').style.width=p+'%';
+/* ═══════════════════ SCORE CARD ═══════════════════ */
+function renderScoreCard(data){
+  var overall=data.overall||Math.round((data.strength+data.evidence+data.logic+data.persuasion)/4);
+  var cls=overall>=85?'excellent':overall>=70?'good':overall>=55?'fair':'weak';
+  var dims=[
+    {label:'Argument Strength', val:data.strength, color:'var(--l1)'},
+    {label:'Evidence Quality',  val:data.evidence, color:'var(--l2)'},
+    {label:'Logical Coherence', val:data.logic,    color:'var(--l5)'},
+    {label:'Persuasiveness',    val:data.persuasion,color:'var(--l4)'}
+  ];
+  var html='<div class="sc-head">';
+  html+='<div><div class="sc-title">🏆 Debate Score Card</div><div style="font-size:11px;color:var(--mu);margin-top:2px;">'+getTopicTitle()+'</div></div>';
+  html+='<div><div class="sc-total '+cls+'">'+overall+'<span style="font-size:14px;color:var(--mu)">/100</span></div></div></div>';
+  html+='<div class="sc-body">';
+  for(var i=0;i<dims.length;i++){
+    html+='<div class="sc-row">';
+    html+='<div class="sc-label">'+dims[i].label+'</div>';
+    html+='<div class="sc-bar-wrap"><div class="sc-bar" style="width:'+dims[i].val+'%;background:'+dims[i].color+'"></div></div>';
+    html+='<div class="sc-score" style="color:'+dims[i].color+'">'+dims[i].val+'</div>';
+    html+='</div>';
+  }
+  html+='<div class="sc-verdict"><strong>Verdict:</strong> '+data.verdict+'</div>';
+  if(data.recommendation) html+='<div class="sc-verdict" style="margin-top:8px;"><strong>💡 Tip:</strong> '+data.recommendation+'</div>';
+  html+='</div>';
+  document.getElementById('scorecard').innerHTML=html;
+  document.getElementById('scorecardSection').style.display='block';
+  lastScoreData=data;
 }
 
 /* ═══════════════════ RUN ═══════════════════ */
-function runDebate() {
-  var btn = document.getElementById('runBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg> Running 5 layers…';
+function runDebate(){
+  var isSBS=document.getElementById('modeSelect').value==='sbs';
+  if(isSBS){ runSideBySide(); return; }
 
+  var btn=document.getElementById('runBtn');
+  btn.disabled=true;
+  btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg> Running 5 layers…';
   layerTelem=[]; totalIn=0; totalOut=0; lastResults=[];
   var t0=Date.now(), prevOut=[], states=['waiting','waiting','waiting','waiting','waiting'], results=[null,null,null,null,null];
   document.getElementById('insightsSection').style.display='none';
-  renderPipeline(states,results);
-  setTele(null,null,null,null,null,false);
-  setProgress(2);
+  document.getElementById('scorecardSection').style.display='none';
+  document.getElementById('costBadge').style.display='none';
+  renderPipeline(states,results); setTele(null,null,null,null,null,false); setProgress(2);
 
-  function runLayer(i) {
-    if (i >= 5) {
-      /* Done */
-      setTele(totalIn.toLocaleString(), totalOut.toLocaleString(), (totalIn+totalOut).toLocaleString(), ((Date.now()-t0)/1000).toFixed(2)+'s', (totalOut/totalIn).toFixed(2)+'x', true);
-      setProgress(100);
-      renderInsights();
-      addHistory();
-      btn.disabled=false;
-      btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Run Again';
-      /* Auto-play voice */
-      if (vConnected) {
-        if (vMode==='verdict' && lastResults[4]) setTimeout(function(){ speakLayer(4,lastResults[4]); }, 800);
-        else if (vMode==='each' && lastResults[0]) setTimeout(function(){ speakLayer(0,lastResults[0]); }, 600);
-      }
+  function runLayer(i){
+    if(i>=5){
+      /* Score card */
+      callAPI(buildScorePrompt(lastResults, document.getElementById('posSelect').value))
+      .then(function(res){
+        try{ var d=JSON.parse(res.text.replace(/```json|```/g,'').trim()); renderScoreCard(d); }catch(e){}
+      }).catch(function(){});
+      setTele(totalIn.toLocaleString(),totalOut.toLocaleString(),(totalIn+totalOut).toLocaleString(),((Date.now()-t0)/1000).toFixed(2)+'s',(totalOut/totalIn).toFixed(2)+'x',true);
+      setProgress(100); updateCost(); renderInsights(); addHistory(); generateShareLink();
+      btn.disabled=false; btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Run Again';
+      if(vConnected){ if(vMode==='verdict'&&lastResults[4]) setTimeout(function(){speakLayer(4,lastResults[4]);},800); else if(vMode==='each'&&lastResults[0]) setTimeout(function(){speakLayer(0,lastResults[0]);},600); }
       return;
     }
     states[i]='running'; renderPipeline(states,results); setProgress(5+(i/5)*70);
-    callAPI(buildPrompt(i, prevOut))
-    .then(function(res) {
-      results[i]=res; states[i]='done'; prevOut.push(res.text);
-      layerTelem.push(res); lastResults.push(res.text);
-      totalIn+=res.inputTokens; totalOut+=res.outputTokens;
-      setTele(totalIn.toLocaleString(), totalOut.toLocaleString(), (totalIn+totalOut).toLocaleString(), ((Date.now()-t0)/1000).toFixed(1)+'s', (totalOut/totalIn).toFixed(2)+'x', true);
-      renderPipeline(states,results); setProgress(5+((i+1)/5)*70+20);
-      runLayer(i+1);
-    })
-    .catch(function(e) {
-      results[i]={text:'⚠️ Error: '+e.message, inputTokens:0, outputTokens:0, latency:0};
-      states[i]='done'; renderPipeline(states,results);
-      runLayer(i+1);
-    });
+    callAPI(buildPrompt(i,prevOut))
+    .then(function(res){ results[i]=res; states[i]='done'; prevOut.push(res.text); layerTelem.push(res); lastResults.push(res.text); totalIn+=res.inputTokens; totalOut+=res.outputTokens; setTele(totalIn.toLocaleString(),totalOut.toLocaleString(),(totalIn+totalOut).toLocaleString(),((Date.now()-t0)/1000).toFixed(1)+'s',(totalOut/totalIn).toFixed(2)+'x',true); renderPipeline(states,results); setProgress(5+((i+1)/5)*70+20); runLayer(i+1); })
+    .catch(function(e){ results[i]={text:'⚠️ Error: '+e.message,inputTokens:0,outputTokens:0,latency:0}; states[i]='done'; renderPipeline(states,results); runLayer(i+1); });
   }
   runLayer(0);
 }
 
+/* ═══════════════════ SIDE BY SIDE ═══════════════════ */
+function runSideBySide(){
+  var posA=document.getElementById('posSelect').value;
+  var posB=document.getElementById('posBSelect').value;
+  if(!posA||!posB){ alert('Please select both positions for Side-by-Side mode.'); return; }
+  var btn=document.getElementById('runBtn');
+  btn.disabled=true; btn.innerHTML='⚔️ Running side-by-side…';
+  document.getElementById('insightsSection').style.display='none';
+  document.getElementById('scorecardSection').style.display='none';
+  var pl=document.getElementById('pipeline');
+  pl.innerHTML='<div class="sbs-wrap"><div class="sbs-col"><div class="sbs-head a">🔵 Position A</div><div id="sbsPipeA"></div></div><div class="sbs-col"><div class="sbs-head b">🔴 Position B</div><div id="sbsPipeB"></div></div></div>';
+
+  var statesA=['waiting','waiting','waiting','waiting','waiting'], resultsA=[null,null,null,null,null];
+  var statesB=['waiting','waiting','waiting','waiting','waiting'], resultsB=[null,null,null,null,null];
+  var prevA=[], prevB=[], doneA=false, doneB=false;
+  totalIn=0; totalOut=0; lastResults=[];
+
+  function renderSBS(){
+    var htmlA='', htmlB='';
+    for(var i=0;i<LAYERS.length;i++){
+      if(i>0){ htmlA+='<div class="conn"><div class="connline"></div><div class="conndot"></div><div class="connline"></div></div>'; htmlB+='<div class="conn"><div class="connline"></div><div class="conndot"></div><div class="connline"></div></div>'; }
+      htmlA+=renderCard(LAYERS[i],statesA[i],resultsA[i],'a'+i);
+      htmlB+=renderCard(LAYERS[i],statesB[i],resultsB[i],'b'+i);
+    }
+    document.getElementById('sbsPipeA').innerHTML=htmlA;
+    document.getElementById('sbsPipeB').innerHTML=htmlB;
+  }
+
+  function checkDone(){
+    if(!doneA||!doneB) return;
+    btn.disabled=false; btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Run Again';
+  }
+
+  function runColA(i){
+    if(i>=5){ doneA=true; checkDone(); return; }
+    statesA[i]='running'; renderSBS();
+    callAPI(buildPrompt(i,prevA,posA))
+    .then(function(res){ resultsA[i]=res; statesA[i]='done'; prevA.push(res.text); totalIn+=res.inputTokens; totalOut+=res.outputTokens; renderSBS(); runColA(i+1); })
+    .catch(function(e){ resultsA[i]={text:'⚠️ '+e.message,inputTokens:0,outputTokens:0,latency:0}; statesA[i]='done'; renderSBS(); runColA(i+1); });
+  }
+  function runColB(i){
+    if(i>=5){ doneB=true; checkDone(); return; }
+    statesB[i]='running'; renderSBS();
+    callAPI(buildPrompt(i,prevB,posB))
+    .then(function(res){ resultsB[i]=res; statesB[i]='done'; prevB.push(res.text); totalIn+=res.inputTokens; totalOut+=res.outputTokens; renderSBS(); runColB(i+1); })
+    .catch(function(e){ resultsB[i]={text:'⚠️ '+e.message,inputTokens:0,outputTokens:0,latency:0}; statesB[i]='done'; renderSBS(); runColB(i+1); });
+  }
+  renderSBS();
+  runColA(0); runColB(0);
+}
+
 /* ═══════════════════ INSIGHTS ═══════════════════ */
-function renderInsights() {
+function renderInsights(){
   document.getElementById('insightsSection').style.display='block';
-  var outs=layerTelem.map(function(l){return l.outputTokens;});
-  var lats=layerTelem.map(function(l){return l.latency;});
-  var maxO=Math.max.apply(null,outs), vi=outs.indexOf(maxO);
-  var fi=lats.indexOf(Math.min.apply(null,lats)), si=lats.indexOf(Math.max.apply(null,lats));
+  var outs=layerTelem.map(function(l){return l.outputTokens;}), lats=layerTelem.map(function(l){return l.latency;});
+  var maxO=Math.max.apply(null,outs), vi=outs.indexOf(maxO), fi=lats.indexOf(Math.min.apply(null,lats)), si=lats.indexOf(Math.max.apply(null,lats));
   var avg=Math.round(outs.reduce(function(a,b){return a+b;},0)/outs.length);
   document.getElementById('iv0').textContent='L'+(vi+1); document.getElementById('id0').textContent=LAYERS[vi].title+' — '+maxO+' tokens';
   document.getElementById('iv1').textContent=avg;
@@ -1241,53 +1191,108 @@ function renderInsights() {
   document.getElementById('iv3').textContent='L'+(si+1); document.getElementById('id3').textContent=LAYERS[si].title+' — '+(lats[si]/1000).toFixed(2)+'s';
   var cols=['var(--l1)','var(--l2)','var(--l3)','var(--l4)','var(--l5)'];
   var bHtml='';
-  for (var i=0;i<outs.length;i++) bHtml+='<div class="bwrap"><div class="bval">'+outs[i]+'</div><div class="bar" style="height:'+Math.round(outs[i]/maxO*100)+'%;background:'+cols[i]+';opacity:.85"></div><div class="blbl">L'+(i+1)+'</div></div>';
+  for(var i=0;i<outs.length;i++) bHtml+='<div class="bwrap"><div class="bval">'+outs[i]+'</div><div class="bar" style="height:'+Math.round(outs[i]/maxO*100)+'%;background:'+cols[i]+';opacity:.85"></div><div class="blbl">L'+(i+1)+'</div></div>';
   document.getElementById('chartBars').innerHTML=bHtml;
-  var tot=outs.reduce(function(a,b){return a+b;},0);
-  var tlHtml='';
-  for (var j=0;j<outs.length;j++) tlHtml+='<div class="tlseg" style="width:'+(outs[j]/tot*100).toFixed(1)+'%;background:'+cols[j]+'">'+Math.round(outs[j]/tot*100)+'%</div>';
+  var tot=outs.reduce(function(a,b){return a+b;},0), tlHtml='';
+  for(var j=0;j<outs.length;j++) tlHtml+='<div class="tlseg" style="width:'+(outs[j]/tot*100).toFixed(1)+'%;background:'+cols[j]+'">'+Math.round(outs[j]/tot*100)+'%</div>';
   document.getElementById('tlBar').innerHTML=tlHtml;
 }
 
 /* ═══════════════════ HISTORY ═══════════════════ */
-function addHistory() {
-  var t = TOPICS[selTopic];
-  debateHistory.unshift({ emoji:t.emoji, title:t.title, pos:document.getElementById('posSelect').value, tokens:totalIn+totalOut, src:SOURCES[selSrc].name, time:new Date().toLocaleTimeString() });
+function addHistory(){
+  var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic];
+  debateHistory.unshift({emoji:t.emoji,title:t.title,pos:document.getElementById('posSelect').value,tokens:totalIn+totalOut,src:SOURCES[selSrc].name,time:new Date().toLocaleTimeString()});
   renderHistory();
 }
-function renderHistory() {
+function renderHistory(){
   var sec=document.getElementById('histSection'), list=document.getElementById('histList');
-  if (!debateHistory.length) { sec.style.display='none'; return; }
+  if(!debateHistory.length){sec.style.display='none';return;}
   sec.style.display='block';
   var html='';
   var show=debateHistory.slice(0,5);
-  for (var i=0;i<show.length;i++) {
+  for(var i=0;i<show.length;i++){
     var e=show[i];
-    html+='<div class="hitem"><div class="hiem">'+e.emoji+'</div><div class="hiinfo"><div class="hitopic">'+e.title+'</div><div class="himeta">'+e.time+' · '+e.pos.slice(0,40)+'… · 📡 '+e.src+'</div></div><div class="hitok">'+e.tokens.toLocaleString()+' tokens</div></div>';
+    html+='<div class="hitem"><div class="hiem">'+e.emoji+'</div><div class="hiinfo"><div class="hitopic">'+e.title+'</div><div class="himeta">'+e.time+' · '+e.pos.slice(0,35)+'… · 📡 '+e.src+'</div></div><div class="hitok">'+e.tokens.toLocaleString()+' tokens</div></div>';
   }
   list.innerHTML=html;
 }
-function clearHist() { debateHistory=[]; document.getElementById('histSection').style.display='none'; }
+function clearHist(){ debateHistory=[]; document.getElementById('histSection').style.display='none'; }
+
+/* ═══════════════════ SHARE LINK ═══════════════════ */
+function generateShareLink(){
+  var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic];
+  var data={topic:t.title,pos:document.getElementById('posSelect').value,src:selSrc,tone:selTone,lang:document.getElementById('langSelect').value,layers:lastResults};
+  var encoded=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  var url=window.location.origin+window.location.pathname+'?debate='+encoded;
+  document.getElementById('shareUrl').value=url;
+}
+function copyShareLink(){
+  var url=document.getElementById('shareUrl').value;
+  if(!url||url.includes('Run a debate')){ alert('Run a debate first to generate a share link.'); return; }
+  navigator.clipboard.writeText(url).then(function(){ var btn=document.getElementById('shareCopyBtn'); btn.textContent='✅ Copied!'; setTimeout(function(){btn.textContent='📋 Copy link';},2000); });
+}
+function loadFromURL(){
+  var params=new URLSearchParams(window.location.search);
+  var encoded=params.get('debate');
+  if(!encoded) return;
+  try{
+    var data=JSON.parse(decodeURIComponent(escape(atob(encoded))));
+    if(data.layers&&data.layers.length>0){
+      lastResults=data.layers; layerTelem=data.layers.map(function(){return {outputTokens:0,inputTokens:0,latency:0};});
+      var states=data.layers.map(function(){ return 'done'; });
+      var results=data.layers.map(function(l,i){ return {text:l,inputTokens:0,outputTokens:0,latency:0}; });
+      renderPipeline(states,results);
+      document.getElementById('insightsSection').style.display='block';
+      var note=document.createElement('div');
+      note.style.cssText='background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:10px 16px;font-size:12px;color:var(--p2);margin-bottom:1rem;';
+      note.textContent='🔗 Shared debate loaded: "'+data.topic+'"';
+      document.getElementById('pipeline').insertAdjacentElement('beforebegin',note);
+    }
+  }catch(e){}
+}
 
 /* ═══════════════════ EXPORT ═══════════════════ */
-function assembleText(fmt) {
-  var t=TOPICS[selTopic], pos=document.getElementById('posSelect').value, src=SOURCES[selSrc].name;
-  if (fmt==='md') {
-    var md='# DebateIQ — AI Debate Report\n\n**Topic:** '+t.title+'\n**Position:** '+pos+'\n**Source:** '+src+'\n**Tone:** '+selTone+'\n**Generated:** '+new Date().toLocaleString()+'\n\n---\n\n';
-    for (var i=0;i<LAYERS.length;i++) { if(lastResults[i]) md+='## Layer '+LAYERS[i].num+': '+LAYERS[i].title+'\n> *'+LAYERS[i].q+'*\n\n'+lastResults[i]+'\n\n---\n\n'; }
+function assembleText(fmt){
+  var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic];
+  var pos=document.getElementById('posSelect').value, src=SOURCES[selSrc].name, lang=document.getElementById('langSelect').value;
+  if(fmt==='md'){
+    var md='# DebateIQ — AI Debate Report\n\n**Topic:** '+t.title+'\n**Position:** '+pos+'\n**Source:** '+src+'\n**Tone:** '+selTone+'\n**Language:** '+lang+'\n**Generated:** '+new Date().toLocaleString()+'\n\n';
+    if(lastScoreData) md+='## Score Card\n- Overall: **'+lastScoreData.overall+'/100**\n- Argument Strength: '+lastScoreData.strength+'\n- Evidence Quality: '+lastScoreData.evidence+'\n- Logical Coherence: '+lastScoreData.logic+'\n- Persuasiveness: '+lastScoreData.persuasion+'\n- Verdict: '+lastScoreData.verdict+'\n\n---\n\n';
+    for(var i=0;i<LAYERS.length;i++){ if(lastResults[i]) md+='## Layer '+LAYERS[i].num+': '+LAYERS[i].title+'\n> *'+LAYERS[i].q+'*\n\n'+lastResults[i]+'\n\n---\n\n'; }
     md+='**Telemetry:** '+totalIn.toLocaleString()+' in · '+totalOut.toLocaleString()+' out · '+(totalIn+totalOut).toLocaleString()+' total\n';
     return md;
   }
-  var txt='DEBATEIQ\n'+'='.repeat(50)+'\nTopic: '+t.title+'\nPosition: '+pos+'\nSource: '+src+'\nTone: '+selTone+'\n'+'='.repeat(50)+'\n\n';
-  for (var j=0;j<LAYERS.length;j++) { if(lastResults[j]) txt+='LAYER '+LAYERS[j].num+': '+LAYERS[j].title.toUpperCase()+'\n'+'-'.repeat(40)+'\n'+lastResults[j]+'\n\n'; }
-  txt+='Tokens: '+totalIn.toLocaleString()+' in · '+totalOut.toLocaleString()+' out · '+(totalIn+totalOut).toLocaleString()+' total';
+  var txt='DEBATEIQ\n'+'='.repeat(50)+'\nTopic: '+t.title+'\nPosition: '+pos+'\nSource: '+src+'\nLanguage: '+lang+'\n'+'='.repeat(50)+'\n\n';
+  for(var j=0;j<LAYERS.length;j++){ if(lastResults[j]) txt+='LAYER '+LAYERS[j].num+': '+LAYERS[j].title.toUpperCase()+'\n'+'-'.repeat(40)+'\n'+lastResults[j]+'\n\n'; }
+  txt+='Tokens: '+totalIn.toLocaleString()+' in · '+totalOut.toLocaleString()+' out';
   return txt;
 }
 function dl(content,name,type){ var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type:type})); a.download=name; a.click(); }
 function exportMD()  { if(!lastResults.length){alert('Run a debate first.');return;} dl(assembleText('md'),'debateiq.md','text/markdown'); }
 function exportTXT() { if(!lastResults.length){alert('Run a debate first.');return;} dl(assembleText('txt'),'debateiq.txt','text/plain'); }
-function exportJSON(){ if(!lastResults.length){alert('Run a debate first.');return;} var t=TOPICS[selTopic]; dl(JSON.stringify({topic:t.title,position:document.getElementById('posSelect').value,source:SOURCES[selSrc].name,tone:selTone,generatedAt:new Date().toISOString(),telemetry:{inputTokens:totalIn,outputTokens:totalOut,totalTokens:totalIn+totalOut},layers:LAYERS.map(function(l,i){return {title:l.title,content:lastResults[i]||''};})}  ,null,2),'debateiq.json','application/json'); }
+function exportJSON(){ if(!lastResults.length){alert('Run a debate first.');return;} var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic]; dl(JSON.stringify({topic:t.title,position:document.getElementById('posSelect').value,source:SOURCES[selSrc].name,tone:selTone,language:document.getElementById('langSelect').value,score:lastScoreData,generatedAt:new Date().toISOString(),telemetry:{inputTokens:totalIn,outputTokens:totalOut,totalTokens:totalIn+totalOut},layers:LAYERS.map(function(l,i){return {title:l.title,content:lastResults[i]||''};})}  ,null,2),'debateiq.json','application/json'); }
 function copyAll()   { if(!lastResults.length){alert('Run a debate first.');return;} navigator.clipboard.writeText(assembleText('txt')).then(function(){alert('Copied!');});}
+function exportPDF() {
+  if(!lastResults.length){alert('Run a debate first.');return;}
+  var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic];
+  var pos=document.getElementById('posSelect').value;
+  var content=assembleText('txt');
+  /* Generate printable HTML and open print dialog */
+  var win=window.open('','_blank');
+  win.document.write('<!DOCTYPE html><html><head><title>DebateIQ — '+t.title+'</title><style>body{font-family:Georgia,serif;max-width:800px;margin:40px auto;padding:0 20px;color:#1a1a1a;line-height:1.7;}h1{font-size:24px;border-bottom:2px solid #8b5cf6;padding-bottom:10px;}h2{font-size:16px;color:#8b5cf6;margin-top:30px;}pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px;}.meta{color:#666;font-size:13px;margin-bottom:20px;}.score{background:#f3f0ff;border:1px solid #8b5cf6;border-radius:8px;padding:16px;margin:20px 0;}hr{border:none;border-top:1px solid #ddd;margin:20px 0;}</style></head><body>');
+  win.document.write('<h1>⚡ DebateIQ — Debate Report</h1>');
+  win.document.write('<div class="meta"><strong>Topic:</strong> '+t.title+' &nbsp;|&nbsp; <strong>Position:</strong> '+pos+' &nbsp;|&nbsp; <strong>Generated:</strong> '+new Date().toLocaleString()+'</div>');
+  if(lastScoreData) win.document.write('<div class="score"><strong>🏆 Score: '+lastScoreData.overall+'/100</strong> — '+lastScoreData.verdict+'</div>');
+  for(var i=0;i<LAYERS.length;i++){
+    if(lastResults[i]){
+      win.document.write('<h2>Layer '+LAYERS[i].num+': '+LAYERS[i].title+'</h2>');
+      win.document.write('<pre>'+lastResults[i].replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/<br>/g,'\n')+'</pre><hr>');
+    }
+  }
+  win.document.write('</body></html>');
+  win.document.close();
+  win.focus(); win.print();
+}
 </script>
 </body>
 </html>
