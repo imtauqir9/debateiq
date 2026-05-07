@@ -1069,9 +1069,15 @@ function buildPrompt(i, prevOutputs) {
 /* ═══════════════════ API CALL ═══════════════════ */
 function callAPI(prompt) {
   var t0 = Date.now();
-  return fetch('https://api.anthropic.com/v1/messages', {
-    method:'POST',
-    headers:{ 'Content-Type':'application/json' },
+  /* Use Netlify function proxy when deployed, direct API when local */
+  var endpoint = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'https://api.anthropic.com/v1/messages'
+    : '/.netlify/functions/claude';
+  var headers = { 'Content-Type': 'application/json' };
+
+  return fetch(endpoint, {
+    method: 'POST',
+    headers: headers,
     body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1200, messages:[{ role:'user', content:prompt }] })
   })
   .then(function(r) { return r.json().then(function(d){ return { data:d, latency:Date.now()-t0 }; }); })
