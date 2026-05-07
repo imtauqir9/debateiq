@@ -501,7 +501,7 @@ select option{background:#161625;}
   <div class="sl"><span class="sn">🎙</span> Voice — ElevenLabs (optional)</div>
   <div class="voicewrap">
     <div class="vhd" id="vHd">
-      <div class="vhl">🔊 ElevenLabs Text-to-Speech <span class="vbdg off" id="vBadge">Not connected</span></div>
+      <div class="vhl">🔊 ElevenLabs Text-to-Speech <span class="vbdg on" id="vBadge">● Browser voice ready</span></div>
       <span class="vch" id="vCh">▼</span>
     </div>
     <div class="vbd" id="vBd">
@@ -549,7 +549,7 @@ select option{background:#161625;}
         <button class="vmode" data-m="verdict">🏆 Final verdict only</button>
         <button class="vmode" data-m="manual">🖐 Manual only</button>
       </div>
-      <div class="vnote" id="vNote">ℹ️ Get a free API key at <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a> — 10,000 chars/month free. If ElevenLabs is blocked, the app automatically falls back to your browser's built-in voice.</div>
+      <div class="vnote" id="vNote">✅ Browser voice active — click ▶ Play on any layer after running. For higher quality neural voice, paste your <a href="https://elevenlabs.io" target="_blank">ElevenLabs</a> API key above and click Connect.</div>
     </div>
   </div>
 
@@ -762,6 +762,17 @@ window.addEventListener('DOMContentLoaded', function() {
   document.getElementById('expTXT').addEventListener('click',  exportTXT);
   document.getElementById('expJSON').addEventListener('click', exportJSON);
   document.getElementById('expCopy').addEventListener('click', copyAll);
+
+  /* Auto-enable browser voice on load — no connection needed */
+  if (window.speechSynthesis) {
+    vConnected = true; vUsing11 = false;
+    document.getElementById('vBadge').textContent = '● Browser voice ready';
+    document.getElementById('vBadge').className   = 'vbdg on';
+    document.getElementById('vCfg').classList.add('on');
+    document.getElementById('vCfg2').classList.add('on');
+    document.getElementById('vModes').classList.add('on');
+    document.getElementById('vNote').innerHTML = '✅ Browser voice active — click ▶ Play on any layer after running. For higher quality neural voice, paste your <a href="https://elevenlabs.io" target="_blank">ElevenLabs</a> API key above and click Connect.';
+  }
 
   /* Load speech voices */
   if (window.speechSynthesis) {
