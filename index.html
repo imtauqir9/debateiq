@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>DebateIQ — AI Debate Strategist</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --bg:#07070f;--s1:#0f0f1c;--s2:#161625;--s3:#1e1e30;
@@ -27,11 +29,49 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,15,.94);backdrop-filter
 .logo span{background:linear-gradient(135deg,var(--p2),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .nd{width:6px;height:6px;border-radius:50%;background:var(--g2);box-shadow:0 0 5px var(--g2);animation:bl 2s infinite;flex-shrink:0;}
 @keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
-.nr{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;}
+.nr{margin-left:auto;display:flex;gap:6px;align-items:center;}
 .bs{background:transparent;border:1px solid var(--bd);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:500;transition:all .2s;white-space:nowrap;}
 .bs:hover{border-color:var(--p);color:var(--p2);}
 .bsp{background:var(--p);border-color:var(--p);color:#fff;}
 .bsp:hover{opacity:.88;}
+
+/* USER AVATAR */
+.user-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--l1));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer;border:2px solid var(--p);flex-shrink:0;}
+.user-menu{position:absolute;top:56px;right:1.2rem;background:var(--s1);border:2px solid var(--bd);border-radius:14px;padding:8px;min-width:200px;z-index:100;display:none;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+.user-menu.show{display:block;}
+.um-header{padding:10px 12px;border-bottom:1px solid var(--bd);margin-bottom:6px;}
+.um-name{font-size:13px;font-weight:700;}
+.um-email{font-size:11px;color:var(--mu);margin-top:2px;}
+.um-btn{width:100%;background:transparent;border:none;border-radius:8px;padding:8px 12px;text-align:left;color:var(--tx);font-family:'Outfit',sans-serif;font-size:12px;cursor:pointer;transition:background .2s;display:flex;align-items:center;gap:8px;}
+.um-btn:hover{background:var(--s2);}
+.um-btn.danger{color:var(--l3);}
+
+/* AUTH MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px);}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--s1);border:2px solid var(--bd);border-radius:20px;max-width:420px;width:100%;overflow:hidden;}
+.modal-top{background:linear-gradient(135deg,rgba(139,92,246,.14),rgba(59,130,246,.07));padding:24px 28px 20px;border-bottom:1px solid var(--bd);}
+.modal-logo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;margin-bottom:10px;}
+.modal-top h2{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:4px;}
+.modal-top p{font-size:12px;color:var(--mu);}
+.modal-body{padding:20px 28px;}
+.auth-tabs{display:flex;gap:0;margin-bottom:20px;border-bottom:2px solid var(--bd);}
+.auth-tab{flex:1;background:transparent;border:none;padding:10px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.auth-tab.sel{color:var(--p2);border-bottom-color:var(--p2);}
+.inp{width:100%;background:var(--s2);border:2px solid var(--bd);border-radius:10px;padding:10px 14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:13px;outline:none;margin-bottom:10px;transition:border-color .2s;}
+.inp:focus{border-color:var(--p);}
+.inp::placeholder{color:var(--di);}
+.auth-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:10px;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s;margin-bottom:12px;}
+.auth-btn:hover{opacity:.88;}
+.auth-btn:disabled{opacity:.4;cursor:not-allowed;}
+.auth-divider{text-align:center;font-size:12px;color:var(--di);margin:12px 0;position:relative;}
+.auth-divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--bd);}
+.auth-divider span{background:var(--s1);padding:0 10px;position:relative;}
+.google-btn{width:100%;padding:11px;background:var(--s2);border:2px solid var(--bd);border-radius:10px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.google-btn:hover{border-color:var(--bd2);}
+.auth-msg{font-size:12px;color:var(--l3);margin-top:8px;text-align:center;}
+.auth-msg.ok{color:var(--g2);}
+.modal-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mu);font-size:18px;cursor:pointer;padding:4px;}
 
 /* PAGE */
 .page{max-width:1060px;margin:0 auto;padding:1.5rem 1.2rem 5rem;}
@@ -75,13 +115,11 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,15,.94);backdrop-filter
 .topic.sel .tick{display:flex;}
 
 /* CUSTOM TOPIC */
-.custom-topic-wrap{margin-bottom:1rem;}
-.custom-topic-row{display:flex;gap:8px;}
+.custom-topic-row{display:flex;gap:8px;margin-bottom:1rem;}
 .ctin{flex:1;background:var(--s1);border:2px solid var(--bd);border-radius:10px;padding:10px 14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
 .ctin:focus{border-color:var(--p);}
 .ctin::placeholder{color:var(--di);}
-.ctbtn{background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:10px;padding:10px 16px;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .2s;}
-.ctbtn:hover{opacity:.88;}
+.ctbtn{background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:10px;padding:10px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
 
 /* CONFIG */
 .cfg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1rem;}
@@ -134,11 +172,9 @@ select option{background:#161625;}
 .sn2{font-size:11px;font-weight:700;margin-bottom:1px;}
 .sd{font-size:9px;color:var(--mu);}
 .srcurl{display:flex;gap:7px;margin-bottom:10px;}
-.surlin{flex:1;background:var(--s2);border:2px solid var(--bd);border-radius:8px;padding:8px 12px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:border-color .2s;}
-.surlin:focus{border-color:var(--g);}
+.surlin{flex:1;background:var(--s2);border:2px solid var(--bd);border-radius:8px;padding:8px 12px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;}
 .surlin::placeholder{color:var(--di);}
-.suruse{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:8px 12px;color:var(--g2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
-.suruse:hover{background:rgba(16,185,129,.2);}
+.suruse{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:8px 12px;color:var(--g2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;}
 .srcnote{font-size:11px;color:var(--di);line-height:1.7;}
 .srcnote a{color:var(--g2);text-decoration:none;}
 
@@ -158,14 +194,11 @@ select option{background:#161625;}
 .vkin{flex:1;background:var(--s2);border:2px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;}
 .vkin::placeholder{color:var(--di);letter-spacing:0;}
 .vconn{background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:8px;padding:9px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
-.vcfg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:10px;opacity:.4;pointer-events:none;transition:opacity .3s;}
-.vcfg.on{opacity:1;pointer-events:auto;}
+.vcfg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:10px;}
 .vcl{font-size:10px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-bottom:4px;}
 .vsl{width:100%;accent-color:var(--p);}
-.vmodes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;opacity:.4;pointer-events:none;}
-.vmodes.on{opacity:1;pointer-events:auto;}
+.vmodes{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .vmode{background:var(--s2);border:2px solid var(--bd);border-radius:999px;padding:5px 12px;font-size:11px;font-weight:500;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
-.vmode:hover{border-color:var(--bd2);color:var(--tx);}
 .vmode.sel{border-color:var(--p2);color:var(--p2);background:rgba(167,139,250,.1);}
 .vnote{font-size:11px;color:var(--di);line-height:1.65;padding-top:10px;border-top:1px solid var(--bd);}
 .vnote a{color:var(--p2);text-decoration:none;}
@@ -177,32 +210,17 @@ select option{background:#161625;}
 .runbtn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;}
 
 /* TELEMETRY */
-.tele{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.4rem;}
+.tele{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:.8rem;}
 .tc{background:var(--s1);border:2px solid var(--bd);border-radius:11px;padding:11px 12px;transition:border-color .3s;}
 .tc.lit{border-color:var(--g);}
 .tlbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--di);font-family:'JetBrains Mono',monospace;margin-bottom:5px;}
 .tval{font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--g2);}
 .tunit{font-size:10px;color:var(--di);margin-top:2px;}
-
-/* COST BADGE */
-.cost-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:999px;padding:4px 12px;font-size:11px;color:var(--o2);font-family:'JetBrains Mono',monospace;margin-bottom:1.4rem;}
+.cost-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:999px;padding:4px 12px;font-size:11px;color:var(--o2);font-family:'JetBrains Mono',monospace;margin-bottom:1rem;}
 
 /* PROGRESS */
-.progwrap{height:3px;background:var(--bd);border-radius:999px;overflow:hidden;margin-bottom:1.4rem;display:none;}
+.progwrap{height:3px;background:var(--bd);border-radius:999px;overflow:hidden;margin-bottom:1.2rem;display:none;}
 .progfill{height:100%;background:linear-gradient(90deg,var(--p),var(--l1));border-radius:999px;transition:width .4s;}
-
-/* TABS (Normal / Side-by-Side) */
-.mode-tabs{display:flex;gap:8px;margin-bottom:1rem;}
-.mtab{background:var(--s1);border:2px solid var(--bd);border-radius:999px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
-.mtab:hover{border-color:var(--bd2);color:var(--tx);}
-.mtab.sel{border-color:var(--p);color:var(--p2);background:rgba(139,92,246,.1);}
-
-/* SIDE BY SIDE */
-.sbs-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.sbs-col{display:flex;flex-direction:column;gap:0;}
-.sbs-head{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-bottom:10px;text-align:center;font-size:12px;font-weight:700;}
-.sbs-head.a{color:var(--l1);border-color:rgba(56,189,248,.3);}
-.sbs-head.b{color:var(--l3);border-color:rgba(251,113,133,.3);}
 
 /* PIPELINE */
 .pipeline{display:flex;flex-direction:column;gap:0;margin-bottom:1.5rem;}
@@ -244,7 +262,7 @@ select option{background:#161625;}
 .emptysub{font-size:13px;color:var(--di);}
 
 /* SCORE CARD */
-.scorecard{background:var(--s1);border:2px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:1.5rem;}
+.scorecard{background:var(--s1);border:2px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:1.5rem;}
 .sc-head{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
 .sc-title{font-size:14px;font-weight:700;}
 .sc-total{font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;}
@@ -253,14 +271,45 @@ select option{background:#161625;}
 .sc-total.fair{color:var(--o2);}
 .sc-total.weak{color:var(--l3);}
 .sc-body{padding:16px 18px;}
-.sc-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
-.sc-row:last-child{margin-bottom:0;}
+.sc-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
 .sc-label{font-size:12px;color:var(--mu);width:110px;flex-shrink:0;}
-.sc-bar-wrap{flex:1;height:8px;background:var(--s3);border-radius:999px;overflow:hidden;}
+.sc-bar-wrap{flex:1;height:7px;background:var(--s3);border-radius:999px;overflow:hidden;}
 .sc-bar{height:100%;border-radius:999px;transition:width 1s cubic-bezier(.34,1.56,.64,1);}
-.sc-score{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;width:40px;text-align:right;flex-shrink:0;}
-.sc-verdict{margin-top:14px;padding-top:14px;border-top:1px solid var(--bd);font-size:12px;color:var(--mu);line-height:1.7;}
-.sc-verdict strong{color:var(--tx);}
+.sc-score{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;width:36px;text-align:right;flex-shrink:0;}
+.sc-verdict{margin-top:12px;padding-top:12px;border-top:1px solid var(--bd);font-size:12px;color:var(--mu);line-height:1.7;}
+
+/* DEBATE COACH */
+.coach-card{background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(56,189,248,.04));border:2px solid rgba(139,92,246,.25);border-radius:14px;overflow:hidden;margin-bottom:1.5rem;}
+.coach-head{padding:14px 18px;border-bottom:1px solid rgba(139,92,246,.15);display:flex;align-items:center;gap:10px;}
+.coach-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--l1));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.coach-title{font-size:14px;font-weight:700;color:var(--p2);}
+.coach-sub{font-size:11px;color:var(--mu);margin-top:1px;}
+.coach-body{padding:16px 18px;}
+.coach-text{font-size:13px;line-height:1.85;color:var(--tx);}
+.coach-loading{display:flex;gap:5px;align-items:center;padding:8px 0;}
+.coach-metric{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(139,92,246,.15);}
+.cm-item{background:var(--s2);border:1px solid var(--bd);border-radius:9px;padding:10px 12px;}
+.cm-label{font-size:10px;color:var(--mu);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+.cm-val{font-size:14px;font-weight:700;color:var(--p2);}
+
+/* CLOUD HISTORY */
+.cloud-hist{background:var(--s1);border:2px solid var(--bd);border-radius:14px;overflow:hidden;margin-top:1.5rem;}
+.ch-head{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
+.ch-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.ch-badge{font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(139,92,246,.1);color:var(--p2);border:1px solid rgba(139,92,246,.2);font-family:'JetBrains Mono',monospace;}
+.ch-list{max-height:320px;overflow-y:auto;}
+.ch-item{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .2s;}
+.ch-item:last-child{border-bottom:none;}
+.ch-item:hover{background:var(--s2);}
+.ch-em{font-size:18px;flex-shrink:0;}
+.ch-info{flex:1;min-width:0;}
+.ch-topic{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ch-meta{font-size:10px;color:var(--di);margin-top:2px;}
+.ch-score{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;flex-shrink:0;}
+.ch-score.excellent{color:var(--g2);}
+.ch-score.good{color:var(--l1);}
+.ch-score.fair{color:var(--o2);}
+.ch-empty{padding:2rem;text-align:center;color:var(--di);font-size:13px;}
 
 /* INSIGHTS */
 .insgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:.8rem;}
@@ -269,8 +318,6 @@ select option{background:#161625;}
 .inslbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--di);font-family:'JetBrains Mono',monospace;margin-bottom:7px;}
 .insval{font-size:24px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--ic,var(--p));}
 .insdesc{font-size:11px;color:var(--mu);margin-top:3px;}
-
-/* CHART */
 .chartcard{background:var(--s1);border:2px solid var(--bd);border-radius:12px;padding:16px;margin-top:1rem;}
 .chartlbl{font-size:10px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-bottom:12px;}
 .chartbars{display:flex;align-items:flex-end;gap:9px;height:100px;}
@@ -280,27 +327,13 @@ select option{background:#161625;}
 .blbl{font-size:10px;color:var(--di);font-family:'JetBrains Mono',monospace;}
 .tlbar{display:flex;height:18px;border-radius:7px;overflow:hidden;gap:2px;margin-top:10px;}
 .tlseg{display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(0,0,0,.7);font-weight:700;overflow:hidden;border-radius:3px;}
-
-/* EXPORT */
 .expbar{display:flex;gap:7px;flex-wrap:wrap;margin-top:1.2rem;padding:12px 14px;background:var(--s1);border:2px solid var(--bd);border-radius:12px;align-items:center;}
 .explbl{font-size:11px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-right:4px;}
 .expbtn{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;color:var(--mu);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
 .expbtn:hover{border-color:var(--p);color:var(--p2);}
-
-/* SHARE */
 .share-row{display:flex;gap:8px;margin-top:.8rem;}
-.share-url{flex:1;background:var(--s1);border:2px solid var(--bd);border-radius:9px;padding:9px 12px;color:var(--mu);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;cursor:text;}
-.share-copy{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:9px;padding:9px 14px;color:var(--p2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;}
-.share-copy:hover{background:rgba(139,92,246,.2);}
-
-/* HISTORY */
-.histlist{display:flex;flex-direction:column;gap:7px;margin-top:.8rem;}
-.hitem{background:var(--s1);border:1px solid var(--bd);border-radius:11px;padding:10px 14px;display:flex;align-items:center;gap:10px;}
-.hiem{font-size:16px;}
-.hiinfo{flex:1;min-width:0;}
-.hitopic{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.himeta{font-size:10px;color:var(--di);margin-top:2px;}
-.hitok{font-size:10px;color:var(--g2);font-family:'JetBrains Mono',monospace;flex-shrink:0;}
+.share-url{flex:1;background:var(--s1);border:2px solid var(--bd);border-radius:9px;padding:9px 12px;color:var(--mu);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;}
+.share-copy{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:9px;padding:9px 14px;color:var(--p2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
 
 /* PLAYER BAR */
 .playerbar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(7,7,15,.96);backdrop-filter:blur(16px);border-top:1px solid rgba(139,92,246,.3);padding:8px 1.2rem;display:none;align-items:center;gap:10px;}
@@ -318,82 +351,54 @@ select option{background:#161625;}
 .pbpause{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:7px;padding:5px 10px;font-size:11px;color:var(--l2);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;flex-shrink:0;}
 .pbstop{background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.25);border-radius:7px;padding:5px 10px;font-size:11px;color:var(--l3);cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;flex-shrink:0;}
 
-/* TUTORIAL */
-.tut{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(8px);}
-.tut.show{display:flex;}
-.tutbox{background:var(--s1);border:2px solid var(--bd);border-radius:18px;max-width:580px;width:100%;overflow:hidden;max-height:90vh;overflow-y:auto;}
-.tuttop{background:linear-gradient(135deg,rgba(139,92,246,.14),rgba(59,130,246,.07));padding:20px 24px 16px;border-bottom:1px solid var(--bd);}
-.tutlogo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;margin-bottom:8px;}
-.tuttop h2{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:3px;}
-.tuttop p{font-size:12px;color:var(--mu);}
-.tutsteps{padding:16px 24px;display:flex;flex-direction:column;gap:12px;}
-.tutstep{display:flex;gap:10px;}
-.tutn{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-top:2px;}
-.tutb{flex:1;}
-.tutt{font-size:12px;font-weight:700;margin-bottom:2px;}
-.tutd{font-size:11px;color:var(--mu);line-height:1.6;}
-.tutex{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.18);border-radius:7px;padding:6px 10px;margin-top:5px;font-size:10px;color:var(--p2);font-family:'JetBrains Mono',monospace;line-height:1.7;}
-.tutfoot{padding:14px 24px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--bd);}
-.tutgo{background:linear-gradient(135deg,var(--p),#7c3aed);border:none;border-radius:9px;padding:10px 20px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;}
-.tutskip{background:transparent;border:1px solid var(--bd);border-radius:9px;padding:10px 13px;font-family:'Outfit',sans-serif;font-size:12px;color:var(--mu);cursor:pointer;}
+/* TOAST */
+.toast{position:fixed;bottom:70px;right:1.2rem;background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:10px 16px;font-size:12px;color:var(--tx);z-index:300;display:none;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(0,0,0,.4);}
+.toast.show{display:flex;animation:slideIn .3s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* MOBILE */
 @media(max-width:700px){
   .cfg{grid-template-columns:1fr 1fr;}
   .tele{grid-template-columns:1fr 1fr;}
   .insgrid{grid-template-columns:1fr 1fr;}
-  .cats{grid-template-columns:1fr 1fr;}
-  .topics{grid-template-columns:1fr 1fr;}
+  .cats,.topics{grid-template-columns:1fr 1fr;}
   .srcgrid{grid-template-columns:repeat(2,1fr);}
-  .sbs-wrap{grid-template-columns:1fr;}
   .vcfg{grid-template-columns:1fr 1fr;}
-  .nr .bs:not(.bsp){display:none;}
-  .sc-row{flex-wrap:wrap;}
+  .nr .bs:nth-child(2){display:none;}
+  .coach-metric{grid-template-columns:1fr;}
 }
 @media(max-width:480px){
   .cfg{grid-template-columns:1fr;}
   .tele{grid-template-columns:1fr 1fr;}
   .insgrid{grid-template-columns:1fr 1fr;}
-  .cats{grid-template-columns:1fr;}
-  .topics{grid-template-columns:1fr;}
-  .chips{gap:3px;}
-  .hero h1{font-size:1.6rem;}
+  .cats,.topics{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
-<!-- TUTORIAL -->
-<div class="tut" id="tut">
-  <div class="tutbox">
-    <div class="tuttop">
-      <div class="tutlogo"><div class="li">⚡</div><span>DebateIQ</span></div>
-      <h2>How to use this app</h2>
-      <p>Cricket &amp; Food · 5-Layer AI Reasoning · ElevenLabs Voice</p>
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" id="authClose">✕</button>
+    <div class="modal-top">
+      <div class="modal-logo"><div class="li">⚡</div><span>DebateIQ</span></div>
+      <h2>Sign in to DebateIQ</h2>
+      <p>Save your debates to the cloud and get personalised coaching</p>
     </div>
-    <div class="tutsteps">
-      <div class="tutstep">
-        <div class="tutn" style="background:rgba(56,189,248,.14);color:var(--l1);border:1px solid rgba(56,189,248,.3)">1</div>
-        <div class="tutb"><div class="tutt">Pick a topic or type your own</div>
-        <div class="tutd">Click Cricket or Food, then pick a topic card. Or type any debate question in the custom topic box.</div>
-        <div class="tutex">🏏 Strike Rate · 🌐 T20 · 🍔 Fast Food · 📋 Food Reg · ✏️ Custom</div></div>
+    <div class="modal-body">
+      <div class="auth-tabs">
+        <button class="auth-tab sel" id="tabLogin">Sign in</button>
+        <button class="auth-tab" id="tabSignup">Create account</button>
       </div>
-      <div class="tutstep">
-        <div class="tutn" style="background:rgba(251,146,60,.14);color:var(--l4);border:1px solid rgba(251,146,60,.3)">2</div>
-        <div class="tutb"><div class="tutt">Configure position, persona, tone &amp; language</div>
-        <div class="tutd">Pick your side, a debate persona, tone, and what language you want the output in.</div>
-        <div class="tutex">Position: "Strike Rate matters more" · Language: Arabic · Tone: Aggressive</div></div>
-      </div>
-      <div class="tutstep">
-        <div class="tutn" style="background:rgba(52,211,153,.14);color:var(--l5);border:1px solid rgba(52,211,153,.3)">3</div>
-        <div class="tutb"><div class="tutt">Choose Normal or Side-by-Side mode</div>
-        <div class="tutd">Normal: one position argued through 5 layers. Side-by-Side: two opposing positions debated simultaneously.</div>
-        <div class="tutex">L1 Analyse → L2 Argue → L3 Counter → L4 Critique → L5 Verdict + Score Card</div></div>
-      </div>
-    </div>
-    <div class="tutfoot">
-      <button class="tutskip" id="tutskip">Skip</button>
-      <button class="tutgo" id="tutgo">Start debating →</button>
+      <input class="inp" id="authEmail" type="email" placeholder="Email address" />
+      <input class="inp" id="authPassword" type="password" placeholder="Password (min 6 chars)" />
+      <button class="auth-btn" id="authSubmit">Sign in</button>
+      <div id="authMsg" class="auth-msg"></div>
+      <div class="auth-divider"><span>or continue with</span></div>
+      <button class="google-btn" id="googleBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
     </div>
   </div>
 </div>
@@ -411,13 +416,24 @@ select option{background:#161625;}
   <button class="pbstop" id="pbStop">■ Stop</button>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <!-- NAV -->
 <nav>
   <div class="ni">
     <div class="logo"><div class="li">⚡</div><span>DebateIQ</span></div>
     <div class="nd"></div>
     <div class="nr">
-      <button class="bs" id="navGuide">? Guide</button>
+      <div id="userMenuWrap" style="position:relative;">
+        <div class="user-avatar" id="userAvatar" style="display:none">?</div>
+        <div class="user-menu" id="userMenu">
+          <div class="um-header"><div class="um-name" id="umName">—</div><div class="um-email" id="umEmail">—</div></div>
+          <button class="um-btn" id="umHistory">📚 My debate history</button>
+          <button class="um-btn danger" id="umSignout">↩ Sign out</button>
+        </div>
+      </div>
+      <button class="bs" id="navLogin" onclick="showAuth()">Sign in</button>
       <button class="bs" id="navClear">Clear</button>
       <button class="bs bsp" id="navExport">⬇ Export</button>
     </div>
@@ -436,7 +452,6 @@ select option{background:#161625;}
     </div>
   </div>
 
-  <!-- STEP 1: TOPIC -->
   <div class="sl"><span class="sn">01</span> Choose your debate topic</div>
   <div class="cats">
     <button class="cat ac" id="catCricket"><span class="cbadge cbc">2 topics</span><span class="ce">🏏</span><div class="ct">Cricket</div><div class="css2">Strike rate, T20 leagues</div></button>
@@ -450,17 +465,12 @@ select option{background:#161625;}
     <button class="topic" id="topic-ff"><div class="tick">✓</div><span class="te">🍔</span><div class="tt">Fast Food vs Traditional Cuisine</div><div class="tsu">Which model better serves modern society?</div></button>
     <button class="topic" id="topic-fr"><div class="tick">✓</div><span class="te">📋</span><div class="tt">Government Food Regulation</div><div class="tsu">How much should governments control what we eat?</div></button>
   </div>
-
-  <!-- CUSTOM TOPIC -->
-  <div class="custom-topic-wrap">
-    <div class="sl" style="margin-top:.6rem;"><span class="sn">✏️</span> Or type your own topic</div>
-    <div class="custom-topic-row">
-      <input class="ctin" id="customTopicIn" placeholder="e.g. Should social media be banned for under 16s?" />
-      <button class="ctbtn" id="customTopicBtn">Use this topic</button>
-    </div>
+  <div class="sl" style="margin-top:.6rem;"><span class="sn">✏️</span> Or type your own topic</div>
+  <div class="custom-topic-row">
+    <input class="ctin" id="customTopicIn" placeholder="e.g. Should social media be banned for under 16s?" />
+    <button class="ctbtn" id="customTopicBtn">Use this topic</button>
   </div>
 
-  <!-- STEP 2: CONFIG -->
   <div class="sl"><span class="sn">02</span> Configure your argument</div>
   <div class="cfg">
     <div class="cf"><div class="cfl">Position <span class="cft">pick a side</span></div><select id="posSelect"></select></div>
@@ -474,16 +484,7 @@ select option{background:#161625;}
         <option value="activist">✊ Policy Activist</option>
       </select>
     </div>
-    <div class="cf"><div class="cfl">Depth <span class="cft">word count</span></div>
-      <select id="depthSelect">
-        <option value="concise">Concise (150–200 words)</option>
-        <option value="standard" selected>Standard (220–270 words)</option>
-        <option value="deep">Deep (300–350 words)</option>
-      </select>
-    </div>
-  </div>
-  <div class="cfg" style="margin-top:-4px;">
-    <div class="cf"><div class="cfl">Language <span class="cft">output language</span></div>
+    <div class="cf"><div class="cfl">Language <span class="cft">output</span></div>
       <select id="langSelect">
         <option value="English">🇬🇧 English</option>
         <option value="Arabic">🇸🇦 Arabic</option>
@@ -499,13 +500,15 @@ select option{background:#161625;}
         <option value="Swahili">🌍 Swahili</option>
       </select>
     </div>
-    <div class="cf"><div class="cfl">Mode <span class="cft">debate format</span></div>
-      <select id="modeSelect">
-        <option value="normal">🧠 Normal — 5 layer reasoning</option>
-        <option value="sbs">⚔️ Side-by-Side — two positions</option>
+  </div>
+  <div class="cfg">
+    <div class="cf"><div class="cfl">Depth <span class="cft">word count</span></div>
+      <select id="depthSelect">
+        <option value="concise">Concise (150–200)</option>
+        <option value="standard" selected>Standard (220–270)</option>
+        <option value="deep">Deep (300–350)</option>
       </select>
     </div>
-    <div class="cf" id="posBWrap" style="display:none"><div class="cfl">Position B <span class="cft">opposing side</span></div><select id="posBSelect"></select></div>
   </div>
 
   <div class="tones">
@@ -517,8 +520,7 @@ select option{background:#161625;}
     <button class="tone" data-t="socratic">🤔 Socratic</button>
   </div>
 
-  <!-- PREVIEW -->
-  <div class="prev" id="preview">
+  <div class="prev">
     <div class="pe" id="prevEm">🏏</div>
     <div class="pm">
       <div class="plbl">Selected debate</div>
@@ -534,10 +536,9 @@ select option{background:#161625;}
     <div class="psr"><div class="psrn" id="prevSrcName">ESPNCricinfo</div><div class="psru" id="prevSrcUrl">espncricinfo.com</div></div>
   </div>
 
-  <!-- SOURCE -->
   <div class="sl"><span class="sn">03</span> Knowledge source</div>
   <div class="srcwrap">
-    <div class="srchd" id="srcHd"><div class="srchl">📡 Select source <span class="srcbdg" id="srcBadge">ESPNCricinfo</span></div><span class="srcch" id="srcCh">▼</span></div>
+    <div class="srchd" id="srcHd"><div class="srchl">📡 Source <span class="srcbdg" id="srcBadge">ESPNCricinfo</span></div><span class="srcch" id="srcCh">▼</span></div>
     <div class="srcbd" id="srcBd">
       <div class="srcgrid" id="srcGrid"></div>
       <div class="srcurl"><input class="surlin" id="customSrcUrl" type="url" placeholder="Or paste any URL…" /><button class="suruse" id="applyUrlBtn">Use URL</button></div>
@@ -545,13 +546,12 @@ select option{background:#161625;}
     </div>
   </div>
 
-  <!-- VOICE -->
-  <div class="sl"><span class="sn">🎙</span> Voice — ElevenLabs</div>
+  <div class="sl"><span class="sn">🎙</span> Voice</div>
   <div class="voicewrap">
     <div class="vhd" id="vHd"><div class="vhl">🔊 Text-to-Speech <span class="vbdg on" id="vBadge">● Browser voice ready</span></div><span class="vch" id="vCh">▼</span></div>
     <div class="vbd" id="vBd">
-      <div class="vkrow"><input class="vkin" id="vKey" type="password" placeholder="ElevenLabs API key: xi_... (optional — upgrades to neural voice)" /><button class="vconn" id="vConnBtn">Connect</button></div>
-      <div class="vcfg on" id="vCfg">
+      <div class="vkrow"><input class="vkin" id="vKey" type="password" placeholder="ElevenLabs API key (optional)" /><button class="vconn" id="vConnBtn">Connect</button></div>
+      <div class="vcfg" id="vCfg">
         <div><div class="vcl">Voice</div>
           <select id="vVoice" style="background:var(--s2);border:2px solid var(--bd);border-radius:8px;padding:8px 10px;color:var(--tx);font-size:12px;outline:none;width:100%;appearance:none;-webkit-appearance:none;">
             <option value="21m00Tcm4TlvDq8ikWAM">Rachel — calm</option>
@@ -562,61 +562,64 @@ select option{background:#161625;}
             <option value="pNInz6obpgDQGcFmaJgB">Adam — narrative</option>
           </select>
         </div>
-        <div><div class="vcl">Stability <span id="stabVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">0.50</span></div><input class="vsl" type="range" id="stabSlider" min="0" max="1" step="0.05" value="0.5"></div>
-        <div><div class="vcl">Similarity <span id="simVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">0.75</span></div><input class="vsl" type="range" id="simSlider" min="0" max="1" step="0.05" value="0.75"></div>
-      </div>
-      <div class="vcfg on" id="vCfg2">
         <div><div class="vcl">Speed <span id="speedVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">1.0x</span></div><input class="vsl" type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1.0"></div>
         <div><div class="vcl">Volume <span id="volVal" style="color:var(--p2);font-family:'JetBrains Mono',monospace;">100%</span></div><input class="vsl" type="range" id="volSlider" min="0" max="1" step="0.05" value="1.0"></div>
-        <div style="display:flex;align-items:flex-end;gap:6px;padding-top:14px;"><button class="lplay" id="playAllBtn">▶▶ Play all</button><button class="lcopy" id="replayBtn">↺ Replay</button></div>
       </div>
-      <div class="vmodes on" id="vModes">
+      <div class="vmodes" id="vModes">
         <button class="vmode sel" data-m="each">🔁 Each layer</button>
         <button class="vmode" data-m="verdict">🏆 Final verdict</button>
         <button class="vmode" data-m="manual">🖐 Manual</button>
       </div>
-      <div class="vnote" id="vNote">✅ Browser voice active — click ▶ Play on any layer. For neural voice, add your <a href="https://elevenlabs.io" target="_blank">ElevenLabs</a> key above.</div>
+      <div class="vnote" id="vNote">✅ Browser voice active. For neural voice add your <a href="https://elevenlabs.io" target="_blank">ElevenLabs</a> key.</div>
     </div>
   </div>
 
-  <!-- RUN -->
   <button class="runbtn" id="runBtn">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
     Run 5-Layer Reasoning Engine
   </button>
 
-  <!-- TELEMETRY -->
   <div class="tele">
-    <div class="tc" id="tc0"><div class="tlbl">⬆ Input tokens</div><div class="tval" id="tv0">—</div><div class="tunit">all layers</div></div>
-    <div class="tc" id="tc1"><div class="tlbl">⬇ Output tokens</div><div class="tval" id="tv1">—</div><div class="tunit">generated</div></div>
-    <div class="tc" id="tc2"><div class="tlbl">⚡ Total tokens</div><div class="tval" id="tv2">—</div><div class="tunit">combined</div></div>
+    <div class="tc" id="tc0"><div class="tlbl">⬆ Input</div><div class="tval" id="tv0">—</div><div class="tunit">tokens</div></div>
+    <div class="tc" id="tc1"><div class="tlbl">⬇ Output</div><div class="tval" id="tv1">—</div><div class="tunit">tokens</div></div>
+    <div class="tc" id="tc2"><div class="tlbl">⚡ Total</div><div class="tval" id="tv2">—</div><div class="tunit">tokens</div></div>
     <div class="tc" id="tc3"><div class="tlbl">⏱ Latency</div><div class="tval" id="tv3">—</div><div class="tunit">elapsed</div></div>
     <div class="tc" id="tc4"><div class="tlbl">📊 Efficiency</div><div class="tval" id="tv4">—</div><div class="tunit">out÷in</div></div>
   </div>
-  <div id="costBadge" style="display:none;" class="cost-badge">💰 <span id="costVal">~$0.000</span> estimated cost · claude-sonnet-4</div>
+  <div id="costBadge" style="display:none;" class="cost-badge">💰 <span id="costVal">~$0.000</span> estimated cost</div>
 
   <div class="progwrap" id="progWrap"><div class="progfill" id="progFill" style="width:0%"></div></div>
 
-  <!-- PIPELINE -->
   <div class="sl"><span class="sn">04</span> Reasoning pipeline</div>
   <div id="pipeline">
     <div class="empty"><div class="emptyicon">🧠</div><div class="emptytitle">Ready to reason</div><div class="emptysub">Configure above and click Run.</div></div>
   </div>
 
-  <!-- SCORE CARD -->
   <div id="scorecardSection" style="display:none">
     <div class="sl"><span class="sn">🏆</span> Debate score card</div>
     <div class="scorecard" id="scorecard"></div>
   </div>
 
-  <!-- INSIGHTS -->
+  <div id="coachSection" style="display:none">
+    <div class="sl"><span class="sn">🎓</span> Debate coach feedback</div>
+    <div class="coach-card" id="coachCard">
+      <div class="coach-head">
+        <div class="coach-avatar">🎓</div>
+        <div><div class="coach-title">Your Personal Debate Coach</div><div class="coach-sub">AI-powered feedback on your arguing style</div></div>
+      </div>
+      <div class="coach-body">
+        <div id="coachContent"><div class="coach-loading"><div class="ld" style="background:var(--p2)"></div><div class="ld" style="background:var(--p2)"></div><div class="ld" style="background:var(--p2)"></div></div><div style="font-size:12px;color:var(--mu);margin-top:8px">Analysing your debate style…</div></div>
+      </div>
+    </div>
+  </div>
+
   <div id="insightsSection" style="display:none">
-    <div class="sl"><span class="sn">05</span> Telemetry insights</div>
+    <div class="sl"><span class="sn">05</span> Telemetry</div>
     <div class="insgrid">
       <div class="insc" style="--ic:var(--l1)"><div class="inslbl">Most verbose</div><div class="insval" id="iv0">—</div><div class="insdesc" id="id0"></div></div>
-      <div class="insc" style="--ic:var(--o2)"><div class="inslbl">Avg tokens/layer</div><div class="insval" id="iv1">—</div><div class="insdesc">mean output</div></div>
-      <div class="insc" style="--ic:var(--l5)"><div class="inslbl">Fastest layer</div><div class="insval" id="iv2">—</div><div class="insdesc" id="id2"></div></div>
-      <div class="insc" style="--ic:var(--l3)"><div class="inslbl">Slowest layer</div><div class="insval" id="iv3">—</div><div class="insdesc" id="id3"></div></div>
+      <div class="insc" style="--ic:var(--o2)"><div class="inslbl">Avg tokens</div><div class="insval" id="iv1">—</div><div class="insdesc">per layer</div></div>
+      <div class="insc" style="--ic:var(--l5)"><div class="inslbl">Fastest</div><div class="insval" id="iv2">—</div><div class="insdesc" id="id2"></div></div>
+      <div class="insc" style="--ic:var(--l3)"><div class="inslbl">Slowest</div><div class="insval" id="iv3">—</div><div class="insdesc" id="id3"></div></div>
     </div>
     <div class="chartcard">
       <div class="chartlbl">Output tokens per layer</div>
@@ -624,34 +627,50 @@ select option{background:#161625;}
       <div style="font-size:10px;color:var(--di);font-family:'JetBrains Mono',monospace;margin-top:8px;margin-bottom:4px;">Token budget share</div>
       <div class="tlbar" id="tlBar"></div>
     </div>
-    <!-- EXPORT + SHARE -->
     <div class="expbar">
       <span class="explbl">Export:</span>
       <button class="expbtn" id="expMD">📄 Markdown</button>
       <button class="expbtn" id="expTXT">📝 Text</button>
       <button class="expbtn" id="expJSON">{ } JSON</button>
       <button class="expbtn" id="expCopy">📋 Copy</button>
-      <button class="expbtn" id="expPDF">📑 PDF</button>
     </div>
-    <div class="sl" style="margin-top:1rem;"><span class="sn">🔗</span> Share this debate</div>
+    <div class="sl" style="margin-top:1rem;"><span class="sn">🔗</span> Share</div>
     <div class="share-row">
       <input class="share-url" id="shareUrl" readonly placeholder="Run a debate to generate a share link…" />
       <button class="share-copy" id="shareCopyBtn">📋 Copy link</button>
     </div>
   </div>
 
-  <!-- HISTORY -->
-  <div id="histSection" style="display:none">
-    <div class="sl"><span class="sn">06</span> Session history</div>
-    <div class="histlist" id="histList"></div>
+  <!-- CLOUD HISTORY -->
+  <div id="cloudHistSection" style="display:none">
+    <div class="sl"><span class="sn">☁️</span> My debate history</div>
+    <div class="cloud-hist">
+      <div class="ch-head">
+        <div class="ch-title">☁️ Saved debates <span class="ch-badge" id="chCount">0</span></div>
+        <button class="bs" id="refreshHistBtn">↺ Refresh</button>
+      </div>
+      <div class="ch-list" id="chList"><div class="ch-empty">Sign in to see your saved debates.</div></div>
+    </div>
   </div>
 </div>
 
 <script>
+/* ═══════════════════ SUPABASE INIT ═══════════════════ */
+var SUPABASE_URL = 'REPLACE_WITH_YOUR_SUPABASE_URL';
+var SUPABASE_KEY = 'REPLACE_WITH_YOUR_SUPABASE_ANON_KEY';
+var supabase = null;
+try {
+  if (SUPABASE_URL.indexOf('REPLACE') === -1) {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  }
+} catch(e) { console.log('Supabase not configured yet'); }
+
+var currentUser = null;
+
 /* ═══════════════════ DATA ═══════════════════ */
 var TOPICS = {
   cs:   { emoji:'🏏', title:'Strike Rate vs Batting Average',   cat:'cricket', defaultSrc:'cricinfo',
-          positions:['Strike Rate is the more important metric','Batting Average is the more important metric','Both are equally important — context decides','Neither alone is sufficient; composite metrics are needed'] },
+          positions:['Strike Rate is the more important metric','Batting Average is the more important metric','Both are equally important — format context decides','Neither alone is sufficient; composite metrics needed'] },
   ct20: { emoji:'🌐', title:'T20 Leagues & Traditional Cricket',  cat:'cricket', defaultSrc:'cricinfo',
           positions:['T20 leagues have transformed cricket for the better','T20 leagues are damaging Test cricket','Impact is mixed — depends on country and player','T20 leagues need stricter regulation'] },
   ff:   { emoji:'🍔', title:'Fast Food vs Traditional Cuisine',   cat:'food',    defaultSrc:'who',
@@ -660,130 +679,202 @@ var TOPICS = {
           positions:['Stricter food regulation is urgently needed','Food regulation should be reduced — personal choice matters','Current regulation is broadly adequate','Industry self-regulation is more effective'] }
 };
 var SOURCES = {
-  cricinfo:{ name:'ESPNCricinfo', url:'espncricinfo.com', icon:'🏏', desc:'Cricket stats',        cat:'cricket', ctx:"ESPNCricinfo (espncricinfo.com), the world's leading cricket statistics platform" },
-  cricbuzz: { name:'Cricbuzz',    url:'cricbuzz.com',     icon:'📊', desc:'Cricket news',          cat:'cricket', ctx:'Cricbuzz (cricbuzz.com), a leading cricket news platform' },
-  icc:      { name:'ICC',         url:'icc-cricket.com',  icon:'🏆', desc:'Governing body',        cat:'cricket', ctx:'the ICC (icc-cricket.com), the official governing body of world cricket' },
-  wisden:   { name:'Wisden',      url:'wisden.com',       icon:'📖', desc:'Cricket almanac',       cat:'cricket', ctx:'Wisden (wisden.com), the historic cricket almanac' },
-  who:      { name:'WHO',         url:'who.int',          icon:'🏥', desc:'Global health',         cat:'food',    ctx:'the WHO (who.int), the global public health authority' },
-  fda:      { name:'FDA',         url:'fda.gov',          icon:'🔬', desc:'Food safety',           cat:'food',    ctx:'the US FDA (fda.gov), the food safety regulatory body' },
-  bbc:      { name:'BBC',         url:'bbc.co.uk',        icon:'📺', desc:'News & culture',        cat:'general', ctx:'BBC (bbc.co.uk), a globally trusted broadcaster' },
-  reuters:  { name:'Reuters',     url:'reuters.com',      icon:'📰', desc:'Global newswire',       cat:'general', ctx:'Reuters (reuters.com), the world leading news agency' },
-  guardian: { name:'Guardian',    url:'theguardian.com',  icon:'🗞️', desc:'Investigative news',   cat:'general', ctx:'The Guardian (theguardian.com), an investigative news outlet' },
-  custom:   { name:'Custom URL',  url:'',                 icon:'🔗', desc:'Your source',           cat:'general', ctx:'a custom source provided by the user' }
+  cricinfo:{ name:'ESPNCricinfo', url:'espncricinfo.com', icon:'🏏', desc:'Cricket stats',  cat:'cricket', ctx:"ESPNCricinfo (espncricinfo.com), the world's leading cricket statistics platform" },
+  cricbuzz: { name:'Cricbuzz',    url:'cricbuzz.com',     icon:'📊', desc:'Cricket news',   cat:'cricket', ctx:'Cricbuzz (cricbuzz.com)' },
+  icc:      { name:'ICC',         url:'icc-cricket.com',  icon:'🏆', desc:'Governing body', cat:'cricket', ctx:'the ICC (icc-cricket.com), the official governing body of world cricket' },
+  wisden:   { name:'Wisden',      url:'wisden.com',       icon:'📖', desc:'Almanac',        cat:'cricket', ctx:'Wisden (wisden.com), the historic cricket almanac' },
+  who:      { name:'WHO',         url:'who.int',          icon:'🏥', desc:'Global health',  cat:'food',    ctx:'the WHO (who.int), the global public health authority' },
+  fda:      { name:'FDA',         url:'fda.gov',          icon:'🔬', desc:'Food safety',    cat:'food',    ctx:'the US FDA (fda.gov)' },
+  bbc:      { name:'BBC',         url:'bbc.co.uk',        icon:'📺', desc:'News',           cat:'general', ctx:'BBC (bbc.co.uk)' },
+  reuters:  { name:'Reuters',     url:'reuters.com',      icon:'📰', desc:'Newswire',       cat:'general', ctx:'Reuters (reuters.com)' },
+  guardian: { name:'Guardian',    url:'theguardian.com',  icon:'🗞️', desc:'Investigative',  cat:'general', ctx:'The Guardian (theguardian.com)' },
+  custom:   { name:'Custom URL',  url:'',                 icon:'🔗', desc:'Your source',    cat:'general', ctx:'a custom source' }
 };
 var LAYERS = [
-  { num:'01', title:'Context Analysis',  sub:'Understand the problem landscape',  q:'What is the problem and what influences it?', color:'var(--l1)' },
-  { num:'02', title:'Argument Builder',  sub:'Take a clear, justified position',  q:'What is my position and why?',               color:'var(--l2)' },
-  { num:'03', title:'Counter Argument',  sub:'The strongest opposing view',        q:'What is the best case against my position?', color:'var(--l3)' },
-  { num:'04', title:'Self-Critique',     sub:'Identify weaknesses and gaps',       q:'Where is my argument weakest?',              color:'var(--l4)' },
-  { num:'05', title:'Final Strategy',    sub:'Synthesised, balanced conclusion',   q:'What is the most informed final answer?',    color:'var(--l5)' }
+  { num:'01', title:'Context Analysis',  sub:'Understand the problem',           q:'What is the problem and what influences it?', color:'var(--l1)' },
+  { num:'02', title:'Argument Builder',  sub:'Take a clear, justified position', q:'What is my position and why?',               color:'var(--l2)' },
+  { num:'03', title:'Counter Argument',  sub:'The strongest opposing view',      q:'What is the best case against my position?', color:'var(--l3)' },
+  { num:'04', title:'Self-Critique',     sub:'Identify weaknesses and gaps',     q:'Where is my argument weakest?',              color:'var(--l4)' },
+  { num:'05', title:'Final Strategy',    sub:'Synthesised conclusion',           q:'What is the most informed final answer?',    color:'var(--l5)' }
 ];
 var PERSONA = { analyst:'📊 Sports/Domain Analyst', academic:'🎓 Academic Researcher', journalist:'📰 Investigative Journalist', lawyer:'⚖️ Defense Lawyer', economist:'💹 Economist', activist:'✊ Policy Activist' };
-var TONE_DESC = { persuasive:'compelling and rhetorically persuasive', formal:'formally structured and academically rigorous', aggressive:'bold, assertive and uncompromising', balanced:'measured and fair, acknowledging nuance on both sides', socratic:'questioning and exploratory' };
-/* Cost per 1M tokens (Sonnet) */
-var COST_IN = 3.0, COST_OUT = 15.0;
+var TONE_DESC = { persuasive:'compelling and rhetorically persuasive', formal:'formally structured and academically rigorous', aggressive:'bold, assertive and uncompromising', balanced:'measured and fair', socratic:'questioning and exploratory' };
+var COST_IN=3.0, COST_OUT=15.0;
 
 /* STATE */
-var selTopic = 'cs', selSrc = 'cricinfo', selTone = 'persuasive', selCat = 'cricket', customSrcName = '';
-var customTopicText = '', usingCustomTopic = false;
-var layerTelem = [], totalIn = 0, totalOut = 0, lastResults = [], debateHistory = [];
-var vConnected = true, vKey = '', vMode = 'each', vAudio = null, vAudioUrl = null, vPaused = false, vLayer = -1, vUsing11 = false, vVoices = [];
-var lastScoreData = null;
+var selTopic='cs', selSrc='cricinfo', selTone='persuasive', selCat='cricket', customSrcName='', customTopicText='', usingCustomTopic=false;
+var layerTelem=[], totalIn=0, totalOut=0, lastResults=[], debateHistory=[], lastScoreData=null, lastCoachData=null;
+var vConnected=true, vKey='', vMode='each', vAudio=null, vAudioUrl=null, vPaused=false, vLayer=-1, vUsing11=false, vVoices=[];
 
-/* ═══════════════════ INIT ═══════════════════ */
-window.addEventListener('DOMContentLoaded', function() {
-  /* Tutorial */
-  document.getElementById('tutskip').addEventListener('click', function(){ document.getElementById('tut').classList.remove('show'); });
-  document.getElementById('tutgo').addEventListener('click', function(){ document.getElementById('tut').classList.remove('show'); });
-  document.getElementById('navGuide').addEventListener('click', function(){ document.getElementById('tut').classList.add('show'); });
-  document.getElementById('navClear').addEventListener('click', clearHist);
-  document.getElementById('navExport').addEventListener('click', exportMD);
+/* ═══════════════════ TOAST ═══════════════════ */
+function showToast(msg, isOk) {
+  var t = document.getElementById('toast');
+  t.textContent = (isOk ? '✅ ' : 'ℹ️ ') + msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
 
-  /* Category */
-  document.getElementById('catCricket').addEventListener('click', function(){ switchCat('cricket'); });
-  document.getElementById('catFood').addEventListener('click', function(){ switchCat('food'); });
+/* ═══════════════════ AUTH ═══════════════════ */
+function showAuth(){ document.getElementById('authModal').classList.add('show'); }
+function hideAuth(){ document.getElementById('authModal').classList.remove('show'); }
 
-  /* Topics */
-  document.getElementById('topic-cs').addEventListener('click', function(){ selectTopic('cs'); });
-  document.getElementById('topic-ct20').addEventListener('click', function(){ selectTopic('ct20'); });
-  document.getElementById('topic-ff').addEventListener('click', function(){ selectTopic('ff'); });
-  document.getElementById('topic-fr').addEventListener('click', function(){ selectTopic('fr'); });
-
-  /* Custom topic */
-  document.getElementById('customTopicBtn').addEventListener('click', applyCustomTopic);
-  document.getElementById('customTopicIn').addEventListener('keydown', function(e){ if(e.key==='Enter') applyCustomTopic(); });
-
-  /* Dropdowns */
-  document.getElementById('posSelect').addEventListener('change', updatePreview);
-  document.getElementById('personaSelect').addEventListener('change', updatePreview);
-  document.getElementById('langSelect').addEventListener('change', updatePreview);
-  document.getElementById('modeSelect').addEventListener('change', function(){
-    var isSBS = this.value === 'sbs';
-    document.getElementById('posBWrap').style.display = isSBS ? 'flex' : 'none';
+function initAuth(){
+  if (!supabase) return;
+  supabase.auth.getSession().then(function(r){
+    if (r.data && r.data.session) setUser(r.data.session.user);
   });
+  supabase.auth.onAuthStateChange(function(event, session){
+    if (session) setUser(session.user);
+    else clearUser();
+  });
+}
 
-  /* Tone */
-  var toneBtns = document.querySelectorAll('.tone');
-  for(var i=0;i<toneBtns.length;i++){
-    toneBtns[i].addEventListener('click', function(){
-      selTone = this.getAttribute('data-t');
-      for(var j=0;j<toneBtns.length;j++) toneBtns[j].classList.remove('sel');
-      this.classList.add('sel');
-      updatePreview();
-    });
+function setUser(user){
+  currentUser = user;
+  var initial = (user.email||'U').charAt(0).toUpperCase();
+  document.getElementById('userAvatar').textContent = initial;
+  document.getElementById('userAvatar').style.display = 'flex';
+  document.getElementById('navLogin').style.display = 'none';
+  document.getElementById('umName').textContent = user.user_metadata?.full_name || user.email?.split('@')[0] || 'User';
+  document.getElementById('umEmail').textContent = user.email || '';
+  document.getElementById('cloudHistSection').style.display = 'block';
+  loadCloudHistory();
+  hideAuth();
+  showToast('Signed in successfully!', true);
+}
+
+function clearUser(){
+  currentUser = null;
+  document.getElementById('userAvatar').style.display = 'none';
+  document.getElementById('navLogin').style.display = 'block';
+  document.getElementById('cloudHistSection').style.display = 'none';
+  document.getElementById('userMenu').classList.remove('show');
+}
+
+async function doAuth(isSignup){
+  if (!supabase){ showToast('Supabase not configured yet — see setup instructions.'); return; }
+  var email = document.getElementById('authEmail').value.trim();
+  var pass = document.getElementById('authPassword').value;
+  var msg = document.getElementById('authMsg');
+  var btn = document.getElementById('authSubmit');
+  if (!email || !pass){ msg.textContent = 'Please enter email and password.'; return; }
+  btn.disabled = true; btn.textContent = isSignup ? 'Creating account…' : 'Signing in…';
+  msg.textContent = ''; msg.className = 'auth-msg';
+  try {
+    var res = isSignup
+      ? await supabase.auth.signUp({ email, password: pass })
+      : await supabase.auth.signInWithPassword({ email, password: pass });
+    if (res.error) throw res.error;
+    if (isSignup && !res.data.session) {
+      msg.textContent = '✅ Check your email to confirm your account!';
+      msg.className = 'auth-msg ok';
+    }
+  } catch(e) {
+    msg.textContent = e.message || 'Authentication failed.';
   }
+  btn.disabled = false; btn.textContent = isSignup ? 'Create account' : 'Sign in';
+}
 
-  /* Source */
-  document.getElementById('srcHd').addEventListener('click', function(){
-    var bd=document.getElementById('srcBd'), ch=document.getElementById('srcCh');
-    var open=bd.classList.toggle('open');
-    this.classList.toggle('open',open); ch.classList.toggle('open',open);
-  });
-  document.getElementById('applyUrlBtn').addEventListener('click', applyCustomUrl);
+async function doGoogle(){
+  if (!supabase){ showToast('Supabase not configured yet.'); return; }
+  await supabase.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.href } });
+}
 
-  /* Voice */
-  document.getElementById('vHd').addEventListener('click', function(){
-    var bd=document.getElementById('vBd'), ch=document.getElementById('vCh');
-    var open=bd.classList.toggle('open');
-    this.classList.toggle('open',open); ch.classList.toggle('open',open);
-  });
-  document.getElementById('vConnBtn').addEventListener('click', connectVoice);
-  document.getElementById('stabSlider').addEventListener('input', function(){ document.getElementById('stabVal').textContent=parseFloat(this.value).toFixed(2); });
-  document.getElementById('simSlider').addEventListener('input',  function(){ document.getElementById('simVal').textContent=parseFloat(this.value).toFixed(2); });
-  document.getElementById('speedSlider').addEventListener('input', function(){ document.getElementById('speedVal').textContent=parseFloat(this.value).toFixed(1)+'x'; if(vAudio) vAudio.playbackRate=parseFloat(this.value); });
-  document.getElementById('volSlider').addEventListener('input',   function(){ document.getElementById('volVal').textContent=Math.round(this.value*100)+'%'; if(vAudio) vAudio.volume=parseFloat(this.value); });
-  document.getElementById('playAllBtn').addEventListener('click', function(){ if(lastResults.length) speakLayer(0,lastResults[0]); });
-  document.getElementById('replayBtn').addEventListener('click',  function(){ if(vLayer>=0&&lastResults[vLayer]) speakLayer(vLayer,lastResults[vLayer]); });
-  var vmodeBtns=document.querySelectorAll('.vmode');
-  for(var i=0;i<vmodeBtns.length;i++){
-    vmodeBtns[i].addEventListener('click', function(){
-      vMode=this.getAttribute('data-m');
-      for(var j=0;j<vmodeBtns.length;j++) vmodeBtns[j].classList.remove('sel');
-      this.classList.add('sel');
+async function doSignout(){
+  if (!supabase) return;
+  await supabase.auth.signOut();
+  showToast('Signed out.');
+  document.getElementById('userMenu').classList.remove('show');
+}
+
+/* ═══════════════════ CLOUD HISTORY ═══════════════════ */
+async function saveDebateToCloud(scoreData){
+  if (!currentUser) return;
+  var t = usingCustomTopic ? {emoji:'✏️',title:customTopicText} : TOPICS[selTopic];
+  try {
+    var res = await fetch('/.netlify/functions/save-debate', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        user_id: currentUser.id,
+        topic: t.title, topic_emoji: t.emoji,
+        position: document.getElementById('posSelect').value,
+        tone: selTone, language: document.getElementById('langSelect').value,
+        source: SOURCES[selSrc].name, score: scoreData,
+        layers: lastResults, total_tokens: totalIn + totalOut
+      })
     });
+    var data = await res.json();
+    if (data.success) { showToast('Debate saved to your account!', true); loadCloudHistory(); }
+  } catch(e) { console.log('Save failed:', e); }
+}
+
+async function loadCloudHistory(){
+  if (!currentUser) return;
+  var list = document.getElementById('chList');
+  list.innerHTML = '<div class="ch-empty">Loading…</div>';
+  try {
+    var res = await fetch('/.netlify/functions/get-debates?user_id='+currentUser.id);
+    var data = await res.json();
+    document.getElementById('chCount').textContent = data.length || 0;
+    if (!data.length){ list.innerHTML = '<div class="ch-empty">No saved debates yet. Run a debate to save it!</div>'; return; }
+    var html = '';
+    data.forEach(function(d){
+      var sc = d.score_overall;
+      var scClass = sc>=85?'excellent':sc>=70?'good':sc>=55?'fair':'weak';
+      var date = new Date(d.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+      html += '<div class="ch-item">';
+      html += '<div class="ch-em">'+(d.topic_emoji||'🏏')+'</div>';
+      html += '<div class="ch-info"><div class="ch-topic">'+d.topic+'</div>';
+      html += '<div class="ch-meta">'+date+' · '+((d.position||'').slice(0,30))+'… · 📡 '+d.source+'</div></div>';
+      if (sc) html += '<div class="ch-score '+scClass+'">'+sc+'/100</div>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+  } catch(e) { list.innerHTML = '<div class="ch-empty">Error loading history. Check your connection.</div>'; }
+}
+
+/* ═══════════════════ DEBATE COACH ═══════════════════ */
+function buildCoachPrompt(results, score, pos){
+  var topic = getTopicTitle();
+  var pa = document.getElementById('personaSelect').value;
+  var persona = PERSONA[pa] || 'analyst';
+  return 'You are an expert debate coach with 20 years of experience in competitive debating, law, and public speaking.\n\nAnalyse this debate and provide PERSONAL coaching feedback to improve the debater\'s skills.\n\nTopic: "'+topic+'"\nPosition argued: "'+pos+'"\nPersona used: '+persona+'\nScore achieved: '+(score?score.overall+'/100':'Not scored')+'\n\nThe 5-layer debate:\n[Context Analysis]: '+results[0]+'\n\n[Arguments]: '+results[1]+'\n\n[Counter Arguments]: '+results[2]+'\n\n[Self-Critique]: '+results[3]+'\n\n[Final Strategy]: '+results[4]+'\n\nProvide coaching feedback in this structure:\n\n**🎯 Your Debating Strengths**\n(2-3 specific things this debater did well — be specific with examples from their text)\n\n**⚠️ Key Areas to Improve**\n(2-3 specific weaknesses with actionable advice — very specific, not generic)\n\n**💡 Your Debating Style Profile**\n(In 2 sentences, describe what kind of debater this person is — their tendencies, strengths and blind spots)\n\n**📚 Personalised Exercise**\n(One specific practice exercise tailored to this debater\'s weaknesses)\n\n**⚡ Quick Win for Next Debate**\n(The single most impactful change they can make immediately)\n\nBe direct, specific, and encouraging. Reference their actual words and arguments.';
+}
+
+async function runDebateCoach(results, scoreData, pos){
+  document.getElementById('coachSection').style.display = 'block';
+  document.getElementById('coachContent').innerHTML = '<div class="coach-loading"><div class="ld" style="background:var(--p2)"></div><div class="ld" style="background:var(--p2)"></div><div class="ld" style="background:var(--p2)"></div></div><div style="font-size:12px;color:var(--mu);margin-top:8px">Your personal coach is analysing your debate…</div>';
+  try {
+    var res = await callAPI(buildCoachPrompt(results, scoreData, pos));
+    lastCoachData = res.text;
+    var html = '<div class="coach-text">'+escHtml(res.text)+'</div>';
+    if (scoreData) {
+      html += '<div class="coach-metric">';
+      html += '<div class="cm-item"><div class="cm-label">Overall Score</div><div class="cm-val">'+scoreData.overall+'/100</div></div>';
+      html += '<div class="cm-item"><div class="cm-label">Best Dimension</div><div class="cm-val">'+ getBestDimension(scoreData)+'</div></div>';
+      html += '<div class="cm-item"><div class="cm-label">Biggest Gap</div><div class="cm-val">'+getWeakestDimension(scoreData)+'</div></div>';
+      html += '<div class="cm-item"><div class="cm-label">Improvement Area</div><div class="cm-val">'+getImprovementArea(scoreData)+'</div></div>';
+      html += '</div>';
+    }
+    document.getElementById('coachContent').innerHTML = html;
+  } catch(e) {
+    document.getElementById('coachContent').innerHTML = '<div style="font-size:13px;color:var(--l3)">⚠️ Coach feedback unavailable. '+e.message+'</div>';
   }
-  document.getElementById('pbPause').addEventListener('click', togglePause);
-  document.getElementById('pbStop').addEventListener('click', stopVoice);
+}
 
-  /* Run */
-  document.getElementById('runBtn').addEventListener('click', runDebate);
-
-  /* Export */
-  document.getElementById('expMD').addEventListener('click', exportMD);
-  document.getElementById('expTXT').addEventListener('click', exportTXT);
-  document.getElementById('expJSON').addEventListener('click', exportJSON);
-  document.getElementById('expCopy').addEventListener('click', copyAll);
-  document.getElementById('expPDF').addEventListener('click', exportPDF);
-  document.getElementById('shareCopyBtn').addEventListener('click', copyShareLink);
-
-  /* Speech voices */
-  if(window.speechSynthesis){ window.speechSynthesis.onvoiceschanged=function(){ vVoices=window.speechSynthesis.getVoices(); }; vVoices=window.speechSynthesis.getVoices(); }
-
-  /* Check for shared debate in URL */
-  loadFromURL();
-
-  selectTopic('cs');
-});
+function getBestDimension(s){
+  var dims={strength:'Argument Strength',evidence:'Evidence Quality',logic:'Logical Coherence',persuasion:'Persuasiveness'};
+  var best=Object.keys(dims).reduce(function(a,b){ return s[a]>s[b]?a:b; });
+  return dims[best];
+}
+function getWeakestDimension(s){
+  var dims={strength:'Argument Strength',evidence:'Evidence Quality',logic:'Logical Coherence',persuasion:'Persuasiveness'};
+  var weak=Object.keys(dims).reduce(function(a,b){ return s[a]<s[b]?a:b; });
+  return dims[weak]+' ('+s[weak]+')';
+}
+function getImprovementArea(s){
+  var gap=s.persuasion-s.evidence; return gap>10?'Add more evidence':'Use stronger rhetoric';
+}
 
 /* ═══════════════════ TOPIC SELECTION ═══════════════════ */
 function switchCat(cat){
@@ -799,38 +890,25 @@ function selectTopic(id){
   selTopic=id; selSrc=t.defaultSrc; usingCustomTopic=false;
   document.getElementById('customTopicIn').value='';
   var ids=['cs','ct20','ff','fr'];
-  for(var i=0;i<ids.length;i++){
-    var el=document.getElementById('topic-'+ids[i]);
-    if(el) el.className='topic'+(ids[i]===id?' sel':'');
-  }
-  var ps=document.getElementById('posSelect');
-  ps.innerHTML=''; 
+  for(var i=0;i<ids.length;i++){ var el=document.getElementById('topic-'+ids[i]); if(el) el.className='topic'+(ids[i]===id?' sel':''); }
+  var ps=document.getElementById('posSelect'); ps.innerHTML='';
   for(var j=0;j<t.positions.length;j++){ var opt=document.createElement('option'); opt.textContent=t.positions[j]; ps.appendChild(opt); }
-  var pb=document.getElementById('posBSelect');
-  pb.innerHTML='';
-  for(var k=t.positions.length-1;k>=0;k--){ var opt2=document.createElement('option'); opt2.textContent=t.positions[k]; pb.appendChild(opt2); }
   renderSrcGrid(); updateSrcNote(); updatePreview();
 }
 function applyCustomTopic(){
   var val=document.getElementById('customTopicIn').value.trim();
-  if(!val){ alert('Please type a debate topic first.'); return; }
+  if(!val){ alert('Please type a debate topic.'); return; }
   customTopicText=val; usingCustomTopic=true;
   var ids=['cs','ct20','ff','fr'];
   for(var i=0;i<ids.length;i++){ var el=document.getElementById('topic-'+ids[i]); if(el) el.className='topic'; }
-  var ps=document.getElementById('posSelect');
-  ps.innerHTML='';
-  var defaultPos=['For (supporting this view)','Against (opposing this view)','Neutral — exploring both sides','Devil\'s advocate'];
-  for(var j=0;j<defaultPos.length;j++){ var opt=document.createElement('option'); opt.textContent=defaultPos[j]; ps.appendChild(opt); }
-  var pb=document.getElementById('posBSelect');
-  pb.innerHTML='';
-  var defaultPosB=['Against (opposing this view)','For (supporting this view)','Neutral','Devil\'s advocate'];
-  for(var k=0;k<defaultPosB.length;k++){ var opt2=document.createElement('option'); opt2.textContent=defaultPosB[k]; pb.appendChild(opt2); }
+  var ps=document.getElementById('posSelect'); ps.innerHTML='';
+  ['For (supporting this view)','Against (opposing this view)','Neutral — exploring both sides','Devil\'s advocate'].forEach(function(p){ var opt=document.createElement('option'); opt.textContent=p; ps.appendChild(opt); });
   updatePreview();
 }
+function getTopicTitle(){ return usingCustomTopic?customTopicText:(TOPICS[selTopic]||{title:''}).title; }
+function getTopicEmoji(){ return usingCustomTopic?'✏️':(TOPICS[selTopic]||{emoji:'🏏'}).emoji; }
 
 /* ═══════════════════ PREVIEW ═══════════════════ */
-function getTopicTitle(){ return usingCustomTopic ? customTopicText : (TOPICS[selTopic]||{title:''}).title; }
-function getTopicEmoji(){ return usingCustomTopic ? '✏️' : (TOPICS[selTopic]||{emoji:'🏏'}).emoji; }
 function updatePreview(){
   var s=SOURCES[selSrc], ps=document.getElementById('posSelect'), pa=document.getElementById('personaSelect'), lang=document.getElementById('langSelect');
   document.getElementById('prevEm').textContent=getTopicEmoji();
@@ -868,85 +946,74 @@ function updateSrcNote(){
   document.getElementById('srcBadge').textContent=s.name;
 }
 function applyCustomUrl(){
-  var val=document.getElementById('customSrcUrl').value.trim();
-  if(!val){ alert('Please paste a URL.'); return; }
-  try{ customSrcName=new URL(val).hostname; }catch(e){ customSrcName=val; }
+  var val=document.getElementById('customSrcUrl').value.trim(); if(!val){alert('Paste a URL.');return;}
+  try{customSrcName=new URL(val).hostname;}catch(e){customSrcName=val;}
   SOURCES.custom.url=customSrcName; SOURCES.custom.ctx='the website at '+customSrcName;
   selSrc='custom'; renderSrcGrid(); updateSrcNote(); updatePreview();
 }
 
 /* ═══════════════════ VOICE ═══════════════════ */
 function connectVoice(){
-  var key=document.getElementById('vKey').value.trim();
-  if(!key){ alert('Paste your ElevenLabs API key.'); return; }
+  var key=document.getElementById('vKey').value.trim(); if(!key){alert('Paste your ElevenLabs key.');return;}
   var btn=document.getElementById('vConnBtn'); btn.textContent='Testing…'; btn.disabled=true;
   fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM',{
     method:'POST',headers:{'xi-api-key':key,'Content-Type':'application/json','Accept':'audio/mpeg'},
     body:JSON.stringify({text:'Connected.',model_id:'eleven_turbo_v2_5',voice_settings:{stability:.5,similarity_boost:.75}})
-  }).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.blob(); })
+  }).then(function(r){if(!r.ok) throw new Error('HTTP '+r.status);return r.blob();})
   .then(function(blob){
     vKey=key; vUsing11=true;
-    document.getElementById('vBadge').textContent='● ElevenLabs active'; document.getElementById('vBadge').className='vbdg on';
+    document.getElementById('vBadge').textContent='● ElevenLabs'; document.getElementById('vBadge').className='vbdg on';
     btn.textContent='✓ Active'; btn.style.background='var(--g)';
-    document.getElementById('vNote').innerHTML='✅ ElevenLabs neural voice active · <a href="https://elevenlabs.io/app" target="_blank">Manage →</a>';
+    document.getElementById('vNote').innerHTML='✅ ElevenLabs active · <a href="https://elevenlabs.io/app" target="_blank">Manage →</a>';
     playBlob(blob,-1);
-  }).catch(function(e){
-    vUsing11=false;
-    document.getElementById('vNote').innerHTML='⚠️ ElevenLabs blocked ('+e.message+') — using browser voice.';
-    btn.textContent='Retry'; btn.disabled=false;
-  });
+  }).catch(function(e){ vUsing11=false; document.getElementById('vNote').innerHTML='⚠️ ElevenLabs blocked ('+e.message+') — using browser voice.'; btn.textContent='Retry'; btn.disabled=false; });
 }
 function speakLayer(idx,text){
-  if(!text) return;
-  stopVoice(); vLayer=idx;
-  var voiceId=document.getElementById('vVoice').value;
-  var stability=parseFloat(document.getElementById('stabSlider').value);
-  var similarity=parseFloat(document.getElementById('simSlider').value);
-  var speed=parseFloat(document.getElementById('speedSlider').value);
-  var volume=parseFloat(document.getElementById('volSlider').value);
+  if(!text) return; stopVoice(); vLayer=idx;
+  var speed=parseFloat(document.getElementById('speedSlider').value), volume=parseFloat(document.getElementById('volSlider').value);
   var clean=text.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,4500);
   updatePlayerBar(idx,text);
-  if(vUsing11 && vKey){
-    fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId,{
+  if(vUsing11&&vKey){
+    fetch('https://api.elevenlabs.io/v1/text-to-speech/'+document.getElementById('vVoice').value,{
       method:'POST',headers:{'xi-api-key':vKey,'Content-Type':'application/json','Accept':'audio/mpeg'},
-      body:JSON.stringify({text:clean,model_id:'eleven_turbo_v2_5',voice_settings:{stability:stability,similarity_boost:similarity,style:.2,use_speaker_boost:true}})
-    }).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.blob(); })
-    .then(function(blob){ playBlob(blob,idx,speed,volume); })
-    .catch(function(){ vUsing11=false; speakBrowser(idx,clean,speed,volume); });
+      body:JSON.stringify({text:clean,model_id:'eleven_turbo_v2_5',voice_settings:{stability:.5,similarity_boost:.75,style:.2,use_speaker_boost:true}})
+    }).then(function(r){if(!r.ok) throw new Error('HTTP '+r.status);return r.blob();})
+    .then(function(blob){playBlob(blob,idx,speed,volume);})
+    .catch(function(){vUsing11=false;speakBrowser(idx,clean,speed,volume);});
   } else { speakBrowser(idx,clean,speed,volume); }
 }
 function playBlob(blob,idx,speed,volume){
-  speed=speed||1; volume=volume===undefined?1:volume;
+  speed=speed||1;volume=volume===undefined?1:volume;
   if(vAudioUrl) URL.revokeObjectURL(vAudioUrl);
   vAudioUrl=URL.createObjectURL(blob); vAudio=new Audio(vAudioUrl);
   vAudio.playbackRate=speed; vAudio.volume=volume; vAudio.play(); vLayer=idx;
   setPlayBtn(idx,'playing');
-  vAudio.ontimeupdate=function(){ if(vAudio&&vAudio.duration){ document.getElementById('pbProg').style.width=Math.round((vAudio.currentTime/vAudio.duration)*100)+'%'; } };
-  vAudio.onended=function(){ var li=vLayer; stopVoice(); if(vMode==='each'&&li>=0&&li<lastResults.length-1) setTimeout(function(){ speakLayer(li+1,lastResults[li+1]); },700); };
+  vAudio.ontimeupdate=function(){ if(vAudio&&vAudio.duration) document.getElementById('pbProg').style.width=Math.round((vAudio.currentTime/vAudio.duration)*100)+'%'; };
+  vAudio.onended=function(){ var li=vLayer; stopVoice(); if(vMode==='each'&&li>=0&&li<lastResults.length-1) setTimeout(function(){speakLayer(li+1,lastResults[li+1]);},700); };
 }
 function speakBrowser(idx,text,speed,volume){
   if(!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   var u=new SpeechSynthesisUtterance(text); u.rate=speed||1; u.volume=volume===undefined?1:volume;
-  var en=vVoices.find(function(v){ return v.lang&&v.lang.startsWith('en')&&v.localService; }); if(en) u.voice=en;
+  var en=vVoices.find(function(v){return v.lang&&v.lang.startsWith('en')&&v.localService;}); if(en) u.voice=en;
   setPlayBtn(idx,'playing'); vLayer=idx;
   var words=text.split(' ').length, prog=0;
-  var iv=setInterval(function(){ prog=Math.min(prog+(100/words),98); document.getElementById('pbProg').style.width=prog+'%'; },400);
-  u.onend=function(){ clearInterval(iv); document.getElementById('pbProg').style.width='100%'; var li=vLayer; stopVoice(); if(vMode==='each'&&li>=0&&li<lastResults.length-1) setTimeout(function(){ speakLayer(li+1,lastResults[li+1]); },600); };
-  u.onerror=function(){ clearInterval(iv); stopVoice(); };
+  var iv=setInterval(function(){prog=Math.min(prog+(100/words),98);document.getElementById('pbProg').style.width=prog+'%';},400);
+  u.onend=function(){clearInterval(iv);document.getElementById('pbProg').style.width='100%';var li=vLayer;stopVoice();if(vMode==='each'&&li>=0&&li<lastResults.length-1)setTimeout(function(){speakLayer(li+1,lastResults[li+1]);},600);};
+  u.onerror=function(){clearInterval(iv);stopVoice();};
   window.speechSynthesis.speak(u);
 }
 function togglePause(){
   var btn=document.getElementById('pbPause');
-  if(vAudio){ if(vPaused){vAudio.play();vPaused=false;btn.textContent='⏸ Pause';}else{vAudio.pause();vPaused=true;btn.textContent='▶ Resume';} }
-  else if(window.speechSynthesis){ if(vPaused){window.speechSynthesis.resume();vPaused=false;btn.textContent='⏸ Pause';}else{window.speechSynthesis.pause();vPaused=true;btn.textContent='▶ Resume';} }
+  if(vAudio){if(vPaused){vAudio.play();vPaused=false;btn.textContent='⏸ Pause';}else{vAudio.pause();vPaused=true;btn.textContent='▶ Resume';}}
+  else if(window.speechSynthesis){if(vPaused){window.speechSynthesis.resume();vPaused=false;btn.textContent='⏸ Pause';}else{window.speechSynthesis.pause();vPaused=true;btn.textContent='▶ Resume';}}
 }
 function stopVoice(){
   if(window.speechSynthesis) window.speechSynthesis.cancel();
   if(vAudio){vAudio.pause();vAudio=null;} if(vAudioUrl){URL.revokeObjectURL(vAudioUrl);vAudioUrl=null;}
   vPaused=false; vLayer=-1;
   document.getElementById('playerBar').classList.remove('show');
-  document.querySelectorAll('.lplay').forEach(function(b){ b.textContent='▶ Play'; b.classList.remove('playing'); });
+  document.querySelectorAll('.lplay').forEach(function(b){b.textContent='▶ Play';b.classList.remove('playing');});
   document.getElementById('pbPause').textContent='⏸ Pause';
 }
 function updatePlayerBar(idx,text){
@@ -964,27 +1031,26 @@ function setPlayBtn(idx,state){
 }
 
 /* ═══════════════════ PROMPTS ═══════════════════ */
-function buildPrompt(i,prevOutputs,posOverride){
-  var topic=getTopicTitle(), pos=posOverride||document.getElementById('posSelect').value;
+function buildPrompt(i,prevOutputs){
+  var topic=getTopicTitle(), pos=document.getElementById('posSelect').value;
   var pa=document.getElementById('personaSelect').value, dept=document.getElementById('depthSelect').value;
   var lang=document.getElementById('langSelect').value, src=SOURCES[selSrc];
   var words=dept==='concise'?'150-200':dept==='deep'?'300-350':'220-270';
   var persona=PERSONA[pa]||'analyst', tone=TONE_DESC[selTone]||'persuasive';
-  var langLine=lang!=='English'?'\nIMPORTANT: Write your entire response in '+lang+'. All arguments, analysis and conclusions must be in '+lang+'.'  :'';
-  var ctx=prevOutputs.length>0?'\n\nPrevious reasoning layers:\n'+prevOutputs.map(function(o,j){return '[Layer '+(j+1)+' — '+LAYERS[j].title+']:\n'+o;}).join('\n\n'):'';
+  var langLine=lang!=='English'?'\nIMPORTANT: Write your entire response in '+lang+'. All arguments must be in '+lang+'.':'';
+  var ctx=prevOutputs.length>0?'\n\nPrevious layers:\n'+prevOutputs.map(function(o,j){return '[Layer '+(j+1)+' — '+LAYERS[j].title+']:\n'+o;}).join('\n\n'):'';
   var pre='You are writing as a '+persona+'. Tone: '+tone+'. Draw on the expertise of '+src.ctx+'.'+langLine;
   var ins=[
-    pre+'\nLayer 1 — Context Analysis.\nTopic: "'+topic+'". Position to explore: "'+pos+'".\nObjectively map the debate. Define the core question. Identify 4-5 key factors. Surface hidden assumptions. Do NOT take a position yet. '+words+' words.',
-    pre+'\nLayer 2 — Argument Builder.\nTopic: "'+topic+'". Defend: "'+pos+'".\nBuild 3 distinct evidence-backed arguments, each with a bold claim, evidence, and a real-world example. '+words+' words.',
-    pre+'\nLayer 3 — Counter Argument.\nTopic: "'+topic+'". Challenge: "'+pos+'".\n3 genuinely compelling counter-arguments. No strawmen. '+words+' words.',
-    pre+'\nLayer 4 — Self-Critique.\nTopic: "'+topic+'". Original position: "'+pos+'".\n3-4 honest weaknesses in Layer 2\'s arguments. Name each flaw, why it undermines the argument, stronger version. '+words+' words.',
-    pre+'\nLayer 5 — Final Strategy.\nTopic: "'+topic+'". Original position: "'+pos+'".\nSynthesise all four layers. State conditions each side wins. End with italicised "Final Verdict:". '+words+' words.'
+    pre+'\nLayer 1 — Context Analysis. Topic: "'+topic+'". Position: "'+pos+'".\nObjectively map the debate. Identify 4-5 key factors. Surface hidden assumptions. Do NOT take a position. '+words+' words.',
+    pre+'\nLayer 2 — Argument Builder. Topic: "'+topic+'". Defend: "'+pos+'".\n3 distinct evidence-backed arguments with claim, evidence, and example. '+words+' words.',
+    pre+'\nLayer 3 — Counter Argument. Topic: "'+topic+'". Challenge: "'+pos+'".\n3 genuinely compelling counter-arguments. No strawmen. '+words+' words.',
+    pre+'\nLayer 4 — Self-Critique. Topic: "'+topic+'". Position: "'+pos+'".\n3-4 honest weaknesses in Layer 2 with improvement suggestions. '+words+' words.',
+    pre+'\nLayer 5 — Final Strategy. Topic: "'+topic+'". Position: "'+pos+'".\nSynthesise all layers. State conditions each side wins. End with "Final Verdict:". '+words+' words.'
   ];
   return ins[i]+ctx;
 }
-function buildScorePrompt(results, pos){
-  var topic=getTopicTitle();
-  return 'You are a debate judge. Analyse this 5-layer debate argument and score it.\nTopic: "'+topic+'"\nPosition: "'+pos+'"\n\nLayer 1 — Context Analysis:\n'+results[0]+'\n\nLayer 2 — Arguments:\n'+results[1]+'\n\nLayer 3 — Counter Arguments:\n'+results[2]+'\n\nLayer 4 — Self-Critique:\n'+results[3]+'\n\nLayer 5 — Final Strategy:\n'+results[4]+'\n\nScore this debate on 4 dimensions (0-100 each):\n1. Argument Strength: How strong and convincing are the core arguments?\n2. Evidence Quality: How well-cited and specific is the evidence?\n3. Logical Coherence: How logically consistent and well-structured?\n4. Persuasiveness: How likely to convince a neutral audience?\n\nRespond ONLY with valid JSON, no other text:\n{"strength":85,"evidence":72,"logic":90,"persuasion":78,"overall":81,"verdict":"One sentence summary of the argument quality","recommendation":"One actionable improvement tip"}';
+function buildScorePrompt(results,pos){
+  return 'You are a debate judge. Score this debate on: Argument Strength, Evidence Quality, Logical Coherence, Persuasiveness (each 0-100).\nTopic: "'+getTopicTitle()+'"\nPosition: "'+pos+'"\n\nLayer 1:\n'+results[0]+'\nLayer 2:\n'+results[1]+'\nLayer 3:\n'+results[2]+'\nLayer 4:\n'+results[3]+'\nLayer 5:\n'+results[4]+'\n\nRespond ONLY with valid JSON:\n{"strength":85,"evidence":72,"logic":90,"persuasion":78,"overall":81,"verdict":"One sentence summary","recommendation":"One improvement tip"}';
 }
 
 /* ═══════════════════ API ═══════════════════ */
@@ -994,17 +1060,17 @@ function callAPI(prompt){
     ?'https://api.anthropic.com/v1/messages':'/.netlify/functions/claude';
   return fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})
-  }).then(function(r){ return r.json().then(function(d){ return {data:d,latency:Date.now()-t0}; }); })
+  }).then(function(r){return r.json().then(function(d){return{data:d,latency:Date.now()-t0};});})
   .then(function(res){
     var d=res.data,lat=res.latency;
     if(d.error) throw new Error(d.error.message||'API error');
-    var text=(d.content||[]).map(function(c){ return c.text||''; }).join('');
-    return {text:text,inputTokens:d.usage&&d.usage.input_tokens||0,outputTokens:d.usage&&d.usage.output_tokens||0,latency:lat};
+    var text=(d.content||[]).map(function(c){return c.text||'';}).join('');
+    return{text:text,inputTokens:d.usage&&d.usage.input_tokens||0,outputTokens:d.usage&&d.usage.output_tokens||0,latency:lat};
   });
 }
 
 /* ═══════════════════ RENDER ═══════════════════ */
-function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');}
 function renderCard(layer,state,result,idx){
   var col=state==='waiting'?'var(--di)':layer.color, lab=state==='waiting'?'waiting':state==='running'?'processing…':'complete ✓';
   var s=SOURCES[selSrc];
@@ -1040,14 +1106,9 @@ function renderPipeline(states,results){
   for(var j=0;j<LAYERS.length;j++){
     (function(idx){
       var pb=document.getElementById('vbtn'+idx);
-      if(pb) pb.addEventListener('click', function(){
-        if(!vConnected){vConnected=true; vUsing11=false;}
-        speakLayer(idx,lastResults[idx]);
-      });
+      if(pb) pb.addEventListener('click',function(){ speakLayer(idx,lastResults[idx]); });
       var cb=document.getElementById('copybtn'+idx);
-      if(cb) cb.addEventListener('click', function(){
-        if(lastResults[idx]) navigator.clipboard.writeText('[Layer '+(idx+1)+' — '+LAYERS[idx].title+']\n\n'+lastResults[idx]).then(function(){alert('Copied!');});
-      });
+      if(cb) cb.addEventListener('click',function(){ if(lastResults[idx]) navigator.clipboard.writeText('[Layer '+(idx+1)+']\n\n'+lastResults[idx]).then(function(){showToast('Copied!',true);}); });
     })(j);
   }
 }
@@ -1056,10 +1117,10 @@ function setTele(v0,v1,v2,v3,v4,lit){
   var vals=[v0,v1,v2,v3,v4];
   for(var j=0;j<5;j++) document.getElementById('tv'+j).textContent=vals[j]===null?'—':vals[j];
 }
-function setProgress(p){ document.getElementById('progWrap').style.display='block'; document.getElementById('progFill').style.width=p+'%'; }
+function setProgress(p){document.getElementById('progWrap').style.display='block';document.getElementById('progFill').style.width=p+'%';}
 function updateCost(){
   var cost=((totalIn/1000000)*COST_IN)+((totalOut/1000000)*COST_OUT);
-  var badge=document.getElementById('costBadge'); badge.style.display='inline-flex';
+  document.getElementById('costBadge').style.display='inline-flex';
   document.getElementById('costVal').textContent='~$'+cost.toFixed(4);
 }
 
@@ -1067,22 +1128,11 @@ function updateCost(){
 function renderScoreCard(data){
   var overall=data.overall||Math.round((data.strength+data.evidence+data.logic+data.persuasion)/4);
   var cls=overall>=85?'excellent':overall>=70?'good':overall>=55?'fair':'weak';
-  var dims=[
-    {label:'Argument Strength', val:data.strength, color:'var(--l1)'},
-    {label:'Evidence Quality',  val:data.evidence, color:'var(--l2)'},
-    {label:'Logical Coherence', val:data.logic,    color:'var(--l5)'},
-    {label:'Persuasiveness',    val:data.persuasion,color:'var(--l4)'}
-  ];
-  var html='<div class="sc-head">';
-  html+='<div><div class="sc-title">🏆 Debate Score Card</div><div style="font-size:11px;color:var(--mu);margin-top:2px;">'+getTopicTitle()+'</div></div>';
-  html+='<div><div class="sc-total '+cls+'">'+overall+'<span style="font-size:14px;color:var(--mu)">/100</span></div></div></div>';
+  var dims=[{label:'Argument Strength',val:data.strength,color:'var(--l1)'},{label:'Evidence Quality',val:data.evidence,color:'var(--l2)'},{label:'Logical Coherence',val:data.logic,color:'var(--l5)'},{label:'Persuasiveness',val:data.persuasion,color:'var(--l4)'}];
+  var html='<div class="sc-head"><div><div class="sc-title">🏆 Debate Score Card</div><div style="font-size:11px;color:var(--mu);margin-top:2px;">'+getTopicTitle()+'</div></div><div class="sc-total '+cls+'">'+overall+'<span style="font-size:14px;color:var(--mu)">/100</span></div></div>';
   html+='<div class="sc-body">';
   for(var i=0;i<dims.length;i++){
-    html+='<div class="sc-row">';
-    html+='<div class="sc-label">'+dims[i].label+'</div>';
-    html+='<div class="sc-bar-wrap"><div class="sc-bar" style="width:'+dims[i].val+'%;background:'+dims[i].color+'"></div></div>';
-    html+='<div class="sc-score" style="color:'+dims[i].color+'">'+dims[i].val+'</div>';
-    html+='</div>';
+    html+='<div class="sc-row"><div class="sc-label">'+dims[i].label+'</div><div class="sc-bar-wrap"><div class="sc-bar" style="width:'+dims[i].val+'%;background:'+dims[i].color+'"></div></div><div class="sc-score" style="color:'+dims[i].color+'">'+dims[i].val+'</div></div>';
   }
   html+='<div class="sc-verdict"><strong>Verdict:</strong> '+data.verdict+'</div>';
   if(data.recommendation) html+='<div class="sc-verdict" style="margin-top:8px;"><strong>💡 Tip:</strong> '+data.recommendation+'</div>';
@@ -1094,28 +1144,38 @@ function renderScoreCard(data){
 
 /* ═══════════════════ RUN ═══════════════════ */
 function runDebate(){
-  var isSBS=document.getElementById('modeSelect').value==='sbs';
-  if(isSBS){ runSideBySide(); return; }
-
   var btn=document.getElementById('runBtn');
   btn.disabled=true;
   btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg> Running 5 layers…';
-  layerTelem=[]; totalIn=0; totalOut=0; lastResults=[];
+  layerTelem=[]; totalIn=0; totalOut=0; lastResults=[]; lastScoreData=null; lastCoachData=null;
   var t0=Date.now(), prevOut=[], states=['waiting','waiting','waiting','waiting','waiting'], results=[null,null,null,null,null];
   document.getElementById('insightsSection').style.display='none';
   document.getElementById('scorecardSection').style.display='none';
+  document.getElementById('coachSection').style.display='none';
   document.getElementById('costBadge').style.display='none';
   renderPipeline(states,results); setTele(null,null,null,null,null,false); setProgress(2);
 
   function runLayer(i){
     if(i>=5){
+      var pos=document.getElementById('posSelect').value;
       /* Score card */
-      callAPI(buildScorePrompt(lastResults, document.getElementById('posSelect').value))
-      .then(function(res){
-        try{ var d=JSON.parse(res.text.replace(/```json|```/g,'').trim()); renderScoreCard(d); }catch(e){}
-      }).catch(function(){});
+      callAPI(buildScorePrompt(lastResults,pos)).then(function(res){
+        try{
+          var d=JSON.parse(res.text.replace(/```json|```/g,'').trim());
+          renderScoreCard(d);
+          /* Debate Coach */
+          runDebateCoach(lastResults,d,pos);
+          /* Save to cloud if logged in */
+          saveDebateToCloud(d);
+        }catch(e){
+          runDebateCoach(lastResults,null,pos);
+          saveDebateToCloud(null);
+        }
+      }).catch(function(){
+        runDebateCoach(lastResults,null,pos);
+      });
       setTele(totalIn.toLocaleString(),totalOut.toLocaleString(),(totalIn+totalOut).toLocaleString(),((Date.now()-t0)/1000).toFixed(2)+'s',(totalOut/totalIn).toFixed(2)+'x',true);
-      setProgress(100); updateCost(); renderInsights(); addHistory(); generateShareLink();
+      setProgress(100); updateCost(); renderInsights(); generateShareLink();
       btn.disabled=false; btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Run Again';
       if(vConnected){ if(vMode==='verdict'&&lastResults[4]) setTimeout(function(){speakLayer(4,lastResults[4]);},800); else if(vMode==='each'&&lastResults[0]) setTimeout(function(){speakLayer(0,lastResults[0]);},600); }
       return;
@@ -1128,64 +1188,13 @@ function runDebate(){
   runLayer(0);
 }
 
-/* ═══════════════════ SIDE BY SIDE ═══════════════════ */
-function runSideBySide(){
-  var posA=document.getElementById('posSelect').value;
-  var posB=document.getElementById('posBSelect').value;
-  if(!posA||!posB){ alert('Please select both positions for Side-by-Side mode.'); return; }
-  var btn=document.getElementById('runBtn');
-  btn.disabled=true; btn.innerHTML='⚔️ Running side-by-side…';
-  document.getElementById('insightsSection').style.display='none';
-  document.getElementById('scorecardSection').style.display='none';
-  var pl=document.getElementById('pipeline');
-  pl.innerHTML='<div class="sbs-wrap"><div class="sbs-col"><div class="sbs-head a">🔵 Position A</div><div id="sbsPipeA"></div></div><div class="sbs-col"><div class="sbs-head b">🔴 Position B</div><div id="sbsPipeB"></div></div></div>';
-
-  var statesA=['waiting','waiting','waiting','waiting','waiting'], resultsA=[null,null,null,null,null];
-  var statesB=['waiting','waiting','waiting','waiting','waiting'], resultsB=[null,null,null,null,null];
-  var prevA=[], prevB=[], doneA=false, doneB=false;
-  totalIn=0; totalOut=0; lastResults=[];
-
-  function renderSBS(){
-    var htmlA='', htmlB='';
-    for(var i=0;i<LAYERS.length;i++){
-      if(i>0){ htmlA+='<div class="conn"><div class="connline"></div><div class="conndot"></div><div class="connline"></div></div>'; htmlB+='<div class="conn"><div class="connline"></div><div class="conndot"></div><div class="connline"></div></div>'; }
-      htmlA+=renderCard(LAYERS[i],statesA[i],resultsA[i],'a'+i);
-      htmlB+=renderCard(LAYERS[i],statesB[i],resultsB[i],'b'+i);
-    }
-    document.getElementById('sbsPipeA').innerHTML=htmlA;
-    document.getElementById('sbsPipeB').innerHTML=htmlB;
-  }
-
-  function checkDone(){
-    if(!doneA||!doneB) return;
-    btn.disabled=false; btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Run Again';
-  }
-
-  function runColA(i){
-    if(i>=5){ doneA=true; checkDone(); return; }
-    statesA[i]='running'; renderSBS();
-    callAPI(buildPrompt(i,prevA,posA))
-    .then(function(res){ resultsA[i]=res; statesA[i]='done'; prevA.push(res.text); totalIn+=res.inputTokens; totalOut+=res.outputTokens; renderSBS(); runColA(i+1); })
-    .catch(function(e){ resultsA[i]={text:'⚠️ '+e.message,inputTokens:0,outputTokens:0,latency:0}; statesA[i]='done'; renderSBS(); runColA(i+1); });
-  }
-  function runColB(i){
-    if(i>=5){ doneB=true; checkDone(); return; }
-    statesB[i]='running'; renderSBS();
-    callAPI(buildPrompt(i,prevB,posB))
-    .then(function(res){ resultsB[i]=res; statesB[i]='done'; prevB.push(res.text); totalIn+=res.inputTokens; totalOut+=res.outputTokens; renderSBS(); runColB(i+1); })
-    .catch(function(e){ resultsB[i]={text:'⚠️ '+e.message,inputTokens:0,outputTokens:0,latency:0}; statesB[i]='done'; renderSBS(); runColB(i+1); });
-  }
-  renderSBS();
-  runColA(0); runColB(0);
-}
-
 /* ═══════════════════ INSIGHTS ═══════════════════ */
 function renderInsights(){
   document.getElementById('insightsSection').style.display='block';
   var outs=layerTelem.map(function(l){return l.outputTokens;}), lats=layerTelem.map(function(l){return l.latency;});
   var maxO=Math.max.apply(null,outs), vi=outs.indexOf(maxO), fi=lats.indexOf(Math.min.apply(null,lats)), si=lats.indexOf(Math.max.apply(null,lats));
   var avg=Math.round(outs.reduce(function(a,b){return a+b;},0)/outs.length);
-  document.getElementById('iv0').textContent='L'+(vi+1); document.getElementById('id0').textContent=LAYERS[vi].title+' — '+maxO+' tokens';
+  document.getElementById('iv0').textContent='L'+(vi+1); document.getElementById('id0').textContent=LAYERS[vi].title+' — '+maxO;
   document.getElementById('iv1').textContent=avg;
   document.getElementById('iv2').textContent='L'+(fi+1); document.getElementById('id2').textContent=LAYERS[fi].title+' — '+(lats[fi]/1000).toFixed(2)+'s';
   document.getElementById('iv3').textContent='L'+(si+1); document.getElementById('id3').textContent=LAYERS[si].title+' — '+(lats[si]/1000).toFixed(2)+'s';
@@ -1198,101 +1207,123 @@ function renderInsights(){
   document.getElementById('tlBar').innerHTML=tlHtml;
 }
 
-/* ═══════════════════ HISTORY ═══════════════════ */
-function addHistory(){
-  var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic];
-  debateHistory.unshift({emoji:t.emoji,title:t.title,pos:document.getElementById('posSelect').value,tokens:totalIn+totalOut,src:SOURCES[selSrc].name,time:new Date().toLocaleTimeString()});
-  renderHistory();
-}
-function renderHistory(){
-  var sec=document.getElementById('histSection'), list=document.getElementById('histList');
-  if(!debateHistory.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  var html='';
-  var show=debateHistory.slice(0,5);
-  for(var i=0;i<show.length;i++){
-    var e=show[i];
-    html+='<div class="hitem"><div class="hiem">'+e.emoji+'</div><div class="hiinfo"><div class="hitopic">'+e.title+'</div><div class="himeta">'+e.time+' · '+e.pos.slice(0,35)+'… · 📡 '+e.src+'</div></div><div class="hitok">'+e.tokens.toLocaleString()+' tokens</div></div>';
-  }
-  list.innerHTML=html;
-}
-function clearHist(){ debateHistory=[]; document.getElementById('histSection').style.display='none'; }
-
-/* ═══════════════════ SHARE LINK ═══════════════════ */
+/* ═══════════════════ SHARE ═══════════════════ */
 function generateShareLink(){
   var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic];
-  var data={topic:t.title,pos:document.getElementById('posSelect').value,src:selSrc,tone:selTone,lang:document.getElementById('langSelect').value,layers:lastResults};
+  var data={topic:t.title,pos:document.getElementById('posSelect').value,layers:lastResults};
   var encoded=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-  var url=window.location.origin+window.location.pathname+'?debate='+encoded;
-  document.getElementById('shareUrl').value=url;
+  document.getElementById('shareUrl').value=window.location.origin+window.location.pathname+'?debate='+encoded;
 }
 function copyShareLink(){
   var url=document.getElementById('shareUrl').value;
-  if(!url||url.includes('Run a debate')){ alert('Run a debate first to generate a share link.'); return; }
-  navigator.clipboard.writeText(url).then(function(){ var btn=document.getElementById('shareCopyBtn'); btn.textContent='✅ Copied!'; setTimeout(function(){btn.textContent='📋 Copy link';},2000); });
-}
-function loadFromURL(){
-  var params=new URLSearchParams(window.location.search);
-  var encoded=params.get('debate');
-  if(!encoded) return;
-  try{
-    var data=JSON.parse(decodeURIComponent(escape(atob(encoded))));
-    if(data.layers&&data.layers.length>0){
-      lastResults=data.layers; layerTelem=data.layers.map(function(){return {outputTokens:0,inputTokens:0,latency:0};});
-      var states=data.layers.map(function(){ return 'done'; });
-      var results=data.layers.map(function(l,i){ return {text:l,inputTokens:0,outputTokens:0,latency:0}; });
-      renderPipeline(states,results);
-      document.getElementById('insightsSection').style.display='block';
-      var note=document.createElement('div');
-      note.style.cssText='background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:10px 16px;font-size:12px;color:var(--p2);margin-bottom:1rem;';
-      note.textContent='🔗 Shared debate loaded: "'+data.topic+'"';
-      document.getElementById('pipeline').insertAdjacentElement('beforebegin',note);
-    }
-  }catch(e){}
+  if(!url||url.includes('Run a debate')){ showToast('Run a debate first.'); return; }
+  navigator.clipboard.writeText(url).then(function(){ showToast('Share link copied!',true); });
 }
 
 /* ═══════════════════ EXPORT ═══════════════════ */
 function assembleText(fmt){
-  var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic];
-  var pos=document.getElementById('posSelect').value, src=SOURCES[selSrc].name, lang=document.getElementById('langSelect').value;
+  var t=usingCustomTopic?{title:customTopicText}:TOPICS[selTopic], pos=document.getElementById('posSelect').value, src=SOURCES[selSrc].name;
   if(fmt==='md'){
-    var md='# DebateIQ — AI Debate Report\n\n**Topic:** '+t.title+'\n**Position:** '+pos+'\n**Source:** '+src+'\n**Tone:** '+selTone+'\n**Language:** '+lang+'\n**Generated:** '+new Date().toLocaleString()+'\n\n';
-    if(lastScoreData) md+='## Score Card\n- Overall: **'+lastScoreData.overall+'/100**\n- Argument Strength: '+lastScoreData.strength+'\n- Evidence Quality: '+lastScoreData.evidence+'\n- Logical Coherence: '+lastScoreData.logic+'\n- Persuasiveness: '+lastScoreData.persuasion+'\n- Verdict: '+lastScoreData.verdict+'\n\n---\n\n';
-    for(var i=0;i<LAYERS.length;i++){ if(lastResults[i]) md+='## Layer '+LAYERS[i].num+': '+LAYERS[i].title+'\n> *'+LAYERS[i].q+'*\n\n'+lastResults[i]+'\n\n---\n\n'; }
-    md+='**Telemetry:** '+totalIn.toLocaleString()+' in · '+totalOut.toLocaleString()+' out · '+(totalIn+totalOut).toLocaleString()+' total\n';
+    var md='# DebateIQ Report\n\n**Topic:** '+t.title+'\n**Position:** '+pos+'\n**Source:** '+src+'\n**Generated:** '+new Date().toLocaleString()+'\n\n';
+    if(lastScoreData) md+='## Score: '+lastScoreData.overall+'/100\n'+lastScoreData.verdict+'\n\n---\n\n';
+    for(var i=0;i<LAYERS.length;i++){if(lastResults[i]) md+='## Layer '+LAYERS[i].num+': '+LAYERS[i].title+'\n\n'+lastResults[i]+'\n\n---\n\n';}
+    if(lastCoachData) md+='## Debate Coach Feedback\n\n'+lastCoachData+'\n\n';
+    md+='**Tokens:** '+totalIn.toLocaleString()+' in · '+totalOut.toLocaleString()+' out\n';
     return md;
   }
-  var txt='DEBATEIQ\n'+'='.repeat(50)+'\nTopic: '+t.title+'\nPosition: '+pos+'\nSource: '+src+'\nLanguage: '+lang+'\n'+'='.repeat(50)+'\n\n';
-  for(var j=0;j<LAYERS.length;j++){ if(lastResults[j]) txt+='LAYER '+LAYERS[j].num+': '+LAYERS[j].title.toUpperCase()+'\n'+'-'.repeat(40)+'\n'+lastResults[j]+'\n\n'; }
+  var txt='DEBATEIQ REPORT\n'+'='.repeat(50)+'\nTopic: '+t.title+'\nPosition: '+pos+'\nSource: '+src+'\n'+'='.repeat(50)+'\n\n';
+  for(var j=0;j<LAYERS.length;j++){if(lastResults[j]) txt+='LAYER '+LAYERS[j].num+': '+LAYERS[j].title.toUpperCase()+'\n'+'-'.repeat(40)+'\n'+lastResults[j]+'\n\n';}
+  if(lastCoachData) txt+='COACH FEEDBACK\n'+'-'.repeat(40)+'\n'+lastCoachData+'\n\n';
   txt+='Tokens: '+totalIn.toLocaleString()+' in · '+totalOut.toLocaleString()+' out';
   return txt;
 }
-function dl(content,name,type){ var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type:type})); a.download=name; a.click(); }
-function exportMD()  { if(!lastResults.length){alert('Run a debate first.');return;} dl(assembleText('md'),'debateiq.md','text/markdown'); }
-function exportTXT() { if(!lastResults.length){alert('Run a debate first.');return;} dl(assembleText('txt'),'debateiq.txt','text/plain'); }
-function exportJSON(){ if(!lastResults.length){alert('Run a debate first.');return;} var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic]; dl(JSON.stringify({topic:t.title,position:document.getElementById('posSelect').value,source:SOURCES[selSrc].name,tone:selTone,language:document.getElementById('langSelect').value,score:lastScoreData,generatedAt:new Date().toISOString(),telemetry:{inputTokens:totalIn,outputTokens:totalOut,totalTokens:totalIn+totalOut},layers:LAYERS.map(function(l,i){return {title:l.title,content:lastResults[i]||''};})}  ,null,2),'debateiq.json','application/json'); }
-function copyAll()   { if(!lastResults.length){alert('Run a debate first.');return;} navigator.clipboard.writeText(assembleText('txt')).then(function(){alert('Copied!');});}
-function exportPDF() {
-  if(!lastResults.length){alert('Run a debate first.');return;}
-  var t=usingCustomTopic?{emoji:'✏️',title:customTopicText}:TOPICS[selTopic];
-  var pos=document.getElementById('posSelect').value;
-  var content=assembleText('txt');
-  /* Generate printable HTML and open print dialog */
-  var win=window.open('','_blank');
-  win.document.write('<!DOCTYPE html><html><head><title>DebateIQ — '+t.title+'</title><style>body{font-family:Georgia,serif;max-width:800px;margin:40px auto;padding:0 20px;color:#1a1a1a;line-height:1.7;}h1{font-size:24px;border-bottom:2px solid #8b5cf6;padding-bottom:10px;}h2{font-size:16px;color:#8b5cf6;margin-top:30px;}pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px;}.meta{color:#666;font-size:13px;margin-bottom:20px;}.score{background:#f3f0ff;border:1px solid #8b5cf6;border-radius:8px;padding:16px;margin:20px 0;}hr{border:none;border-top:1px solid #ddd;margin:20px 0;}</style></head><body>');
-  win.document.write('<h1>⚡ DebateIQ — Debate Report</h1>');
-  win.document.write('<div class="meta"><strong>Topic:</strong> '+t.title+' &nbsp;|&nbsp; <strong>Position:</strong> '+pos+' &nbsp;|&nbsp; <strong>Generated:</strong> '+new Date().toLocaleString()+'</div>');
-  if(lastScoreData) win.document.write('<div class="score"><strong>🏆 Score: '+lastScoreData.overall+'/100</strong> — '+lastScoreData.verdict+'</div>');
-  for(var i=0;i<LAYERS.length;i++){
-    if(lastResults[i]){
-      win.document.write('<h2>Layer '+LAYERS[i].num+': '+LAYERS[i].title+'</h2>');
-      win.document.write('<pre>'+lastResults[i].replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/<br>/g,'\n')+'</pre><hr>');
-    }
-  }
-  win.document.write('</body></html>');
-  win.document.close();
-  win.focus(); win.print();
+function dl(content,name,type){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:type}));a.download=name;a.click();}
+function exportMD(){if(!lastResults.length){showToast('Run a debate first.');return;}dl(assembleText('md'),'debateiq.md','text/markdown');}
+function exportTXT(){if(!lastResults.length){showToast('Run a debate first.');return;}dl(assembleText('txt'),'debateiq.txt','text/plain');}
+function exportJSON(){
+  if(!lastResults.length){showToast('Run a debate first.');return;}
+  var t=usingCustomTopic?{title:customTopicText}:TOPICS[selTopic];
+  dl(JSON.stringify({topic:t.title,position:document.getElementById('posSelect').value,source:SOURCES[selSrc].name,score:lastScoreData,coach:lastCoachData,generatedAt:new Date().toISOString(),telemetry:{inputTokens:totalIn,outputTokens:totalOut},layers:LAYERS.map(function(l,i){return {title:l.title,content:lastResults[i]||''};})}  ,null,2),'debateiq.json','application/json');
 }
+function copyAll(){if(!lastResults.length){showToast('Run a debate first.');return;}navigator.clipboard.writeText(assembleText('txt')).then(function(){showToast('Copied!',true);});}
+
+/* ═══════════════════ INIT ═══════════════════ */
+window.addEventListener('DOMContentLoaded', function(){
+  /* Auth */
+  initAuth();
+  document.getElementById('authClose').addEventListener('click', hideAuth);
+  document.getElementById('tabLogin').addEventListener('click', function(){ this.classList.add('sel'); document.getElementById('tabSignup').classList.remove('sel'); document.getElementById('authSubmit').textContent='Sign in'; document.getElementById('authSubmit').onclick=function(){doAuth(false);}; });
+  document.getElementById('tabSignup').addEventListener('click', function(){ this.classList.add('sel'); document.getElementById('tabLogin').classList.remove('sel'); document.getElementById('authSubmit').textContent='Create account'; document.getElementById('authSubmit').onclick=function(){doAuth(true);}; });
+  document.getElementById('authSubmit').addEventListener('click', function(){ doAuth(false); });
+  document.getElementById('googleBtn').addEventListener('click', doGoogle);
+  document.getElementById('userAvatar').addEventListener('click', function(){ document.getElementById('userMenu').classList.toggle('show'); });
+  document.getElementById('umSignout').addEventListener('click', doSignout);
+  document.getElementById('umHistory').addEventListener('click', function(){ document.getElementById('userMenu').classList.remove('show'); document.getElementById('cloudHistSection').scrollIntoView({behavior:'smooth'}); loadCloudHistory(); });
+  document.getElementById('refreshHistBtn').addEventListener('click', loadCloudHistory);
+
+  /* Category */
+  document.getElementById('catCricket').addEventListener('click', function(){ switchCat('cricket'); });
+  document.getElementById('catFood').addEventListener('click', function(){ switchCat('food'); });
+
+  /* Topics */
+  document.getElementById('topic-cs').addEventListener('click', function(){ selectTopic('cs'); });
+  document.getElementById('topic-ct20').addEventListener('click', function(){ selectTopic('ct20'); });
+  document.getElementById('topic-ff').addEventListener('click', function(){ selectTopic('ff'); });
+  document.getElementById('topic-fr').addEventListener('click', function(){ selectTopic('fr'); });
+
+  /* Custom topic */
+  document.getElementById('customTopicBtn').addEventListener('click', applyCustomTopic);
+  document.getElementById('customTopicIn').addEventListener('keydown', function(e){ if(e.key==='Enter') applyCustomTopic(); });
+
+  /* Dropdowns */
+  document.getElementById('posSelect').addEventListener('change', updatePreview);
+  document.getElementById('personaSelect').addEventListener('change', updatePreview);
+  document.getElementById('langSelect').addEventListener('change', updatePreview);
+
+  /* Tone */
+  var toneBtns=document.querySelectorAll('.tone');
+  for(var i=0;i<toneBtns.length;i++){
+    toneBtns[i].addEventListener('click', function(){ selTone=this.getAttribute('data-t'); for(var j=0;j<toneBtns.length;j++) toneBtns[j].classList.remove('sel'); this.classList.add('sel'); updatePreview(); });
+  }
+
+  /* Source */
+  document.getElementById('srcHd').addEventListener('click', function(){ var bd=document.getElementById('srcBd'),ch=document.getElementById('srcCh'); var open=bd.classList.toggle('open'); this.classList.toggle('open',open); ch.classList.toggle('open',open); });
+  document.getElementById('applyUrlBtn').addEventListener('click', applyCustomUrl);
+
+  /* Voice */
+  document.getElementById('vHd').addEventListener('click', function(){ var bd=document.getElementById('vBd'),ch=document.getElementById('vCh'); var open=bd.classList.toggle('open'); this.classList.toggle('open',open); ch.classList.toggle('open',open); });
+  document.getElementById('vConnBtn').addEventListener('click', connectVoice);
+  document.getElementById('speedSlider').addEventListener('input', function(){ document.getElementById('speedVal').textContent=parseFloat(this.value).toFixed(1)+'x'; if(vAudio) vAudio.playbackRate=parseFloat(this.value); });
+  document.getElementById('volSlider').addEventListener('input',   function(){ document.getElementById('volVal').textContent=Math.round(this.value*100)+'%'; if(vAudio) vAudio.volume=parseFloat(this.value); });
+  var vmodeBtns=document.querySelectorAll('.vmode');
+  for(var i=0;i<vmodeBtns.length;i++){
+    vmodeBtns[i].addEventListener('click', function(){ vMode=this.getAttribute('data-m'); for(var j=0;j<vmodeBtns.length;j++) vmodeBtns[j].classList.remove('sel'); this.classList.add('sel'); });
+  }
+  document.getElementById('pbPause').addEventListener('click', togglePause);
+  document.getElementById('pbStop').addEventListener('click', stopVoice);
+
+  /* Nav */
+  document.getElementById('navClear').addEventListener('click', function(){ debateHistory=[]; document.getElementById('histSection') && (document.getElementById('histSection').style.display='none'); });
+  document.getElementById('navExport').addEventListener('click', exportMD);
+
+  /* Run */
+  document.getElementById('runBtn').addEventListener('click', runDebate);
+
+  /* Export */
+  document.getElementById('expMD').addEventListener('click', exportMD);
+  document.getElementById('expTXT').addEventListener('click', exportTXT);
+  document.getElementById('expJSON').addEventListener('click', exportJSON);
+  document.getElementById('expCopy').addEventListener('click', copyAll);
+  document.getElementById('shareCopyBtn').addEventListener('click', copyShareLink);
+
+  /* Speech voices */
+  if(window.speechSynthesis){ window.speechSynthesis.onvoiceschanged=function(){vVoices=window.speechSynthesis.getVoices();}; vVoices=window.speechSynthesis.getVoices(); }
+
+  /* Close user menu on outside click */
+  document.addEventListener('click', function(e){ if(!document.getElementById('userMenuWrap').contains(e.target)) document.getElementById('userMenu').classList.remove('show'); });
+
+  selectTopic('cs');
+});
 </script>
 </body>
 </html>
