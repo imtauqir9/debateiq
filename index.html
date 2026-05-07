@@ -1655,7 +1655,7 @@ function lvEnd(){
   lvStopListening();
   lvSetWave('idle');
 
-  document.getElementById('lvStartBtn').textContent = '🎙 Start Live Debate';
+  document.getElementById('lvStartBtn').textContent = '🎙 Start New Debate';
   document.getElementById('lvStartBtn').classList.remove('active');
   document.getElementById('lvStartBtn').disabled = false;
   document.getElementById('lvSpeakBtn').disabled = true;
@@ -1663,9 +1663,103 @@ function lvEnd(){
   document.getElementById('lvEndBtn').disabled = true;
 
   var rounds = Math.floor(lvConversation.length / 2);
-  lvSetStatus('Debate ended — '+rounds+' rounds completed. Great job!');
-  if(rounds > 0) showToast('Debate completed — '+rounds+' rounds! 🎙', true);
+  lvSetStatus('Generating debate summary…');
+
+  if(rounds === 0){
+    lvSetStatus('No debate recorded. Click Start to begin.');
+    return;
+  }
+
+  /* Show loading summary card */
+  var t = document.getElementById('lvTranscript');
+  var summaryDiv = document.createElement('div');
+  summaryDiv.id = 'lvSummary';
+  summaryDiv.style.cssText = 'background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(56,189,248,.06));border:2px solid rgba(139,92,246,.25);border-radius:14px;padding:16px;margin-top:10px;animation:fu .4s ease;';
+  summaryDiv.innerHTML = '<div style="font-size:13px;font-weight:700;color:var(--p2);margin-bottom:10px;">🏆 Debate Summary</div><div style="display:flex;gap:5px;align-items:center;font-size:12px;color:var(--mu);"><div class="ld" style="background:var(--p2)"></div><div class="ld" style="background:var(--p2)"></div><div class="ld" style="background:var(--p2)"></div>&nbsp; Analysing your debate…</div>';
+  t.appendChild(summaryDiv);
+  t.scrollTop = t.scrollHeight;
+
+  /* Build summary prompt */
+  var topic = lvGetTopic();
+  var pos = lvGetPos();
+  var fullConvo = lvConversation.map(function(m){
+    return (m.role==='you' ? 'HUMAN (arguing: "'+pos+'"): ' : 'AI (opposing): ') + m.text;
+  }).join('\n\n');
+
+  var summaryPrompt = 'You judged a live spoken debate between a human and an AI.\n\nTopic: "'+topic+'"\nHuman\'s position: "'+pos+'"\nAI argued the opposite.\nRounds: '+rounds+'\n\nFull debate transcript:\n'+fullConvo+'\n\nProvide a concise debate summary in this exact JSON format (no other text):\n{\n  "winner": "Human" or "AI" or "Draw",\n  "winner_reason": "One sentence explaining why they won",\n  "human_score": 75,\n  "ai_score": 82,\n  "human_best": "The single strongest point the human made",\n  "ai_best": "The single strongest point the AI made",\n  "human_tip": "One specific tip for the human to debate better next time",\n  "verdict": "One punchy final sentence summarising the debate"\n}';
+
+  callAPI(summaryPrompt).then(function(res){
+    try{
+      var d = JSON.parse(res.text.replace(/```json|```/g,'').trim());
+      var winnerColor = d.winner==='Human' ? 'var(--l1)' : d.winner==='AI' ? 'var(--l3)' : 'var(--o2)';
+      var winnerEmoji = d.winner==='Human' ? '🏆 You Won!' : d.winner==='AI' ? '🤖 AI Won' : '🤝 Draw';
+
+      summaryDiv.innerHTML =
+        '<div style="font-size:13px;font-weight:700;color:var(--p2);margin-bottom:14px;">🏆 Debate Summary — '+rounds+' rounds</div>'+
+
+        /* Winner banner */
+        '<div style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center;">'+
+        '<div style="font-size:22px;font-weight:800;color:'+winnerColor+';">'+winnerEmoji+'</div>'+
+        '<div style="font-size:12px;color:var(--mu);margin-top:4px;">'+d.winner_reason+'</div>'+
+        '</div>'+
+
+        /* Score bars */
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">'+
+        '<div style="background:var(--s2);border:1px solid var(--bd);border-radius:9px;padding:10px 12px;">'+
+        '<div style="font-size:10px;color:var(--l1);font-family:\'JetBrains Mono\',monospace;margin-bottom:6px;">👤 YOUR SCORE</div>'+
+        '<div style="font-size:28px;font-weight:800;font-family:\'JetBrains Mono\',monospace;color:var(--l1);">'+d.human_score+'<span style="font-size:14px;color:var(--mu)">/100</span></div>'+
+        '<div style="height:5px;background:var(--s3);border-radius:999px;margin-top:8px;overflow:hidden;"><div style="height:100%;width:'+d.human_score+'%;background:var(--l1);border-radius:999px;transition:width 1s;"></div></div>'+
+        '</div>'+
+        '<div style="background:var(--s2);border:1px solid var(--bd);border-radius:9px;padding:10px 12px;">'+
+        '<div style="font-size:10px;color:var(--l3);font-family:\'JetBrains Mono\',monospace;margin-bottom:6px;">🤖 AI SCORE</div>'+
+        '<div style="font-size:28px;font-weight:800;font-family:\'JetBrains Mono\',monospace;color:var(--l3);">'+d.ai_score+'<span style="font-size:14px;color:var(--mu)">/100</span></div>'+
+        '<div style="height:5px;background:var(--s3);border-radius:999px;margin-top:8px;overflow:hidden;"><div style="height:100%;width:'+d.ai_score+'%;background:var(--l3);border-radius:999px;transition:width 1s;"></div></div>'+
+        '</div>'+
+        '</div>'+
+
+        /* Best points */
+        '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">'+
+        '<div style="background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.18);border-radius:9px;padding:10px 12px;">'+
+        '<div style="font-size:10px;color:var(--l1);font-family:\'JetBrains Mono\',monospace;margin-bottom:4px;">✅ YOUR BEST POINT</div>'+
+        '<div style="font-size:12px;color:var(--tx);line-height:1.6;">'+d.human_best+'</div>'+
+        '</div>'+
+        '<div style="background:rgba(251,113,133,.07);border:1px solid rgba(251,113,133,.18);border-radius:9px;padding:10px 12px;">'+
+        '<div style="font-size:10px;color:var(--l3);font-family:\'JetBrains Mono\',monospace;margin-bottom:4px;">🤖 AI\'s BEST POINT</div>'+
+        '<div style="font-size:12px;color:var(--tx);line-height:1.6;">'+d.ai_best+'</div>'+
+        '</div>'+
+        '</div>'+
+
+        /* Tip + verdict */
+        '<div style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:9px;padding:10px 12px;margin-bottom:10px;">'+
+        '<div style="font-size:10px;color:var(--o2);font-family:\'JetBrains Mono\',monospace;margin-bottom:4px;">💡 COACHING TIP FOR NEXT TIME</div>'+
+        '<div style="font-size:12px;color:var(--tx);line-height:1.6;">'+d.human_tip+'</div>'+
+        '</div>'+
+        '<div style="font-size:12px;color:var(--mu);font-style:italic;text-align:center;line-height:1.6;">'+d.verdict+'</div>'+
+
+        /* Replay button */
+        '<div style="text-align:center;margin-top:14px;">'+
+        '<button onclick="lvSummarySpeak(\''+escHtml(d.winner_reason+'. '+d.verdict)+'\')" style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:8px;padding:7px 16px;color:var(--p2);font-family:\'Outfit\',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">🔊 Hear verdict</button>'+
+        '</div>';
+
+      t.scrollTop = t.scrollHeight;
+      lvSetStatus('Debate complete — '+rounds+' rounds · See summary above');
+      showToast(winnerEmoji + ' — debate complete!', true);
+
+    }catch(e){
+      summaryDiv.innerHTML = '<div style="font-size:13px;font-weight:700;color:var(--p2);margin-bottom:8px;">🏆 Debate Complete</div><div style="font-size:12px;color:var(--mu);">'+rounds+' rounds completed. Great debate!</div>';
+      lvSetStatus('Debate ended — '+rounds+' rounds completed.');
+    }
+  }).catch(function(){
+    summaryDiv.innerHTML = '<div style="font-size:13px;font-weight:700;color:var(--p2);margin-bottom:8px;">🏆 Debate Complete</div><div style="font-size:12px;color:var(--mu);">'+rounds+' rounds completed. Well argued!</div>';
+    lvSetStatus('Debate ended — '+rounds+' rounds completed.');
+  });
 }
+
+function lvSummarySpeak(text){
+  if(!text) return;
+  lvSpeak(text, function(){});
+}
+
 
 /* Wire live voice controls */
 window.addEventListener('DOMContentLoaded', function(){
