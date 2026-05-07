@@ -829,7 +829,7 @@ select option{background:#161625;}
     <!-- CONTROLS -->
     <div class="lv-controls">
       <button class="lv-btn lv-start" id="lvStartBtn">🎙 Start Live Debate</button>
-      <button class="lv-btn lv-speak" id="lvSpeakBtn" disabled>🎤 Hold to Speak</button>
+      <button class="lv-btn lv-speak" id="lvSpeakBtn" disabled>🎤 Click to Speak</button>
       <button class="lv-btn lv-end" id="lvEndBtn" disabled>⏹ End Debate</button>
     </div>
 
@@ -1526,56 +1526,67 @@ function lvStartListening(){
 
   lvRecognition = new SpeechRecognition();
   lvRecognition.lang = 'en-US';
-  lvRecognition.interimResults = false;
+  lvRecognition.interimResults = true;
   lvRecognition.maxAlternatives = 1;
+  lvRecognition.continuous = false; // auto-stops after silence
 
+  var lvInterimText = '';
   lvRecognition.onresult = function(event){
-    var speech = event.results[0][0].transcript;
-    lvListening = false;
-    document.getElementById('lvSpeakBtn').classList.remove('recording');
-    document.getElementById('lvSpeakBtn').textContent = '🎤 Hold to Speak';
-    lvSetWave('idle');
+    var interim = '', final = '';
+    for(var i = event.resultIndex; i < event.results.length; i++){
+      if(event.results[i].isFinal){ final += event.results[i][0].transcript; }
+      else { interim += event.results[i][0].transcript; }
+    }
+    /* Show live transcription in status */
+    if(interim) lvSetStatus('Hearing: "' + interim + '"…');
+    if(final){
+      var speech = final.trim();
+      lvListening = false;
+      document.getElementById('lvSpeakBtn').classList.remove('recording');
+      document.getElementById('lvSpeakBtn').textContent = '🎤 Click to Speak';
+      lvSetWave('idle');
+      lvSetStatus('Processing your argument…');
 
-    /* Show user message */
-    lvAddMessage('you', speech);
-    lvSetStatus('AI is thinking…');
-    lvShowTyping();
+      /* Show user message */
+      lvAddMessage('you', speech);
+      lvShowTyping();
+      document.getElementById('lvSpeakBtn').disabled = true;
 
-    /* Get AI response */
-    lvGetAIResponse(speech).then(function(aiText){
-      lvRemoveTyping();
-      lvAddMessage('ai', aiText);
-      lvRound++;
-      /* Speak AI response */
-      lvSpeak(aiText, function(){
-        if(lvActive){
-          lvSetStatus('Your turn — click "Hold to Speak" to respond');
-          document.getElementById('lvSpeakBtn').disabled = false;
-        }
+      /* Get AI response */
+      lvGetAIResponse(speech).then(function(aiText){
+        lvRemoveTyping();
+        lvAddMessage('ai', aiText);
+        lvRound++;
+        lvSpeak(aiText, function(){
+          if(lvActive){
+            lvSetStatus('Your turn — click "Click to Speak" to respond');
+            document.getElementById('lvSpeakBtn').disabled = false;
+          }
+        });
+      }).catch(function(e){
+        lvRemoveTyping();
+        lvSetStatus('Error: '+e.message);
+        document.getElementById('lvSpeakBtn').disabled = false;
       });
-    }).catch(function(e){
-      lvRemoveTyping();
-      lvSetStatus('Error: '+e.message);
-      document.getElementById('lvSpeakBtn').disabled = false;
-    });
+    }
   };
 
   lvRecognition.onerror = function(e){
     lvListening = false;
     document.getElementById('lvSpeakBtn').classList.remove('recording');
-    document.getElementById('lvSpeakBtn').textContent = '🎤 Hold to Speak';
+    document.getElementById('lvSpeakBtn').textContent = '🎤 Click to Speak';
     lvSetWave('idle');
-    if(e.error !== 'aborted') lvSetStatus('Mic error: '+e.error+'. Click to try again.');
+    if(e.error !== 'aborted') lvSetStatus('Mic error: '+e.error+'. Try again.');
     document.getElementById('lvSpeakBtn').disabled = false;
   };
 
   lvRecognition.onend = function(){
-    if(lvListening){ /* No speech detected */
+    if(lvListening){ /* Ended without speech */
       lvListening = false;
       document.getElementById('lvSpeakBtn').classList.remove('recording');
-      document.getElementById('lvSpeakBtn').textContent = '🎤 Hold to Speak';
+      document.getElementById('lvSpeakBtn').textContent = '🎤 Click to Speak';
       lvSetWave('idle');
-      lvSetStatus('No speech detected. Try again.');
+      lvSetStatus('No speech detected. Click to try again.');
       document.getElementById('lvSpeakBtn').disabled = false;
     }
   };
@@ -1613,7 +1624,7 @@ function lvStart(){
   document.getElementById('lvSpeakBtn').disabled = false;
   document.getElementById('lvEndBtn').disabled = false;
 
-  lvSetStatus('Debate started! Click "Hold to Speak" to make your first argument.');
+  lvSetStatus('Debate started! Click "Click to Speak" to make your first argument.');
   lvSetWave('idle');
 
   /* AI opens with a challenge */
@@ -1625,14 +1636,14 @@ function lvStart(){
     lvAddMessage('ai', res.text);
     lvSpeak(res.text, function(){
       if(lvActive){
-        lvSetStatus('Your turn — click "Hold to Speak" to make your argument');
+        lvSetStatus('Your turn — click "Click to Speak" to make your argument');
         document.getElementById('lvSpeakBtn').disabled = false;
       }
     });
   }).catch(function(){
     lvRemoveTyping();
     lvAddMessage('ai', 'Ready to debate! Make your case — I\'ll counter every point.');
-    lvSetStatus('Your turn — click "Hold to Speak"');
+    lvSetStatus('Your turn — click "Click to Speak"');
   });
 }
 
@@ -1648,7 +1659,7 @@ function lvEnd(){
   document.getElementById('lvStartBtn').classList.remove('active');
   document.getElementById('lvStartBtn').disabled = false;
   document.getElementById('lvSpeakBtn').disabled = true;
-  document.getElementById('lvSpeakBtn').textContent = '🎤 Hold to Speak';
+  document.getElementById('lvSpeakBtn').textContent = '🎤 Click to Speak';
   document.getElementById('lvEndBtn').disabled = true;
 
   var rounds = Math.floor(lvConversation.length / 2);
@@ -1670,12 +1681,14 @@ window.addEventListener('DOMContentLoaded', function(){
     var lvTopicSel = document.getElementById('lvTopic');
     if(lvTopicSel){ lvTopicSel.addEventListener('change', lvUpdatePositions); lvUpdatePositions(); }
 
-    /* Hold to speak — mousedown/touchstart to start, mouseup/touchend to stop */
+    /* Click to speak — auto stops when you finish talking */
     if(speakBtn){
-      speakBtn.addEventListener('mousedown',  function(){ if(!lvActive||lvSpeaking) return; speakBtn.disabled=true; lvStartListening(); });
-      speakBtn.addEventListener('touchstart', function(e){ e.preventDefault(); if(!lvActive||lvSpeaking) return; speakBtn.disabled=true; lvStartListening(); });
-      speakBtn.addEventListener('mouseup',   lvStopListening);
-      speakBtn.addEventListener('touchend',  lvStopListening);
+      speakBtn.addEventListener('click', function(){
+        if(!lvActive || lvSpeaking) return;
+        if(lvListening){ lvStopListening(); return; }
+        speakBtn.disabled = true;
+        lvStartListening();
+      });
     }
 
     /* If user has ElevenLabs key in voice panel, share it with live debate */
